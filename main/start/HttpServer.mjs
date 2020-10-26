@@ -12,7 +12,9 @@ async function calcRootContent(mainDir){
         await link(`${mainDir}/start/HttpServer/main.mjs`)
     };navigator.serviceWorker.register('/%23sw')`))()
     return htmlMinifier.minify((
-        await fs.promises.readFile(`${mainDir}/start/HttpServer/main.html`,'utf8')
+        await fs.promises.readFile(`${
+            mainDir
+        }/start/HttpServer/main.html`,'utf8')
     ).replace(
         '<script type=module src=main.mjs></script>',
         `<script type=module>${await main}</script>`
@@ -48,7 +50,8 @@ function HttpServer(mainDir,tls){
             stream.respond({
                 ':status':200,
                 'content-type':'text/html;charset=utf-8',
-                'strict-transport-security':'max-age=63072000; includeSubDomains; preload'
+                'strict-transport-security':
+                    'includeSubDomains;max-age=63072000;preload'
             })
             stream.end(content)
             return
@@ -56,12 +59,16 @@ function HttpServer(mainDir,tls){
         if(header[':method']=='GET'&&url.pathname=='/%23sw'){
             stream.respond({
                 ':status':200,
-                'content-type':'application/javascript'
+                'content-type':'application/javascript',
+                'strict-transport-security':
+                    'includeSubDomains;max-age=63072000;preload'
             })
             return stream.end(await this._swPromise)
         }
         stream.respond({
             ':status':400,
+            'strict-transport-security':
+                'includeSubDomains;max-age=63072000;preload'
         })
         stream.end()
     })
