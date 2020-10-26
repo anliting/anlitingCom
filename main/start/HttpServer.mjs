@@ -47,7 +47,8 @@ function HttpServer(mainDir,tls){
                 return
             stream.respond({
                 ':status':200,
-                'content-type':'text/html;charset=utf-8'
+                'content-type':'text/html;charset=utf-8',
+                'strict-transport-security':'max-age=63072000; includeSubDomains; preload'
             })
             stream.end(content)
             return
