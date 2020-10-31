@@ -1,19 +1,15 @@
 import{rollup}from'rollup'
-import node from'@anliting/node'
-let dir=node.importMetaToDir(import.meta)
-function plugin(name,path){
+function createPlugin(name,path){
     return{
         name,
         resolveId:i=>i==name?name:null,
         load:i=>i==name?link(path):null,
     }
 }
-async function link(input){
+async function link(input,plugin={}){
     let bundle=await rollup({
         input,
-        plugins:[
-            plugin('doe',`${dir}/../../../../lib/doe/export/main.mjs`)
-        ],
+        plugins:Object.entries(plugin).map(e=>createPlugin(...e)),
     })
     return(await bundle.generate({format:'es'})).output[0].code
 }

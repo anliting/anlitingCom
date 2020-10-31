@@ -9,7 +9,9 @@ function calcSw(mainDir){
 }
 async function calcRootContent(mainDir){
     let main=(async()=>minify(`(()=>{${
-        await link(`${mainDir}/start/Server/HttpServer/main.mjs`)
+        await link(`${mainDir}/start/Server/HttpServer/main.mjs`,{
+            doe:`${mainDir}/../lib/doe/export/main.mjs`
+        })
     };navigator.serviceWorker.register('/%23sw')})()`))()
     return htmlMinifier.minify((
         await fs.promises.readFile(`${
