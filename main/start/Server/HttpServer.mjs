@@ -5,19 +5,19 @@ import link from            './HttpServer/link.mjs'
 import minify from          './HttpServer/minify.mjs'
 import htmlMinifier from    'html-minifier'
 function calcSw(mainDir){
-    return fs.promises.readFile(`${mainDir}/start/sw.js`)
+    return fs.promises.readFile(`${mainDir}/start/Server/HttpServer/sw.js`)
 }
 async function calcRootContent(mainDir){
-    let main=(async()=>minify(`${
-        await link(`${mainDir}/start/HttpServer/main.mjs`)
-    };navigator.serviceWorker.register('/%23sw')`))()
+    let main=(async()=>minify(`(()=>{${
+        await link(`${mainDir}/start/Server/HttpServer/main.mjs`)
+    };navigator.serviceWorker.register('/%23sw')})()`))()
     return htmlMinifier.minify((
         await fs.promises.readFile(`${
             mainDir
-        }/start/HttpServer/main.html`,'utf8')
+        }/start/Server/HttpServer/main.html`,'utf8')
     ).replace(
         '<script type=module src=main.mjs></script>',
-        `<script type=module>${await main}</script>`
+        `<script>${await main}</script>`
     ),{
             collapseWhitespace:true,
             removeAttributeQuotes:true,
