@@ -21,9 +21,9 @@ async function calcRootContent(mainDir){
         '<script type=module src=main.mjs></script>',
         `<script>${await main}</script>`
     ),{
-            collapseWhitespace:true,
-            removeAttributeQuotes:true,
-            removeOptionalTags:true,
+        collapseWhitespace:true,
+        removeAttributeQuotes:true,
+        removeOptionalTags:true,
     })
 }
 function HttpServer(mainDir,tls){

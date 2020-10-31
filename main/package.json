@@ -3,6 +3,6 @@
         "html-minifier":"",
         "rollup":"",
         "terser":"",
-        "@anliting/node":""
+        "@anliting/core":"anliting/core"
     }
 }

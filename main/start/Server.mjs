@@ -1,16 +1,7 @@
 import fs from              'fs'
+import core from            '@anliting/core'
 import HttpServer from      './Server/HttpServer.mjs'
 async function load(){
-    async function existFile(p){
-        try{
-            await fs.promises.stat(p)
-            return 1
-        }catch(e){
-            if(!(e.code=='ENOENT'))
-                throw e
-            return 0
-        }
-    }
     async function readListen(path){
         try{
             return(
@@ -24,8 +15,8 @@ async function load(){
     }
     let
         httpListen=readListen('httpListen'),
-        httpListenOnPath=existFile('httpListenOnPath')
-    this._tls=await existFile('tls')
+        httpListenOnPath=core.existFile('httpListenOnPath')
+    this._tls=await core.existFile('tls')
     this._httpServer=new HttpServer(
         this._mainDir,
         this._tls
