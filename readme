@@ -1,0 +1,9 @@
+mkdir anlitingCom
+cd anlitingCom
+git clone https://github.com/anliting/anlitingCom.git
+cp anlitingCom/main/package.json .
+npm i
+mkdir work
+printf '1100 ::1'>work/httpListen
+mkdir work/tls
+cp $key $crt tls
