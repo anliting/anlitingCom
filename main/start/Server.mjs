@@ -5,8 +5,15 @@ import IpcServer from       './Server/IpcServer.mjs'
 async function load(){
     this._ipcServer=new IpcServer
     let ipcServerListen=this._ipcServer.listen()
-    this._ipcServer.out=s=>{
-        console.log(''+s)
+    this._ipcServer.out=b=>{
+        switch(b.readUInt8()){
+            case 0:
+                this._readyToReloadTls=(async()=>{
+                    await this._readyToReloadTls
+                    this._loadTls()
+                })()
+                break
+        }
     }
     async function readListen(path){
         try{
@@ -21,17 +28,10 @@ async function load(){
     let
         httpListen=readListen('httpListen'),
         httpListenOnPath=core.existFile('httpListenOnPath')
-    this._tls=await core.existFile('tls')
-    this._httpServer=new HttpServer(
-        this._mainDir,
-        this._tls
-    )
-    if(this._tls){
-        this._interval=setInterval(async()=>{
-            this._loadTls()
-        },86400e3)
-        await this._loadTls()
-    }
+    this._httpTls=await core.existFile('httpTls')
+    this._httpServer=new HttpServer(this._mainDir,this._httpTls)
+    if(this._httpTls)
+        await this._loadHttpTls()
     await Promise.all([
         ipcServerListen,
         (async()=>{
@@ -46,19 +46,17 @@ async function load(){
 }
 function Server(mainDir){
     this._mainDir=mainDir
-    this._load=load.call(this)
+    this._readyToReloadTls=this._load=load.call(this)
 }
-Server.prototype._loadTls=async function(){
+Server.prototype._loadHttpTls=async function(){
     let[key,crt]=await Promise.all([
-        fs.promises.readFile('tls/key'),
-        fs.promises.readFile('tls/crt'),
+        fs.promises.readFile('httpTls/key'),
+        fs.promises.readFile('httpTls/crt'),
     ])
     this._httpServer.setSecureContext({key,cert:crt})
 }
 Server.prototype.end=async function(){
     await this._load
-    if(this._tls)
-        clearInterval(this._interval)
     await Promise.all([
         this._ipcServer.end(),
         this._httpServer.end(),
