@@ -6,6 +6,8 @@ async function load(){
     this._ipcServer=new IpcServer
     let ipcServerListen=this._ipcServer.listen()
     this._ipcServer.out=b=>{
+        if(this._loadedStatus&&this._endStatus)
+            return
         switch(b.readUInt8()){
             case 0:
                 this._readyToReloadTls=(async()=>{
@@ -43,9 +45,11 @@ async function load(){
                 this._httpServer.listen(['httpServer'])
         })(),
     ])
+    this._loadStatus=1
 }
 function Server(mainDir){
     this._mainDir=mainDir
+    this._loadStatus=this._endStatus=0
     this._readyToReloadTls=this._load=load.call(this)
 }
 Server.prototype._loadHttpTls=async function(){
@@ -56,7 +60,11 @@ Server.prototype._loadHttpTls=async function(){
     this._httpServer.setSecureContext({key,cert:crt})
 }
 Server.prototype.end=async function(){
-    await this._load
+    this._endStatus=1
+    await Promise.all([
+        this._load,
+        this._readyToReloadTls,
+    ])
     await Promise.all([
         this._ipcServer.end(),
         this._httpServer.end(),

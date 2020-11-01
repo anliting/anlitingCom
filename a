@@ -2,14 +2,16 @@ state:
     loading
         load → loaded
         receive end → loading, received end
-        deny requests
+        allow requests
     loading, received end
         load → loaded, received end
-        deny requests
+        allow requests
     loaded
         receive end → loading, received end
         allow requests
     loaded, received end
         deny requests
+        terminate requests
+        end
     load in {0,1}
     end in {0,1}
