@@ -1,0 +1,13 @@
+state:
+    loading
+        load → loaded
+        receive end → loading, received end
+        deny requests
+    loading, received end
+        load → loaded, received end
+        deny requests
+    loaded
+        receive end → loading, received end
+        allow requests
+    loaded, received end
+        deny requests
