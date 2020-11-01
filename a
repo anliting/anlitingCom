@@ -11,3 +11,5 @@ state:
         allow requests
     loaded, received end
         deny requests
+    load in {0,1}
+    end in {0,1}
