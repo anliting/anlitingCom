@@ -1,16 +1,21 @@
 import fs from              'fs'
 import core from            '@anliting/core'
 import HttpServer from      './Server/HttpServer.mjs'
+import IpcServer from       './Server/IpcServer.mjs'
 async function load(){
+    this._ipcServer=new IpcServer
+    let ipcServerListen=this._ipcServer.listen()
+    this._ipcServer.out=s=>{
+        console.log(''+s)
+    }
     async function readListen(path){
         try{
             return(
-                await fs.promises.readFile(path,'utf8')
+                ''+await fs.promises.readFile(path)
             ).split('\n')[0].split(' ')
         }catch(e){
             if(!(e.code=='ENOENT'))
                 throw e
-            return 0
         }
     }
     let
@@ -28,6 +33,7 @@ async function load(){
         await this._loadTls()
     }
     await Promise.all([
+        ipcServerListen,
         (async()=>{
             if(httpListen=await httpListen)
                 this._httpServer.listen(httpListen)
@@ -44,8 +50,8 @@ function Server(mainDir){
 }
 Server.prototype._loadTls=async function(){
     let[key,crt]=await Promise.all([
-        fs.promises.readFile('tls/key','utf8'),
-        fs.promises.readFile('tls/crt','utf8'),
+        fs.promises.readFile('tls/key'),
+        fs.promises.readFile('tls/crt'),
     ])
     this._httpServer.setSecureContext({key,cert:crt})
 }
@@ -53,6 +59,9 @@ Server.prototype.end=async function(){
     await this._load
     if(this._tls)
         clearInterval(this._interval)
-    await this._httpServer.end()
+    await Promise.all([
+        this._ipcServer.end(),
+        this._httpServer.end(),
+    ])
 }
 export default Server

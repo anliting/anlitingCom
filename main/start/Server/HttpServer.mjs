@@ -14,9 +14,9 @@ async function calcRootContent(mainDir){
         })
     };navigator.serviceWorker.register('/%23sw')})()`))()
     return htmlMinifier.minify((
-        await fs.promises.readFile(`${
+        ''+await fs.promises.readFile(`${
             mainDir
-        }/start/Server/HttpServer/main.html`,'utf8')
+        }/start/Server/HttpServer/main.html`)
     ).replace(
         '<script type=module src=main.mjs></script>',
         `<script>${await main}</script>`
