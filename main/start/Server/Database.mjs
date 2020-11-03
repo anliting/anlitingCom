@@ -1,7 +1,6 @@
 import fs from'fs'
 import afs from'@anliting/fs'
 import rmrf from'rmrf'
-import os from'os'
 let edge={
     '0':async function(){
         await fs.promises.mkdir('data-next/tmp')
