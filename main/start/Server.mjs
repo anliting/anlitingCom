@@ -58,10 +58,8 @@ Server.prototype._loadHttpTls=async function(){
 }
 Server.prototype.end=async function(){
     await this._load
+    await this._ipcServer.end()
     await this._reloadTls
-    await Promise.all([
-        this._ipcServer.end(),
-        this._httpServer.end(),
-    ])
+    await this._httpServer.end()
 }
 export default Server
