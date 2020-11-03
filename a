@@ -1,17 +1,8 @@
 state:
     loading
-        load → loaded
-        receive end → loading, received end
         qneueue all tasks
-    loading, received end
-        load → loaded, received end
-        allow requests
-    loaded
-        receive end → loading, received end
-        allow requests
-    loaded, received end
-        deny requests
-        terminate requests
+    received end
+        deny tasks
+        terminate tasks
+        wait until all task end
         end
-    load in {0,1}
-    end in {0,1}
