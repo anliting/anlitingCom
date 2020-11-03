@@ -1,9 +1,12 @@
-mkdir anlitingCom
-cd anlitingCom
-git clone https://github.com/anliting/anlitingCom.git
-cp anlitingCom/main/package.json .
-npm i
-mkdir work
-printf '1100 ::1'>work/httpListen
-mkdir work/httpTls
-cp $key $crt httpTls
+start
+    mkdir anlitingCom
+    cd anlitingCom
+    git clone https://github.com/anliting/anlitingCom.git
+    cp anlitingCom/main/package.json .
+    npm i
+    mkdir work
+    printf '1100 ::1'>work/httpListen
+    mkdir work/httpTls
+    cp $key $crt httpTls
+to-do
+    ws server

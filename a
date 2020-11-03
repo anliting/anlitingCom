@@ -1,8 +1,0 @@
-state:
-    loading
-        qneueue all tasks
-    received end
-        deny tasks
-        terminate tasks
-        wait until all task end
-        end
