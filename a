@@ -2,7 +2,7 @@ state:
     loading
         load → loaded
         receive end → loading, received end
-        allow requests
+        qneueue all tasks
     loading, received end
         load → loaded, received end
         allow requests
