@@ -65,13 +65,17 @@ async function load(){
     }
 }
 function Database(){
-    this._ready=load.call(this)
+    this.load=this._ready=load.call(this)
+    this._nextTempPath=0
 }
-/*Database.prototype._cutTempPath=function(path){
+Database.prototype._cutTempPath=function(path){
 }
 Database.prototype._putTempPath=function(){
-    return''
-}*/
+    return''+this._nextTempPath++
+}
+Database.prototype.end=function(){
+    return this._ready
+}
 Database.prototype.getOwn=function(user){
     return this._ready=(async()=>{
         await this._ready
@@ -101,17 +105,13 @@ Database.prototype.setOwn=function(user,buffer){
 Database.prototype.setPassword=function(user,password){
     return this._ready=(async()=>{
         await this._ready
-        let
-            userPath=`data/user/user/${user}`,
-            passwordPath=`${userPath}/password`
-        await fs.promises.writeFile(passwordPath,password)
-        /*let
-            tempPath=this._putTempPath(),
-        await fs.promises.writeFile(passwordPath,password)
+        let passwordPath=`data/user/user/${user}/password`
+        let tempPath=this._putTempPath()
+        await fs.promises.writeFile(`data/tmp/${tempPath}`,password)
+        await afs.fsyncByPath(`data/tmp/${tempPath}`)
+        await fs.promises.rename(`data/tmp/${tempPath}`,passwordPath)
         await afs.fsyncByPath(passwordPath)
-        await fs.promises.rename(temp,passwordPath)
-        await afs.fsyncByPath(temp)
-        this._cutTempPath(tempPath)*/
+        this._cutTempPath(tempPath)
     })()
 }
 Database.prototype.testCredential=function(user,password){

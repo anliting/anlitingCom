@@ -1,8 +1,10 @@
 {
     "dependencies":{
         "html-minifier":"",
+        "rmrf":"",
         "rollup":"",
         "terser":"",
-        "@anliting/core":"anliting/core"
+        "@anliting/core":"anliting/core",
+        "@anliting/fs":""
     }
 }

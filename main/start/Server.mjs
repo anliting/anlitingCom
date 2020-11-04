@@ -1,10 +1,11 @@
 import fs from              'fs'
 import core from            '@anliting/core'
+import Database from        './Server/Database.mjs'
 import HttpServer from      './Server/HttpServer.mjs'
 import IpcServer from       './Server/IpcServer.mjs'
 async function load(){
+    this._database=new Database
     this._ipcServer=new IpcServer
-    let ipcServerListen=this._ipcServer.listen()
     this._ipcServer.out=async b=>{
         await this._load
         switch(b.readUInt8()){
@@ -13,6 +14,8 @@ async function load(){
                     await this._reloadTls
                     this._loadTls()
                 })()
+                break
+            case 1:
                 break
         }
     }
@@ -33,15 +36,16 @@ async function load(){
     this._httpServer=new HttpServer(this._mainDir,this._httpTls)
     if(this._httpTls)
         await this._loadHttpTls()
+    await this._database.load
     await Promise.all([
-        ipcServerListen,
+        this._ipcServer.listen(),
         (async()=>{
             if(httpListen=await httpListen)
-                this._httpServer.listen(httpListen)
+                await this._httpServer.listen(httpListen)
         })(),
         (async()=>{
             if(await httpListenOnPath)
-                this._httpServer.listen(['httpServer'])
+                await this._httpServer.listen(['httpServer'])
         })(),
     ])
 }
@@ -61,5 +65,6 @@ Server.prototype.end=async function(){
     await this._ipcServer.end()
     await this._reloadTls
     await this._httpServer.end()
+    await this._database.end()
 }
 export default Server
