@@ -9,4 +9,5 @@ start
     mkdir work/httpTls
     cp $key $crt httpTls
 to-do
+    putSuperUser
     ws server
