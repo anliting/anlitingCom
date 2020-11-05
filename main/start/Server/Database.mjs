@@ -6,17 +6,11 @@ let edge={
         await fs.promises.mkdir('data-next/tmp')
         await fs.promises.mkdir('data-next/user')
         await fs.promises.mkdir('data-next/user/user')
-        await fs.promises.mkdir('data-next/user/user/0')
-        await fs.promises.writeFile('data-next/user/main',JSON.stringify({
-            mode:'single',
-        }))
         await Promise.all([
             afs.fsyncByPath('data-next'),
             afs.fsyncByPath('data-next/tmp'),
             afs.fsyncByPath('data-next/user'),
             afs.fsyncByPath('data-next/user/user'),
-            afs.fsyncByPath('data-next/user/user/0'),
-            afs.fsyncByPath('data-next/user/main'),
         ])
         return'1'
     },
@@ -86,14 +80,6 @@ Database.prototype.getOwn=function(user){
                 return Buffer.from(JSON.stringify([]))
             throw e
         }
-    })()
-}
-Database.prototype.getUserMode=function(){
-    return this._ready=(async()=>{
-        await this._ready
-        return JSON.parse(
-            await fs.promises.readFile('data/user/main','utf8')
-        ).mode
     })()
 }
 Database.prototype.setOwn=function(user,buffer){
