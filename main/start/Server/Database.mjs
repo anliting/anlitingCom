@@ -68,8 +68,22 @@ function Database(){
 }
 Database.prototype._cutTempPath=function(path){
 }
+Database.prototype._getUserIndex=async function(){
+    return JSON.parse(
+        ''+await fs.promises.readFile(`data/user/main`)
+    ).index
+}
 Database.prototype._putTempPath=function(){
     return''+this._nextTempPath++
+}
+Database.prototype._setUserIndex=async function(index){
+    let o=JSON.parse(
+        ''+await fs.promises.readFile('data/user/main')
+    )
+    o.index++
+    await fs.promises.writeFile(
+        'data/user/main',JSON.stringify(o)
+    )
 }
 Database.prototype.end=function(){
     return this._ready
@@ -86,17 +100,13 @@ Database.prototype.getOwn=function(user){
         }
     })()
 }
-Database.prototype.getUserIndex=function(){
-    return this._ready=(async()=>{
-        await this._ready
-        return JSON.parse(
-            ''+await fs.promises.readFile(`data/user/user/main`)
-        ).index
-    })()
-}
 Database.prototype.putUser=function(){
     return this._ready=(async()=>{
         await this._ready
+        let id=await this._getUserIndex()
+        await this._setUserIndex(id+1)
+        await fs.promises.mkdir(`data/user/user/${id}`)
+        return id
     })()
 }
 Database.prototype.setOwn=function(user,buffer){
