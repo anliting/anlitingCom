@@ -16,6 +16,13 @@ async function load(){
                 })()
                 break
             case 1:
+                {
+                    let
+                        passwordLength=b.readUInt32BE(1),
+                        password=''+b.slice(1+4,1+4+passwordLength)
+                    let id=await this._database.putUser()
+                    await this._database.setPassword(id,password)
+                }
                 break
         }
     }
