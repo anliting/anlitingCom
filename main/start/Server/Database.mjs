@@ -1,66 +1,27 @@
-import fs from'fs'
+import anlitingCore from'@anliting/core'
 import afs from'@anliting/fs'
+import fs from'fs'
 import rmrf from'rmrf'
-let edge={
-    '0':async function(){
-        await fs.promises.mkdir('data-next/tmp')
-        await fs.promises.mkdir('data-next/user')
-        await fs.promises.writeFile('data-next/user/main',JSON.stringify({
-            index:0,
-        }))
-        await fs.promises.mkdir('data-next/user/user')
-        await Promise.all([
-            afs.fsyncByPath('data-next'),
-            afs.fsyncByPath('data-next/tmp'),
-            afs.fsyncByPath('data-next/user'),
-            afs.fsyncByPath('data-next/user/main'),
-            afs.fsyncByPath('data-next/user/user'),
-        ])
-        return'1'
-    },
-}
-async function getVersion(){
-    try{
-        return['pre',
-            await fs.promises.readFile('data-next/version','utf8')
-        ]
-    }catch(e){
-        if(!(e.code=='ENOENT'))
-            throw e
-    }
-    try{
-        return[0,
-            await fs.promises.readFile('data/version','utf8')
-        ]
-    }catch(e){
-        if(!(e.code=='ENOENT'))
-            throw e
-    }
-    return[0,'0']
-}
-async function setVersion(v){
-    await fs.promises.writeFile('data-next/tmp/version',v)
-    await afs.fsyncByPath('data-next/tmp/version')
-    await fs.promises.rename('data-next/tmp/version','data-next/version')
-    await afs.fsyncByPath('data-next')
-}
 async function load(){
-    for(;;){
-        let v=await getVersion()
-        if(v[0]=='pre'){
-            await rmrf('data')
-            await fs.promises.rename('data-next','data')
-            await afs.fsyncByPath('.')
-            continue
-        }
-        if(v[1] in edge){
-            await rmrf('data-next')
-            await afs.mkdirFsync('data-next')
-            await setVersion(await edge[v[1]]())
-            continue
-        }
-        break
-    }
+    if(await anlitingCore.existFile('data'))
+        return
+    await rmrf('data-next')
+    await fs.promises.mkdir('data-next')
+    await fs.promises.mkdir('data-next/tmp')
+    await fs.promises.mkdir('data-next/user')
+    await fs.promises.writeFile('data-next/user/main',JSON.stringify({
+        index:0,
+    }))
+    await fs.promises.mkdir('data-next/user/user')
+    await Promise.all([
+        afs.fsyncByPath('data-next'),
+        afs.fsyncByPath('data-next/tmp'),
+        afs.fsyncByPath('data-next/user'),
+        afs.fsyncByPath('data-next/user/main'),
+        afs.fsyncByPath('data-next/user/user'),
+    ])
+    await fs.promises.rename('data-next','data')
+    await afs.fsyncByPath('.')
 }
 function Database(){
     this.load=this._ready=load.call(this)
