@@ -1,2 +1,2 @@
-cd testWork
-node ../anlitingCom/main/test.mjs
+(cd testWork;node ../anlitingCom/main/test.mjs)
+rm -fr testWork/*

@@ -13,4 +13,6 @@ import Database from'./start/Server/Database.mjs'
         'database.user'
     )
     await database.end()
+    /*let database=new Database
+    let id=await database.putUser()*/
 })()

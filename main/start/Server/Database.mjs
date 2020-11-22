@@ -1,5 +1,6 @@
 import core from'@anliting/core'
 import fs from'fs'
+import path from'path'
 import rmrf from'rmrf'
 async function load(){
     if(!await core.existFile('data')){
@@ -26,7 +27,6 @@ async function load(){
 }
 function Database(){
     this.load=this._ready=load.call(this)
-    this._nextTempPath=0
 }
 Database.prototype.__next=async function(){
     let a
@@ -35,47 +35,58 @@ Database.prototype.__next=async function(){
     }catch(e){
         return
     }
-    for(let b of a[1])
-        if(b[0]==1){
-            await rmrf(b[1])
-            await fs.promises.mkdir(b[1])
-            await core.fsyncWithParentByPath(b[1])
+    let i=0
+    for(let b of a){
+        let stat,noent
+        try{
+            stat=await fs.promises.stat(b[1])
+        }catch(e){
+            if(!(e.code=='ENOENT'))
+                throw e
+            noent=1
         }
+        if(!noent)
+            if(stat.isDirectory())
+                await rmrf(b[1])
+            else
+                await fs.promises.unlink(b[1])
+        if(b[0]<2){
+            await(
+                b[0]==0?
+                    fs.promises.link(`data/next/${i++}`,b[1])
+                :
+                    fs.promises.mkdir(b[1])
+            )
+            await core.fsyncByPath(b[1])
+        }
+        await core.fsyncByPath(path.resolve(b[1],'..'))
+    }
     await fs.promises.unlink('data/next/main')
     await core.fsyncByPath('data/next')
     await rmrf('data/next')
     await core.fsyncByPath('data')
 }
-Database.prototype.__update=async function(a,b){
-    a=a||[]
-    b=b||[]
+Database.prototype.__update=async function(a){
     await fs.promises.mkdir('data/next')
     await core.fsyncByPath('data/next')
-    await fs.promises.writeFile('data/next/main',JSON.stringify([a,b]))
-    await Promise.all([
-        core.fsyncByPath('data/next'),
-        core.fsyncByPath('data/next/main'),
-    ])
+    let i=0
+    for(let b of a)if(b[0]==0)
+        await fs.promises.writeFile(`data/next/${i++}`,b[2])
+    await fs.promises.writeFile('data/next/main',JSON.stringify(a))
+    await core.fsyncWithParentByPath('data/next/main')
     await this.__next()
-}
-Database.prototype._cutTempPath=function(path){
 }
 Database.prototype._getUserIndex=async function(){
     return JSON.parse(
         ''+await fs.promises.readFile(`data/user/main`)
     ).index
 }
-Database.prototype._putTempPath=function(){
-    return''+this._nextTempPath++
-}
 Database.prototype._setUserIndex=async function(index){
     let o=JSON.parse(
         ''+await fs.promises.readFile('data/user/main')
     )
     o.index++
-    await fs.promises.writeFile(
-        'data/user/main',JSON.stringify(o)
-    )
+    return[[0,'data/user/main',JSON.stringify(o)]]
 }
 Database.prototype.end=function(){
     return this._ready
@@ -96,8 +107,8 @@ Database.prototype.putUser=function(){
     return this._ready=(async()=>{
         await this._ready
         let id=await this._getUserIndex()
-        await this._setUserIndex(id+1)
-        await this.__update(0,[
+        await this.__update([
+            ...await this._setUserIndex(id+1),
             [1,`data/user/user/${id}`]
         ])
         return id
@@ -112,13 +123,9 @@ Database.prototype.setOwn=function(user,buffer){
 Database.prototype.setPassword=function(user,password){
     return this._ready=(async()=>{
         await this._ready
-        let passwordPath=`data/user/user/${user}/password`
-        let tempPath=this._putTempPath()
-        await fs.promises.writeFile(`data/tmp/${tempPath}`,password)
-        await core.fsyncByPath(`data/tmp/${tempPath}`)
-        await fs.promises.rename(`data/tmp/${tempPath}`,passwordPath)
-        await core.fsyncByPath(passwordPath)
-        this._cutTempPath(tempPath)
+        await this.__update([
+            [0,`data/user/user/${user}/password`,password]
+        ])
     })()
 }
 Database.prototype.testCredential=function(user,password){
