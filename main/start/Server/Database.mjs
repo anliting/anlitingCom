@@ -1,3 +1,7 @@
+/*
+    data/tmp: for upload
+    data/user: for user
+*/
 import core from'@anliting/core'
 import fs from'fs'
 import path from'path'
@@ -12,18 +16,9 @@ async function load(){
             index:0,
         }))
         await fs.promises.mkdir('data-next/user/user')
-        await Promise.all([
-            core.fsyncByPath('data-next'),
-            core.fsyncByPath('data-next/tmp'),
-            core.fsyncByPath('data-next/user'),
-            core.fsyncByPath('data-next/user/main'),
-            core.fsyncByPath('data-next/user/user'),
-        ])
         await fs.promises.rename('data-next','data')
-        await core.fsyncByPath('.')
     }
     await this.__next()
-    await rmrf('data/next')
 }
 function Database(){
     this.load=this._ready=load.call(this)
@@ -33,47 +28,42 @@ Database.prototype.__next=async function(){
     try{
         a=JSON.parse(''+await fs.promises.readFile('data/next/main'))
     }catch(e){
-        return
     }
-    let i=0
-    for(let b of a){
-        let stat,noent
-        try{
-            stat=await fs.promises.stat(b[1])
-        }catch(e){
-            if(!(e.code=='ENOENT'))
-                throw e
-            noent=1
+    if(a){
+        let i=0
+        for(let b of a){
+            let stat,noent
+            try{
+                stat=await fs.promises.stat(b[1])
+            }catch(e){
+                if(!(e.code=='ENOENT'))
+                    throw e
+                noent=1
+            }
+            if(!noent)
+                if(stat.isDirectory())
+                    await rmrf(b[1])
+                else
+                    await fs.promises.unlink(b[1])
+            if(b[0]<2){
+                await(
+                    b[0]==0?
+                        fs.promises.link(`data/next/${i++}`,b[1])
+                    :
+                        fs.promises.mkdir(b[1])
+                )
+            }
         }
-        if(!noent)
-            if(stat.isDirectory())
-                await rmrf(b[1])
-            else
-                await fs.promises.unlink(b[1])
-        if(b[0]<2){
-            await(
-                b[0]==0?
-                    fs.promises.link(`data/next/${i++}`,b[1])
-                :
-                    fs.promises.mkdir(b[1])
-            )
-            await core.fsyncByPath(b[1])
-        }
-        await core.fsyncByPath(path.resolve(b[1],'..'))
+        await fs.promises.unlink('data/next/main')
     }
-    await fs.promises.unlink('data/next/main')
-    await core.fsyncByPath('data/next')
     await rmrf('data/next')
-    await core.fsyncByPath('data')
 }
 Database.prototype.__update=async function(a){
     await fs.promises.mkdir('data/next')
-    await core.fsyncByPath('data/next')
     let i=0
     for(let b of a)if(b[0]==0)
         await fs.promises.writeFile(`data/next/${i++}`,b[2])
     await fs.promises.writeFile('data/next/main',JSON.stringify(a))
-    await core.fsyncWithParentByPath('data/next/main')
     await this.__next()
 }
 Database.prototype._getUserIndex=async function(){
