@@ -14,3 +14,4 @@ doe.body(
         doe.button('Log In'),
     ),*/
 )
+navigator.serviceWorker.register('%23sw')
