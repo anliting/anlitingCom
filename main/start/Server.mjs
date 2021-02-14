@@ -13,7 +13,7 @@ async function load(){
         await this._load
         switch(b.readUInt8()){
             case 0:
-                this._reloadTls=(async()=>{
+                return this._reloadTls=(async()=>{
                     await this._reloadTls
                     this._loadHttpTls()
                     this._loadWsTls()
@@ -24,8 +24,12 @@ async function load(){
                     let
                         passwordLength=b.readUInt32BE(1),
                         password=''+b.slice(1+4,1+4+passwordLength)
-                    let id=await this._database.putUser()
-                    await this._database.setPassword(id,password)
+                    let id=await this._database.putSuperUserWithPassword(
+                        password
+                    )
+                    let buffer=Buffer.alloc(4)
+                    buffer.writeUInt32BE(id,0)
+                    return buffer
                 }
                 break
         }

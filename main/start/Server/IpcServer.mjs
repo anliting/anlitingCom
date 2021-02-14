@@ -1,12 +1,14 @@
 import net from         'net'
 import core from        '@anliting/core'
 function IpcServer(){
-    this._server=net.createServer()
+    this._server=net.createServer({allowHalfOpen:true})
     this._connection=new Set
     this._server.on('connection',connection=>{
         this._connection.add(connection)
         ;(async()=>{
-            this.out(await core.content(connection))
+            let res=await this.out(await core.content(connection))
+            if(res)
+                connection.end(res)
         })()
         connection.on('close',()=>this._connection.delete(connection))
     })

@@ -78,6 +78,9 @@ Database.prototype._setUserIndex=async function(index){
     o.index++
     return[[0,'data/user/main',JSON.stringify(o)]]
 }
+Database.prototype._setUserPassword=async function(id,password){
+    return[[0,`data/user/user/${id}/password`,password]]
+}
 Database.prototype.end=function(){
     return this._ready
 }
@@ -93,13 +96,28 @@ Database.prototype.getOwn=function(user){
         }
     })()
 }
-Database.prototype.putUser=function(){
+Database.prototype.putSuperUserWithPassword=function(password){
     return this._ready=(async()=>{
         await this._ready
         let id=await this._getUserIndex()
         await this.__update([
             ...await this._setUserIndex(id+1),
-            [1,`data/user/user/${id}`]
+            [1,`data/user/user/${id}`],
+            [0,`data/user/user/${id}/main`,'{"admin":true}'],
+            ...await this._setUserPassword(id,password),
+        ])
+        return id
+    })()
+}
+Database.prototype.putUserWithPassword=function(password){
+    return this._ready=(async()=>{
+        await this._ready
+        let id=await this._getUserIndex()
+        await this.__update([
+            ...await this._setUserIndex(id+1),
+            [1,`data/user/user/${id}`],
+            [0,`data/user/user/${id}/main`,'{}'],
+            ...await this._setUserPassword(id,password),
         ])
         return id
     })()
@@ -114,7 +132,7 @@ Database.prototype.setPassword=function(user,password){
     return this._ready=(async()=>{
         await this._ready
         await this.__update([
-            [0,`data/user/user/${user}/password`,password]
+            ...await this._setUserPassword(user,password),
         ])
     })()
 }

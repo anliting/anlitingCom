@@ -1,4 +1,5 @@
-import net from'net'
+import net from     'net'
+import core from    '@anliting/core'
 ;(async()=>{
     let
         password=Buffer.from(process.argv[2]),
@@ -6,7 +7,11 @@ import net from'net'
     buffer.writeUInt8(1)
     buffer.writeUInt32BE(password.length,1)
     password.copy(buffer,1+4)
-    ;(await new Promise(rs=>{
+    let connection=await new Promise(rs=>{
         let c=net.connect('ipc',()=>rs(c))
-    })).end(buffer)
+    })
+    ;(async()=>{
+        console.log((await core.content(connection)).readUInt32BE(0))
+    })()
+    connection.end(buffer)
 })()
