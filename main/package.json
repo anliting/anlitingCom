@@ -4,6 +4,7 @@
         "rmrf":"",
         "rollup":"",
         "terser":"",
+        "ws":"",
         "@anliting/core":"anliting/core"
     }
 }

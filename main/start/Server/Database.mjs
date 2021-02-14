@@ -21,7 +21,7 @@ async function load(){
     await this.__next()
 }
 function Database(){
-    this.load=this._ready=load.call(this)
+    this._ready=load.call(this)
 }
 Database.prototype.__next=async function(){
     let a

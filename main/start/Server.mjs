@@ -3,7 +3,10 @@ import core from            '@anliting/core'
 import Database from        './Server/Database.mjs'
 import HttpServer from      './Server/HttpServer.mjs'
 import IpcServer from       './Server/IpcServer.mjs'
+import WsServer from        './Server/WsServer.mjs'
+import putSession from      './Server/putSession.mjs'
 async function load(){
+    this._session=new Map
     this._database=new Database
     this._ipcServer=new IpcServer
     this._ipcServer.out=async b=>{
@@ -12,7 +15,8 @@ async function load(){
             case 0:
                 this._reloadTls=(async()=>{
                     await this._reloadTls
-                    this._loadTls()
+                    this._loadHttpTls()
+                    this._loadWsTls()
                 })()
                 break
             case 1:
@@ -38,12 +42,23 @@ async function load(){
     }
     let
         httpListen=readListen('httpListen'),
-        httpListenOnPath=core.existFile('httpListenOnPath')
+        httpListenOnPath=core.existFile('httpListenOnPath'),
+        wsListen=readListen('wsListen'),
+        wsListenOnPath=core.existFile('wsListenOnPath')
     this._httpTls=await core.existFile('httpTls')
+    this._wsTls=await core.existFile('wsTls')
     this._httpServer=new HttpServer(this._mainDir,this._httpTls)
+    this._wsServer=new WsServer(this._wsTls)
+    this._wsServer.out={
+        putSession:putSession.bind(this),
+        cutSession:session=>{
+            this._session.delete(session)
+        },  
+    }   
     if(this._httpTls)
         await this._loadHttpTls()
-    await this._database.load
+    if(this._wsTls)
+        await this._loadWsTls()
     await Promise.all([
         this._ipcServer.listen(),
         (async()=>{
@@ -53,6 +68,14 @@ async function load(){
         (async()=>{
             if(await httpListenOnPath)
                 await this._httpServer.listen(['httpServer'])
+        })(),
+        (async()=>{
+            if(wsListen=await wsListen)
+                await this._httpServer.listen(httpListen)
+        })(),
+        (async()=>{
+            if(await wsListenOnPath)
+                await this._wsServer.listen(['wsServer'])
         })(),
     ])
 }
@@ -66,6 +89,13 @@ Server.prototype._loadHttpTls=async function(){
         fs.promises.readFile('httpTls/crt'),
     ])
     this._httpServer.setSecureContext({key,cert:crt})
+}
+Server.prototype._loadWsTls=async function(){
+    let[key,crt]=await Promise.all([
+        fs.promises.readFile('wsTls/key'),
+        fs.promises.readFile('wsTls/crt'),
+    ])
+    this._wsServer.setSecureContext({key,cert:crt})
 }
 Server.prototype.end=async function(){
     await this._load
