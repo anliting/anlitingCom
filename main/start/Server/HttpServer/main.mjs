@@ -46,14 +46,23 @@ function newUserPanel(){
     )
     {
         let passwordInput
+        function submit(){
+            connection.logIn(+idInput,passwordInput.value)
+            idInput.value=''
+            passwordInput.value=''
+        }
         logInPanel=doe.div(
+            {onkeydown(e){
+                if(e.key=='Enter')
+                    submit()
+            }},
             idInput=doe.input({placeholder:'ID'}),
             passwordInput=doe.input({
                 placeholder:'Password',
                 type:'password'
             }),
             doe.button('Log In',{onclick(){
-                connection.logIn(0,passwordInput.value)
+                submit()
             }}),
         )
     }
