@@ -10,12 +10,13 @@ function putSession(session){
                 return this._database.getOwn(doc.user)
             })()
         },
-        getUserMode:()=>
-            this._database.getUserMode()
-        ,
         logIn:(user,password)=>{
             doc.ready=(async()=>{
                 await doc.ready
+                if(doc.user!=undefined){
+                    doc.user=undefined
+                    session.logOut()
+                }
                 if(await this._database.testCredential(user,password))
                     doc.user=user
                 else
@@ -25,8 +26,10 @@ function putSession(session){
         logOut:()=>{
             doc.ready=(async()=>{
                 await doc.ready
-                doc.user=undefined
-                session.logOut()
+                if(doc.user!=undefined){
+                    doc.user=undefined
+                    session.logOut()
+                }
             })()
         },
         setOwn:buffer=>

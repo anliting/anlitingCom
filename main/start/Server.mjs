@@ -44,10 +44,15 @@ async function load(){
         httpListen=readListen('httpListen'),
         httpListenOnPath=core.existFile('httpListenOnPath'),
         wsListen=readListen('wsListen'),
-        wsListenOnPath=core.existFile('wsListenOnPath')
+        wsListenOnPath=core.existFile('wsListenOnPath'),
+        wsEndListen=readListen('wsEndListen')
     this._httpTls=await core.existFile('httpTls')
     this._wsTls=await core.existFile('wsTls')
-    this._httpServer=new HttpServer(this._mainDir,this._httpTls)
+    this._httpServer=new HttpServer(
+        this._mainDir,
+        this._httpTls,
+        await wsEndListen
+    )
     this._wsServer=new WsServer(this._wsTls)
     this._wsServer.out={
         putSession:putSession.bind(this),
@@ -71,7 +76,7 @@ async function load(){
         })(),
         (async()=>{
             if(wsListen=await wsListen)
-                await this._httpServer.listen(httpListen)
+                await this._wsServer.listen(wsListen)
         })(),
         (async()=>{
             if(await wsListenOnPath)
@@ -102,6 +107,7 @@ Server.prototype.end=async function(){
     await this._ipcServer.end()
     await this._reloadTls
     await this._httpServer.end()
+    await this._wsServer.end()
     await this._database.end()
 }
 export default Server

@@ -7,29 +7,31 @@ import htmlMinifier from    'html-minifier'
 function calcSw(mainDir){
     return fs.promises.readFile(`${mainDir}/start/Server/HttpServer/sw`)
 }
-async function calcRootContent(mainDir){
-    let main=(async()=>minify(
+async function calcRootContent(mainDir,wsEndListen){
+    let main=(async()=>minify(`globalThis.anlitingCom=${
+        JSON.stringify(wsEndListen)
+    };${
         await link(`${mainDir}/start/Server/HttpServer/main.mjs`,{
             doe:`${mainDir}/../lib/doe/export/main.mjs`
         })
-    ))()
-    return htmlMinifier.minify((
-        ''+await fs.promises.readFile(`${
-            mainDir
-        }/start/Server/HttpServer/main.html`)
-    ).replace(
-        '<script type=module src=main.mjs></script>',
-        `<script type=module>${await main}</script>`
-    ),{
+    }`))()
+    return htmlMinifier.minify(`
+        <!doctype html>
+        <meta name=viewport content='width=device-width,initial-scale=1'>
+        <link rel=icon href=data:,>
+        <title>anliting.com</title>
+        <body>
+        <script type=module>${await main}</script>
+    `,{
         collapseWhitespace:true,
         removeAttributeQuotes:true,
         removeOptionalTags:true,
     })
 }
-function HttpServer(mainDir,tls){
+function HttpServer(mainDir,tls,wsEndListen){
     this._mainDir=mainDir
     this._session=new Set
-    this._rootContentPromise=calcRootContent(mainDir)
+    this._rootContentPromise=calcRootContent(mainDir,wsEndListen)
     this._swPromise=calcSw(mainDir)
     this._server=(tls?
         http2.createSecureServer().on('secureConnection',socket=>{
