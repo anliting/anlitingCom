@@ -28,18 +28,20 @@ async function calcRootContent(mainDir,wsEndListen){
         removeOptionalTags:true,
     })
 }
-function HttpServer(mainDir,tls,wsEndListen){
-    this._mainDir=mainDir
-    this._session=new Set
-    this._rootContentPromise=calcRootContent(mainDir,wsEndListen)
-    this._swPromise=calcSw(mainDir)
-    this._server=(tls?
+function createTypeAHttp2Server(tls){
+    return tls?
         http2.createSecureServer().on('secureConnection',socket=>{
             socket.on('error',()=>{})
         }).on('tlsClientError',()=>{})
     :
         http2.createServer()
-    ).on('session',session=>{
+}
+function HttpServer(mainDir,tls,wsEndListen){
+    this._mainDir=mainDir
+    this._session=new Set
+    this._rootContentPromise=calcRootContent(mainDir,wsEndListen)
+    this._swPromise=calcSw(mainDir)
+    this._server=createTypeAHttp2Server(tls).on('session',session=>{
         this._session.add(session)
         session.on('close',()=>
             this._session.delete(session)
