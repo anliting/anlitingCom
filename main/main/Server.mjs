@@ -24,7 +24,7 @@ async function load(){
                     let
                         passwordLength=b.readUInt32BE(1),
                         password=''+b.slice(1+4,1+4+passwordLength)
-                    let id=await this._database.putSuperUserWithPassword(
+                    let id=await this._database.putSuperUser(
                         password
                     )
                     let buffer=Buffer.alloc(4)

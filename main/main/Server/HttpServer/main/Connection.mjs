@@ -62,7 +62,7 @@ Connection.prototype.logOut=function(){
     this.credential=0
     this.out.credential()
 }
-Connection.prototype.getOwn=function(){
+/*Connection.prototype.getOwn=function(){
     let port=this._port++,buf=new ArrayBuffer(1),dataView=new DataView(buf)
     dataView.setUint8(0,6)
     this._ws.send(buf)
@@ -83,5 +83,5 @@ Connection.prototype.setOwn=async function(own){
     return new Promise(rs=>
         this._onPort[port]=rs
     )
-}
+}*/
 export default Connection
