@@ -5,13 +5,13 @@ import link from            './HttpServer/link.mjs'
 import minify from          './HttpServer/minify.mjs'
 import htmlMinifier from    'html-minifier'
 function calcSw(mainDir){
-    return fs.promises.readFile(`${mainDir}/start/Server/HttpServer/sw`)
+    return fs.promises.readFile(`${mainDir}/main/Server/HttpServer/sw`)
 }
 async function calcRootContent(mainDir,wsEndListen){
     let main=(async()=>minify(`globalThis.anlitingCom=${
         JSON.stringify(wsEndListen)
     };${
-        await link(`${mainDir}/start/Server/HttpServer/main.mjs`,{
+        await link(`${mainDir}/main/Server/HttpServer/main.mjs`,{
             doe:`${mainDir}/../lib/doe/export/main.mjs`
         })
     }`))()

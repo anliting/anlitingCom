@@ -1,5 +1,5 @@
 import core from    '@anliting/core'
-import Server from  './start/Server.mjs'
+import Server from  './main/Server.mjs'
 let server
 core.onceSigintOrSigterm(()=>
     server.end()
