@@ -7,10 +7,9 @@ function getWs(){
         url.hostname=`[${x[1]}]`
     return url
 }
-function Connection(){
+function RealConnection(){
     this._port=0
     this._onPort={}
-    this.credential=0
     this._outCredential=0
     this.load=(async()=>{
         this._ws=new WebSocket(getWs())
@@ -27,10 +26,8 @@ function Connection(){
             }
             // syncLoggedOut
             if(operation==1){
-                if(--this._outCredential==0&&this.credential){
-                    this.credential=0
-                    this.out.credential()
-                }
+                if(--this._outCredential==0)
+                    this.out.logOut()
             }
         }
         await new Promise(rs=>
@@ -38,10 +35,10 @@ function Connection(){
         )
     })()
 }
-Connection.prototype.end=function(){
+RealConnection.prototype.end=function(){
     this._ws.close()
 }
-Connection.prototype.logIn=function(user,password){
+RealConnection.prototype.logIn=function(user,password){
     password=textEncoder.encode(password)
     let
         buf=new ArrayBuffer(5+password.length),
@@ -51,18 +48,14 @@ Connection.prototype.logIn=function(user,password){
     dataView.setUint32(1,user)
     array.set(password,5)
     this._ws.send(buf)
-    this.credential=1
     this._outCredential++
-    this.out.credential()
 }
-Connection.prototype.logOut=function(){
+RealConnection.prototype.logOut=function(){
     let buf=new ArrayBuffer(1),dataView=new DataView(buf)
     dataView.setUint8(0,1)
     this._ws.send(buf)
-    this.credential=0
-    this.out.credential()
 }
-/*Connection.prototype.getOwn=function(){
+/*RealConnection.prototype.getOwn=function(){
     let port=this._port++,buf=new ArrayBuffer(1),dataView=new DataView(buf)
     dataView.setUint8(0,6)
     this._ws.send(buf)
@@ -70,7 +63,7 @@ Connection.prototype.logOut=function(){
         this._onPort[port]=rs
     )
 }
-Connection.prototype.setOwn=async function(own){
+RealConnection.prototype.setOwn=async function(own){
     own=new Uint8Array(await own.arrayBuffer())
     let
         port=this._port++,
@@ -84,4 +77,46 @@ Connection.prototype.setOwn=async function(own){
         this._onPort[port]=rs
     )
 }*/
+function Connection(){
+    this._toSend=[]
+    this._realConnection=new RealConnection
+    this._realConnection.out={
+        logOut:()=>{
+            if(this.credential){
+                this.credential=0
+                this.out.credential()
+            }
+        },
+    }
+    this._clearToSend()
+}
+Connection.prototype._clearToSend=async function(){
+    await this._realConnection.load
+    this._toSend.map(a=>{
+        if(a[0]=='logIn'){
+            this._realConnection.logIn(a[1],a[2])
+        }
+        if(a[0]=='logOut'){
+            this._realConnection.logOut()
+        }
+    })
+    this._toSend=[]
+}
+Connection.prototype._send=function(a){
+    this._toSend.push(a)
+    this._clearToSend()
+}
+Connection.prototype.end=function(){
+    this._realConnection.end()
+}
+Connection.prototype.logIn=function(user,password){
+    this._send(['logIn',user,password])
+    this.credential=1
+    this.out.credential()
+}
+Connection.prototype.logOut=function(){
+    this._send(['logOut'])
+    this.credential=0
+    this.out.credential()
+}
 export default Connection

@@ -1,28 +1,24 @@
 import doe from         'doe'
 import Connection from  './main/Connection.mjs'
-let connection=new Connection
-;(async()=>{
-    await connection.load
-    let userPanel=newUserPanel()
-    connection.out={
-        credential(){
-            userPanel.credential(connection.credential)
-        }
+let connection=new Connection,userPanel=newUserPanel()
+connection.out={
+    credential(){
+        userPanel.credential(connection.credential)
     }
-    doe.body(
-        doe.div('This is An-Li Ting\'s personal website.'),
-        doe.div(
-            n=>{doe(n.style,{marginTop:'1em'})},
-            'You might also want to visit ',
-            doe.a({href:'https://althea.anliting.com/'},'my blog'),
-            '.'
-        ),
-        doe.div(
-            n=>{doe(n.style,{marginTop:'1em'})},
-            userPanel.node,
-        )
+}
+doe.body(
+    doe.div('This is An-Li Ting\'s personal website.'),
+    doe.div(
+        n=>{doe(n.style,{marginTop:'1em'})},
+        'You might also want to visit ',
+        doe.a({href:'https://althea.anliting.com/'},'my blog'),
+        '.'
+    ),
+    doe.div(
+        n=>{doe(n.style,{marginTop:'1em'})},
+        userPanel.node,
     )
-})()
+)
 function newUserPanel(){
     let notLoggedInPanel,loggedInPanel,logInPanel,idInput,panel,currentPanel
     function setPanel(p){
