@@ -1,9 +1,9 @@
 import doe from         'doe'
-import Connection from  './main/Connection.mjs'
-let connection=new Connection,userPanel=newUserPanel()
-connection.out={
+import Site from  './main/Site.mjs'
+let site=new Site,userPanel=newUserPanel()
+site.out={
     credential(){
-        userPanel.credential(connection.credential)
+        userPanel.credential(site.credential)
     }
 }
 doe.body(
@@ -37,13 +37,13 @@ function newUserPanel(){
     )
     loggedInPanel=doe.div(
         doe.button('Log Out',{onclick(){
-            connection.logOut()
+            site.logOut()
         }})
     )
     {
         let passwordInput
         function submit(){
-            connection.logIn(+idInput,passwordInput.value)
+            site.logIn(+idInput,passwordInput.value)
             idInput.value=''
             passwordInput.value=''
         }

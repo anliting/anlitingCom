@@ -7,7 +7,7 @@ function getWs(){
         url.hostname=`[${x[1]}]`
     return url
 }
-function RealConnection(){
+function Connection(){
     this._port=0
     this._onPort={}
     this._outCredential=0
@@ -35,10 +35,10 @@ function RealConnection(){
         )
     })()
 }
-RealConnection.prototype.end=function(){
+Connection.prototype.end=function(){
     this._ws.close()
 }
-RealConnection.prototype.logIn=function(user,password){
+Connection.prototype.logIn=function(user,password){
     password=textEncoder.encode(password)
     let
         buf=new ArrayBuffer(5+password.length),
@@ -50,12 +50,12 @@ RealConnection.prototype.logIn=function(user,password){
     this._ws.send(buf)
     this._outCredential++
 }
-RealConnection.prototype.logOut=function(){
+Connection.prototype.logOut=function(){
     let buf=new ArrayBuffer(1),dataView=new DataView(buf)
     dataView.setUint8(0,1)
     this._ws.send(buf)
 }
-/*RealConnection.prototype.getOwn=function(){
+/*Connection.prototype.getOwn=function(){
     let port=this._port++,buf=new ArrayBuffer(1),dataView=new DataView(buf)
     dataView.setUint8(0,6)
     this._ws.send(buf)
@@ -63,7 +63,7 @@ RealConnection.prototype.logOut=function(){
         this._onPort[port]=rs
     )
 }
-RealConnection.prototype.setOwn=async function(own){
+Connection.prototype.setOwn=async function(own){
     own=new Uint8Array(await own.arrayBuffer())
     let
         port=this._port++,
@@ -77,10 +77,10 @@ RealConnection.prototype.setOwn=async function(own){
         this._onPort[port]=rs
     )
 }*/
-function Connection(){
+function Site(){
     this._toSend=[]
-    this._realConnection=new RealConnection
-    this._realConnection.out={
+    this._connection=new Connection
+    this._connection.out={
         logOut:()=>{
             if(this.credential){
                 this.credential=0
@@ -88,35 +88,33 @@ function Connection(){
             }
         },
     }
-    this._clearToSend()
 }
-Connection.prototype._clearToSend=async function(){
-    await this._realConnection.load
-    this._toSend.map(a=>{
-        if(a[0]=='logIn'){
-            this._realConnection.logIn(a[1],a[2])
-        }
-        if(a[0]=='logOut'){
-            this._realConnection.logOut()
-        }
-    })
-    this._toSend=[]
-}
-Connection.prototype._send=function(a){
+Site.prototype._send=async function(a){
     this._toSend.push(a)
-    this._clearToSend()
+    if(this._toSend.length==1){
+        await this._connection.load
+        this._toSend.map(a=>{
+            if(a[0]=='logIn'){
+                this._connection.logIn(a[1],a[2])
+            }
+            if(a[0]=='logOut'){
+                this._connection.logOut()
+            }
+        })
+        this._toSend=[]
+    }
 }
-Connection.prototype.end=function(){
-    this._realConnection.end()
+Site.prototype.end=function(){
+    this._connection.end()
 }
-Connection.prototype.logIn=function(user,password){
+Site.prototype.logIn=function(user,password){
     this._send(['logIn',user,password])
     this.credential=1
     this.out.credential()
 }
-Connection.prototype.logOut=function(){
+Site.prototype.logOut=function(){
     this._send(['logOut'])
     this.credential=0
     this.out.credential()
 }
-export default Connection
+export default Site
