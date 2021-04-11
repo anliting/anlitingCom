@@ -1,4 +1,4 @@
-import fs from'fs'
+import WsServer from'./WsSite/WsServer.mjs'
 function reply(connection,i,content){
     let buf=Buffer.allocUnsafe(5)
     buf.writeUInt8(0)
@@ -43,4 +43,42 @@ function onMessage(connection,message){
     if(operationCode==6)
         getOwn.call(this,connection)
 }
-export default onMessage
+function syncLoggedOut(connection){
+    let buf=Buffer.allocUnsafe(1)
+    buf.writeUInt8(1)
+    connection.send(buf) 
+}
+function WsSite(tls){
+    this._connectionMap=new Map
+    this._wsServer=new WsServer(tls)
+    this._wsServer.out={
+        connection:connection=>{
+            let doc={
+                get:0,
+                session:{
+                    logOut(){
+                        syncLoggedOut.call(this,connection)
+                    },
+                },
+            }
+            this._connectionMap.set(connection,doc)
+            this.out.putSession(doc.session)
+            connection.on('close',()=>{
+                this._connectionMap.delete(connection)
+                this.out.cutSession(doc.session)
+            }).on('message',message=>{
+                onMessage.call(this,connection,message)
+            })
+        }
+    }
+}
+WsSite.prototype.setSecureContext=function(secureContext){
+    this._wsServer.setSecureContext(secureContext)
+}
+WsSite.prototype.listen=function(a){
+    return this._wsServer.listen(a)
+}
+WsSite.prototype.end=function(){
+    return this._wsServer.end()
+}
+export default WsSite

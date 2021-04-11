@@ -1,46 +1,28 @@
-import fs from'fs'
 import http from'http'
 import https from'https'
 import ws from'ws'
-import onMessage from'./WsServer/onMessage.mjs'
-function syncLoggedOut(connection){
-    let buf=Buffer.allocUnsafe(1)
-    buf.writeUInt8(1)
-    connection.send(buf) 
-}
 function WsServer(tls){
     this._connectionMap=new Map
-    this._httpsServer=tls?
+    this._httpServer=tls?
         https.createServer().on('secureConnection',socket=>{
             socket.on('error',()=>{})
         }).on('tlsClientError',()=>{})
     :
         http.createServer()
-    this._wssServer=new ws.Server({
-        server:this._httpsServer,
+    this._wsServer=new ws.Server({
+        server:this._httpServer,
     }).on('connection',connection=>{
-        let doc={
-            get:0,
-            session:{
-                logOut(){
-                    syncLoggedOut.call(this,connection)
-                },
-            },
-        }
+        let doc={}
         this._connectionMap.set(connection,doc)
-        this.out.putSession(doc.session)
         connection.on('close',()=>{
             this._connectionMap.delete(connection)
-            this.out.cutSession(doc.session)
-        }).on('message',message=>{
-            onMessage.call(this,connection,message)
         }).on('pong',()=>{
             let doc=this._connectionMap.get(connection)
             delete doc.ping
         })
+        this.out.connection(connection)
     })
     this._interval=setInterval(()=>{
-        let now=new Date
         for(let connection of this._connectionMap.keys()){
             let doc=this._connectionMap.get(connection)
             if('ping' in doc){
@@ -52,20 +34,20 @@ function WsServer(tls){
         }
     },8e3)
 }
-WsServer.prototype.setSecureContext=function(secureContext){
-    this._httpsServer.setSecureContext(secureContext)
-}
-WsServer.prototype.listen=function(a){
-    return new Promise(rs=>
-        this._httpsServer.listen(...a,rs)
-    )
-}
 WsServer.prototype.end=function(){
     return new Promise(rs=>{
         clearInterval(this._interval)
-        this._httpsServer.close(rs)
+        this._httpServer.close(rs)
         for(let connection of this._connectionMap.keys())
             connection.terminate()
     })
+}
+WsServer.prototype.listen=function(a){
+    return new Promise(rs=>
+        this._httpServer.listen(...a,rs)
+    )
+}
+WsServer.prototype.setSecureContext=function(secureContext){
+    this._httpServer.setSecureContext(secureContext)
 }
 export default WsServer

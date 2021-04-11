@@ -3,7 +3,7 @@ import core from            '@anliting/core'
 import Database from        './Server/Database.mjs'
 import HttpServer from      './Server/HttpServer.mjs'
 import IpcServer from       './Server/IpcServer.mjs'
-import WsServer from        './Server/WsServer.mjs'
+import WsSite from          './Server/WsSite.mjs'
 import putSession from      './Server/putSession.mjs'
 async function load(){
     this._session=new Map
@@ -57,8 +57,8 @@ async function load(){
         this._httpTls,
         await wsEndListen
     )
-    this._wsServer=new WsServer(this._wsTls)
-    this._wsServer.out={
+    this._wsSite=new WsSite(this._wsTls)
+    this._wsSite.out={
         putSession:putSession.bind(this),
         cutSession:session=>{
             this._session.delete(session)
@@ -80,11 +80,11 @@ async function load(){
         })(),
         (async()=>{
             if(wsListen=await wsListen)
-                await this._wsServer.listen(wsListen)
+                await this._wsSite.listen(wsListen)
         })(),
         (async()=>{
             if(await wsListenOnPath)
-                await this._wsServer.listen(['wsServer'])
+                await this._wsSite.listen(['wsServer'])
         })(),
     ])
 }
@@ -104,14 +104,14 @@ Server.prototype._loadWsTls=async function(){
         fs.promises.readFile('wsTls/key'),
         fs.promises.readFile('wsTls/crt'),
     ])
-    this._wsServer.setSecureContext({key,cert:crt})
+    this._wsSite.setSecureContext({key,cert:crt})
 }
 Server.prototype.end=async function(){
     await this._load
     await this._ipcServer.end()
     await this._reloadTls
     await this._httpServer.end()
-    await this._wsServer.end()
+    await this._wsSite.end()
     await this._database.end()
 }
 export default Server
