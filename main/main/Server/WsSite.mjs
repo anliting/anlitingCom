@@ -27,8 +27,6 @@ async function setOwn(connection,message){
     reply(connection,i,Buffer.allocUnsafe(0))
 }
 function onMessage(connection,message){
-    if(!(message instanceof Buffer))
-        return
     let operationCode=message.readUInt8()
     // logIn
     if(operationCode==0)
@@ -63,12 +61,15 @@ function WsSite(tls){
             }
             this._connectionMap.set(connection,doc)
             this.out.putSession(doc.session)
-            connection.on('close',()=>{
-                this._connectionMap.delete(connection)
-                this.out.cutSession(doc.session)
-            }).on('message',message=>{
-                onMessage.call(this,connection,message)
-            })
+            connection.out={
+                close:()=>{
+                    this._connectionMap.delete(connection)
+                    this.out.cutSession(doc.session)
+                },
+                message:message=>{
+                    onMessage.call(this,connection,message)
+                },
+            }
         }
     }
 }

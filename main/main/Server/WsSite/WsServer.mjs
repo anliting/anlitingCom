@@ -1,6 +1,19 @@
 import http from'http'
 import https from'https'
 import ws from'ws'
+function Connection(connection){
+    this._connection=connection
+    this._connection.on('close',()=>
+        this.out.close()
+    ).on('message',message=>{
+        if(!(message instanceof Buffer))
+            return
+        this.out.message(message)
+    })
+}
+Connection.prototype.send=function(a){
+    this._connection.send(a)
+}
 function WsServer(tls){
     this._connectionMap=new Map
     this._httpServer=tls?
@@ -20,7 +33,7 @@ function WsServer(tls){
             let doc=this._connectionMap.get(connection)
             delete doc.ping
         })
-        this.out.connection(connection)
+        this.out.connection(new Connection(connection))
     })
     this._interval=setInterval(()=>{
         for(let connection of this._connectionMap.keys()){
