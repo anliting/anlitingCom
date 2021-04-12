@@ -55,6 +55,20 @@ Connection.prototype.logOut=function(){
     dataView.setUint8(0,1)
     this._ws.send(buf)
 }
+Connection.prototype.putUser=async function(password){
+    password=textEncoder.encode(password)
+    let
+        port=this._port++,
+        buf=new ArrayBuffer(1+password.length),
+        dataView=new DataView(buf),
+        array=new Uint8Array(buf)
+    dataView.setUint8(0,2)
+    array.set(password,1)
+    this._ws.send(buf)
+    return new Promise(rs=>
+        this._onPort[port]=rs
+    )
+}
 /*Connection.prototype.getOwn=function(){
     let port=this._port++,buf=new ArrayBuffer(1),dataView=new DataView(buf)
     dataView.setUint8(0,6)
@@ -100,6 +114,9 @@ Site.prototype._send=async function(a){
             if(a[0]=='logOut'){
                 this._connection.logOut()
             }
+            if(a[0]=='putUser'){
+                a[2](this._connection.putUser(a[1]))
+            }
         })
         this._toSend=[]
     }
@@ -116,5 +133,10 @@ Site.prototype.logOut=function(){
     this._send(['logOut'])
     this.credential=0
     this.out.credential()
+}
+Site.prototype.putUser=function(password){
+    return new Promise(rs=>{
+        this._send(['putUser',password,rs])
+    })
 }
 export default Site

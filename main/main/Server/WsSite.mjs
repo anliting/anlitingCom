@@ -13,11 +13,13 @@ async function logIn(connection,message){
 async function logOut(connection){
     this._connectionMap.get(connection).session.out.logOut()
 }
-async function getOwn(connection){
+async function putUser(connection,message){
     let
         doc=this._connectionMap.get(connection),
-        i=doc.get++
-    reply(connection,i,await doc.session.out.getOwn())
+        i=doc.get++,
+        buf=Buffer.allocUnsafe(4)
+    buf.writeUInt32BE(await doc.session.out.putUser(message.slice(1)))
+    reply(connection,i,buf)
 }
 async function setOwn(connection,message){
     let
@@ -26,18 +28,22 @@ async function setOwn(connection,message){
     await doc.session.out.setOwn(message.slice(1))
     reply(connection,i,Buffer.allocUnsafe(0))
 }
+async function getOwn(connection){
+    let
+        doc=this._connectionMap.get(connection),
+        i=doc.get++
+    reply(connection,i,await doc.session.out.getOwn())
+}
 function onMessage(connection,message){
     let operationCode=message.readUInt8()
-    // logIn
     if(operationCode==0)
         logIn.call(this,connection,message)
-    // logOut
     if(operationCode==1)
         logOut.call(this,connection)
-    // setOwn
+    if(operationCode==2)
+        putUser.call(this,connection,message)
     if(operationCode==5)
         setOwn.call(this,connection,message)
-    // getOwn
     if(operationCode==6)
         getOwn.call(this,connection)
 }

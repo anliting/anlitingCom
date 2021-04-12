@@ -32,6 +32,12 @@ function putSession(session){
                 }
             })()
         },
+        putUser:password=>
+            doc.ready=(async()=>{
+                await doc.ready
+                await this._database.putUser(password)
+            })()
+        ,
         setOwn:buffer=>
             doc.ready=(async()=>{
                 await doc.ready

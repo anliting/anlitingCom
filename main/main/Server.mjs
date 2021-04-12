@@ -27,7 +27,7 @@ async function load(){
                     let id=await this._database.putSuperUser(
                         password
                     )
-                    let buffer=Buffer.alloc(4)
+                    let buffer=Buffer.allocUnsafe(4)
                     buffer.writeUInt32BE(id,0)
                     return buffer
                 }

@@ -20,7 +20,15 @@ doe.body(
     )
 )
 function newUserPanel(){
-    let notLoggedInPanel,loggedInPanel,logInPanel,idInput,panel,currentPanel
+    let
+        notLoggedInPanel,
+        loggedInPanel,
+        registerPanel,
+        logInPanel,
+        idInput,
+        passwordInput,
+        panel,
+        currentPanel
     function setPanel(p){
         doe(panel,
             1,currentPanel,
@@ -29,6 +37,8 @@ function newUserPanel(){
     }
     notLoggedInPanel=doe.div(
         doe.button('Register',{onclick(){
+            setPanel(registerPanel)
+            passwordInput.focus()
         }}),
         doe.button('Log In',{onclick(){
             setPanel(logInPanel)
@@ -41,7 +51,38 @@ function newUserPanel(){
         }})
     )
     {
+        function cancel(){
+            passwordInput.value=''
+            setPanel(notLoggedInPanel)
+        }
+        function submit(){
+            //site.putUser(passwordInput.value)
+            passwordInput.value=''
+        }
+        registerPanel=doe.div(
+            {onkeydown(e){
+                if(e.key=='Enter')
+                    submit()
+            }},
+            doe.button('Cancel',{onclick(){
+                cancel()
+            }}),
+            passwordInput=doe.input({
+                placeholder:'Password',
+                type:'password'
+            }),
+            doe.button('Register',{onclick(){
+                submit()
+            }}),
+        )
+    }
+    {
         let passwordInput
+        function cancel(){
+            idInput.value=''
+            passwordInput.value=''
+            setPanel(notLoggedInPanel)
+        }
         function submit(){
             site.logIn(+idInput,passwordInput.value)
             idInput.value=''
@@ -52,6 +93,9 @@ function newUserPanel(){
                 if(e.key=='Enter')
                     submit()
             }},
+            doe.button('Cancel',{onclick(){
+                cancel()
+            }}),
             idInput=doe.input({placeholder:'ID'}),
             passwordInput=doe.input({
                 placeholder:'Password',
