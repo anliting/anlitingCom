@@ -21,7 +21,7 @@ function Connection(){
             // reply
             if(operation==0){
                 let port=dataView.getUint32(1)
-                this._onPort[port](new Uint8Array(a,5))
+                this._onPort[port](a.slice(5))
                 delete this._onPort[port]
             }
             // syncLoggedOut
@@ -134,9 +134,9 @@ Site.prototype.logOut=function(){
     this.credential=0
     this.out.credential()
 }
-Site.prototype.putUser=function(password){
-    return new Promise(rs=>{
+Site.prototype.putUser=async function(password){
+    return new DataView(await new Promise(rs=>{
         this._send(['putUser',password,rs])
-    })
+    })).getUint32(0)
 }
 export default Site

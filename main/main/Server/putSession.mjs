@@ -35,7 +35,7 @@ function putSession(session){
         putUser:password=>
             doc.ready=(async()=>{
                 await doc.ready
-                await this._database.putUser(password)
+                return this._database.putUser(password)
             })()
         ,
         setOwn:buffer=>
