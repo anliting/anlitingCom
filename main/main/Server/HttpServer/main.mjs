@@ -70,7 +70,10 @@ function newUserPanel(){
             doe(registerPanel,
                 1,beingRegisteredDiv,0,
                 doe.div(
-                    `The registration is complete. The user ID is ${userId}.`
+                    `The registration is complete. The user ID is ${userId}. `,
+                    doe.button({onclick(){
+                        setPanel(notLoggedInPanel)
+                    }},'Back')
                 )
             )
         }
