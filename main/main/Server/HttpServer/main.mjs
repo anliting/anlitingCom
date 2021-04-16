@@ -6,6 +6,21 @@ site.out={
         userPanel.credential(site.credential)
     }
 }
+doe.head(
+    doe.style(`
+        .button{
+            display:inline;
+            padding:.25em .5em;
+            background-color:#3f3f3f;
+            color:white;
+            text-shadow:
+                0 0 .05em rgba(0,0,0,.4),
+                .05em .05em .05em rgba(0,0,0,.2);
+            user-select:none;
+            text-align:center;
+        }
+    `)
+)
 doe.body(
     doe.div('This is An-Li Ting\'s personal website.'),
     doe.div(
@@ -36,17 +51,18 @@ function newUserPanel(){
         )
     }
     notLoggedInPanel=doe.div(
-        doe.button('Register',{onclick(){
+        doe.div('Register',{className:'button',onclick(){
             setPanel(registerPanel)
             passwordInput.focus()
         }}),
-        doe.button('Log In',{onclick(){
+        ' ',
+        doe.div('Log In',{className:'button',onclick(){
             setPanel(logInPanel)
             idInput.focus()
         }})
     )
     loggedInPanel=doe.div(
-        doe.button('Log Out',{onclick(){
+        doe.div('Log Out',{className:'button',onclick(){
             site.logOut()
         }})
     )
@@ -71,7 +87,7 @@ function newUserPanel(){
                 1,beingRegisteredDiv,0,
                 doe.div(
                     `The registration is complete. The user ID is ${userId}. `,
-                    doe.button({onclick(){
+                    doe.div({className:'button',onclick(){
                         setPanel(notLoggedInPanel)
                     }},'Back')
                 )
@@ -83,14 +99,16 @@ function newUserPanel(){
                     if(e.key=='Enter')
                         submit()
                 }},
-                doe.button('Cancel',{onclick(){
+                doe.div('Cancel',{className:'button',onclick(){
                     cancel()
                 }}),
+                ' ',
                 passwordInput=doe.input({
                     placeholder:'Password',
                     type:'password'
                 }),
-                doe.button('Register',{onclick(){
+                ' ',
+                doe.div('Register',{className:'button',onclick(){
                     submit()
                 }}),
             )
@@ -113,15 +131,17 @@ function newUserPanel(){
                 if(e.key=='Enter')
                     submit()
             }},
-            doe.button('Cancel',{onclick(){
+            doe.div('Cancel',{className:'button',onclick(){
                 cancel()
             }}),
+            ' ',
             idInput=doe.input({placeholder:'ID'}),
             passwordInput=doe.input({
                 placeholder:'Password',
                 type:'password'
             }),
-            doe.button('Log In',{onclick(){
+            ' ',
+            doe.div('Log In',{className:'button',onclick(){
                 submit()
             }}),
         )
