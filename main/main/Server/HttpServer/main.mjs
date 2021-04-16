@@ -75,19 +75,23 @@ function newUserPanel(){
         async function submit(){
             let putUser=site.putUser(passwordInput.value)
             passwordInput.value=''
-            let beingRegisteredDiv
+            let beingRegisteredDiv,completeDiv
             doe(registerPanel,
                 1,form,0,
                 beingRegisteredDiv=doe.div(
-                    'The registration is in progress. '
+                    'The registration is in progress.'
                 )
             )
             let userId=await putUser
             doe(registerPanel,
                 1,beingRegisteredDiv,0,
-                doe.div(
+                completeDiv=doe.div(
                     `The registration is complete. The user ID is ${userId}. `,
                     doe.div({className:'button',onclick(){
+                        doe(registerPanel,
+                            1,completeDiv,0,
+                            form
+                        )
                         setPanel(notLoggedInPanel)
                     }},'Back')
                 )
@@ -136,6 +140,7 @@ function newUserPanel(){
             }}),
             ' ',
             idInput=doe.input({placeholder:'ID'}),
+            ' ',
             passwordInput=doe.input({
                 placeholder:'Password',
                 type:'password'
