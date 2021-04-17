@@ -147,7 +147,7 @@ function newUserPanel(){
             setPanel(notLoggedInPanel)
         }
         function submit(){
-            site.logIn(+idInput,passwordInput.value)
+            site.logIn(+idInput.value,passwordInput.value)
             idInput.value=''
             passwordInput.value=''
         }

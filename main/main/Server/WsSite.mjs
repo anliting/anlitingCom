@@ -7,7 +7,7 @@ function reply(connection,i,content){
 }
 async function logIn(connection,message){
     this._connectionMap.get(connection).session.out.logIn(
-        message.readUInt32BE(),message.slice(5)
+        message.readUInt32BE(1),message.slice(5)
     )
 }
 async function logOut(connection){
