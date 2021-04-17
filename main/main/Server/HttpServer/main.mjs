@@ -8,16 +8,37 @@ site.out={
 }
 doe.head(
     doe.style(`
+        body{
+            background-color:#7f7f7f;
+            color:#fff;
+            text-shadow:
+                0 0 .05em rgba(0,0,0,.4),
+                .05em .05em .05em rgba(0,0,0,.2);
+        }
+        a{
+            color:#fff;
+        }
+        input{
+            height:1.5em;
+            background-color:#bfbfbf;
+            padding:.125em .5em;
+            border:none;
+            outline:none;
+            font-size:16px;
+        }
         .button{
-            display:inline;
-            padding:.25em .5em;
+            display:inline-block;
+            padding:.125em .5em;
             background-color:#3f3f3f;
-            color:white;
+            color:#fff;
             text-shadow:
                 0 0 .05em rgba(0,0,0,.4),
                 .05em .05em .05em rgba(0,0,0,.2);
             user-select:none;
             text-align:center;
+            font-family:sans-serif;
+            font-size:16px;
+            line-height:1.5em;
         }
     `)
 )
