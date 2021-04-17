@@ -42,19 +42,33 @@ doe.head(
             line-height:1.5em;
             vertical-align:top;
         }
+        body>.main{
+            width:540px;
+            margin:0 auto;
+        }
     `)
 )
 doe.body(
-    doe.div('This is An-Li Ting\'s personal website.'),
     doe.div(
-        n=>{doe(n.style,{marginTop:'1em'})},
-        'You might also want to visit ',
-        doe.a({href:'https://althea.anliting.com/'},'my blog'),
-        '.'
-    ),
-    doe.div(
-        n=>{doe(n.style,{marginTop:'1em'})},
-        userPanel.node,
+        {className:'main',},
+        doe.div('This is An-Li Ting\'s personal website.'),
+        doe.div(
+            n=>{doe(n.style,{marginTop:'1em'})},
+            'You might also want to visit ',
+            doe.a({href:'https://althea.anliting.com/'},'my blog'),
+            '.'
+        ),
+        doe.div(
+            n=>{doe(n.style,{marginTop:'1em'})},
+            userPanel.node,
+        ),
+        doe.div(
+            n=>{doe(n.style,{marginTop:'1em'})},
+            'Here are some services this website provides:',
+            doe.ul(
+                doe.li(doe.a({href:'https://stopwatch.anliting.com/'},'Stopwatch'))
+            )
+        )
     )
 )
 function newUserPanel(){
@@ -126,18 +140,25 @@ function newUserPanel(){
                     if(e.key=='Enter')
                         submit()
                 }},
-                doe.div('Cancel',{className:'button',onclick(){
-                    cancel()
-                }}),
-                ' ',
-                passwordInput=doe.input({
-                    placeholder:'Password',
-                    type:'password'
-                }),
-                ' ',
-                doe.div('Register',{className:'button',onclick(){
-                    submit()
-                }}),
+                doe.div(
+                    n=>{doe(n.style,{margin:'.5em 0'})},
+                    doe.div('Cancel',{className:'button',onclick(){
+                        cancel()
+                    }}),
+                ),
+                doe.div(
+                    n=>{doe(n.style,{margin:'.5em 0'})},
+                    passwordInput=doe.input({
+                        placeholder:'Password',
+                        type:'password'
+                    }),
+                ),
+                doe.div(
+                    n=>{doe(n.style,{margin:'.5em 0'})},
+                    doe.div('Register',{className:'button',onclick(){
+                        submit()
+                    }}),
+                )
             )
         )
     }
@@ -158,20 +179,29 @@ function newUserPanel(){
                 if(e.key=='Enter')
                     submit()
             }},
-            doe.div('Cancel',{className:'button',onclick(){
-                cancel()
-            }}),
-            ' ',
-            idInput=doe.input({placeholder:'ID'}),
-            ' ',
-            passwordInput=doe.input({
-                placeholder:'Password',
-                type:'password'
-            }),
-            ' ',
-            doe.div('Log In',{className:'button',onclick(){
-                submit()
-            }}),
+            doe.div(
+                n=>{doe(n.style,{margin:'.5em 0'})},
+                doe.div('Cancel',{className:'button',onclick(){
+                    cancel()
+                }}),
+            ),
+            doe.div(
+                n=>{doe(n.style,{margin:'.5em 0'})},
+                idInput=doe.input({placeholder:'ID'}),
+            ),
+            doe.div(
+                n=>{doe(n.style,{margin:'.5em 0'})},
+                passwordInput=doe.input({
+                    placeholder:'Password',
+                    type:'password'
+                }),
+            ),
+            doe.div(
+                n=>{doe(n.style,{margin:'.5em 0'})},
+                doe.div('Log In',{className:'button',onclick(){
+                    submit()
+                }}),
+            ),
         )
     }
     return{
