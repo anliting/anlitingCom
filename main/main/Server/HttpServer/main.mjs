@@ -25,6 +25,7 @@ doe.head(
             border:none;
             outline:none;
             font-size:16px;
+            vertical-align:top;
         }
         .button{
             display:inline-block;
@@ -39,6 +40,7 @@ doe.head(
             font-family:sans-serif;
             font-size:16px;
             line-height:1.5em;
+            vertical-align:top;
         }
     `)
 )
