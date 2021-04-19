@@ -1,7 +1,7 @@
 import doe from             'doe'
 import Site from            './main/Site.mjs'
-import newUserPanel from    './main/newUserPanel.mjs'
-let site=new Site,userPanel=newUserPanel(site)
+import UserPanel from       './main/UserPanel.mjs'
+let site=new Site,userPanel=new UserPanel(site)
 site.out={
     credential(){
         userPanel.credential(site.credential)
