@@ -47,6 +47,12 @@ doe.head(
             width:540px;
             margin:0 auto;
         }
+        .userPanel{
+            box-shadow:
+                0 0 .1em rgba(0,0,0,.4),
+                .1em .1em .1em rgba(0,0,0,.2);
+            padding:.5em;
+        }
     `)
 )
 doe.body(

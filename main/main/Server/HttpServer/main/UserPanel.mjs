@@ -36,6 +36,8 @@ function UserPanel(site){
         }})
     )
     this.node=doe.div(
+        {className:'userPanel'},
+        n=>{doe(n.style,{height:'8.5em'})},
         this._currentPanel=this._notLoggedInPanel,
     )
 }

@@ -1,6 +1,6 @@
 import doe from         'doe'
 async function submit(){
-    let putUser=site.putUser(this._passwordInput.value)
+    let putUser=this._site.putUser(this._passwordInput.value)
     this._passwordInput.value=''
     let beingRegisteredDiv,completeDiv
     doe(this.node,
@@ -26,6 +26,7 @@ async function submit(){
 }
 function RegisterPanel(site,out){
     this._out=out
+    this._site=site
     this.node=doe.div(
         this._form=doe.div(
             {onkeydown:e=>{
@@ -33,21 +34,20 @@ function RegisterPanel(site,out){
                     submit.call(this)
             }},
             doe.div(
-                n=>{doe(n.style,{margin:'.5em 0'})},
                 doe.div('Cancel',{className:'button',onclick:()=>{
                     this._passwordInput.value=''
                     this._out.back()
                 }}),
             ),
             doe.div(
-                n=>{doe(n.style,{margin:'.5em 0'})},
+                n=>{doe(n.style,{marginTop:'.5em'})},
                 this._passwordInput=doe.input({
                     placeholder:'Password',
                     type:'password'
                 }),
             ),
             doe.div(
-                n=>{doe(n.style,{margin:'.5em 0'})},
+                n=>{doe(n.style,{marginTop:'.5em'})},
                 doe.div('Register',{className:'button',onclick:()=>{
                     submit.call(this)
                 }}),

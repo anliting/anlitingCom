@@ -17,24 +17,23 @@ function LogInPanel(site,out){
                 submit.call(this)
         }},
         doe.div(
-            n=>{doe(n.style,{margin:'.5em 0'})},
             doe.div('Cancel',{className:'button',onclick:()=>{
                 cancel.call(this)
             }}),
         ),
         doe.div(
-            n=>{doe(n.style,{margin:'.5em 0'})},
+            n=>{doe(n.style,{marginTop:'.5em'})},
             this._idInput=doe.input({placeholder:'ID'}),
         ),
         doe.div(
-            n=>{doe(n.style,{margin:'.5em 0'})},
+            n=>{doe(n.style,{marginTop:'.5em'})},
             this._passwordInput=doe.input({
                 placeholder:'Password',
                 type:'password'
             }),
         ),
         doe.div(
-            n=>{doe(n.style,{margin:'.5em 0'})},
+            n=>{doe(n.style,{marginTop:'.5em'})},
             doe.div('Log In',{className:'button',onclick:()=>{
                 submit.call(this)
             }}),
