@@ -1,7 +1,17 @@
+let never=new Promise(()=>{})
 function putSession(session){
     let doc={}
     this._session.set(session,doc)
     session.out={
+        cutCurrentUser:()=>{
+            doc.ready=(async()=>{
+                await doc.ready
+                if(doc.user==undefined)
+                    return
+                await this._database.cutUser(doc.user)
+                session.logOut()
+            })()
+        },
         getOwn:()=>{
             return doc.ready=(async()=>{
                 await doc.ready

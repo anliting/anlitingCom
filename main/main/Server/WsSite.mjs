@@ -5,6 +5,19 @@ function reply(connection,i,content){
     buf.writeUInt32BE(i,1)
     connection.send(Buffer.concat([buf,content])) 
 }
+async function cutCurrentUser(connection){
+    let
+        doc=this._connectionMap.get(connection),
+        i=doc.get++
+    await doc.session.out.cutCurrentUser()
+    reply(connection,i,Buffer.allocUnsafe(0))
+}
+async function getOwn(connection){
+    let
+        doc=this._connectionMap.get(connection),
+        i=doc.get++
+    reply(connection,i,await doc.session.out.getOwn())
+}
 async function logIn(connection,message){
     this._connectionMap.get(connection).session.out.logIn(
         message.readUInt32BE(1),message.slice(5)
@@ -28,12 +41,6 @@ async function setOwn(connection,message){
     await doc.session.out.setOwn(message.slice(1))
     reply(connection,i,Buffer.allocUnsafe(0))
 }
-async function getOwn(connection){
-    let
-        doc=this._connectionMap.get(connection),
-        i=doc.get++
-    reply(connection,i,await doc.session.out.getOwn())
-}
 function onMessage(connection,message){
     let operationCode=message.readUInt8()
     if(operationCode==0)
@@ -42,6 +49,8 @@ function onMessage(connection,message){
         logOut.call(this,connection)
     if(operationCode==2)
         putUser.call(this,connection,message)
+    if(operationCode==3)
+        cutCurrentUser.call(this,connection)
     if(operationCode==5)
         setOwn.call(this,connection,message)
     if(operationCode==6)

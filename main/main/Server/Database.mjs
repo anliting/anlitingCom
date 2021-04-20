@@ -52,6 +52,14 @@ Database.prototype._setUserIndex=async function(index){
 Database.prototype._setUserPassword=async function(id,password){
     return[[0,`data/user/user/${id}/password`,password]]
 }
+Database.prototype.cutUser=function(id){
+    return this._ready=(async()=>{
+        await this._ready
+        await this._atomicDirectoryUpdater.update([
+            [2,`data/user/user/${id}`],
+        ])
+    })()
+}
 Database.prototype.end=function(){
     return this._ready
 }

@@ -35,6 +35,17 @@ function Connection(){
         )
     })()
 }
+Connection.prototype.cutCurrentUser=async function(){
+    let
+        port=this._port++,
+        buf=new ArrayBuffer(1),
+        dataView=new DataView(buf)
+    dataView.setUint8(0,3)
+    this._ws.send(buf)
+    return new Promise(rs=>
+        this._onPort[port]=rs
+    )
+}
 Connection.prototype.end=function(){
     this._ws.close()
 }

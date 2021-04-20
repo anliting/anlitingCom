@@ -12,7 +12,7 @@ function LogInPanel(site,out){
         this._passwordInput.value=''
     }
     this.node=doe.div(
-        {onkeydown(e){
+        {onkeydown:e=>{
             if(e.key=='Enter')
                 submit.call(this)
         }},
