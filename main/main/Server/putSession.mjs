@@ -9,6 +9,7 @@ function putSession(session){
                 if(doc.user==undefined)
                     return
                 await this._database.cutUser(doc.user)
+                doc.user=undefined
                 session.logOut()
             })()
         },

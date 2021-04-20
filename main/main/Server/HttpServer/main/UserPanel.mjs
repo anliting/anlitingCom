@@ -33,7 +33,11 @@ function UserPanel(site){
     this._loggedInPanel=doe.div(
         doe.div('Log Out',{className:'button',onclick(){
             site.logOut()
-        }})
+        }}),
+        ' ',
+        doe.div('Delete Current User',{className:'button',onclick:()=>{
+            site.cutCurrentUser()
+        }}),
     )
     this.node=doe.div(
         {className:'userPanel'},
