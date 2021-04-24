@@ -7,6 +7,10 @@ function setPanel(p){
         0,this._currentPanel=p
     )
 }
+function back(){
+    this._logInPanel.clear()
+    this.out.back()
+}
 function UserPanel(site){
     let
         registerPanel=new RegisterPanel(site,{
@@ -16,11 +20,15 @@ function UserPanel(site){
             }
         })
     this._logInPanel=new LogInPanel(site)
+    this._logInPanel.out={
+        submit:()=>{
+            back.call(this)
+        },
+    }
     this._homePanel=doe.div(
         this._homePanelNotLoggedIn=doe.div(
             doe.div('Cancel',{className:'button',onclick:()=>{
-                // clear log in panel
-                this.out.back()
+                back.call(this)
             }}),
             ' ',
             doe.div('Register',{className:'button',onclick:()=>{
@@ -31,8 +39,9 @@ function UserPanel(site){
         ),
         this._homePanelLoggedIn=doe.div(
             n=>{doe(n.style,{display:'none'})},
-            doe.div('Log Out',{className:'button',onclick(){
+            doe.div('Log Out',{className:'button',onclick:()=>{
                 site.logOut()
+                this.out.logOut()
             }}),
             ' ',
             doe.div('Delete Current User',{className:'button',onclick:()=>{

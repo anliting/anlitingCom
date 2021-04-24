@@ -1,19 +1,28 @@
 import doe from             'doe'
 import Site from            './main/Site.mjs'
 import UserPanel from       './main/UserPanel.mjs'
-let site=new Site,userPanel=new UserPanel(site)
+let
+    site=new Site,
+    userPanel=new UserPanel(site),
+    main,
+    currentPage,
+    homePage,
+    userPanelButton
 site.out={
     credential(){
         userPanel.credential(site.credential)
+        userPanelButton.textContent=site.credential?site.userId:'Log In'
     }
 }
-let main,homePage,currentPage
 function setPage(page){
     doe(main,page,1,currentPage)
     currentPage=page
 }
 userPanel.out={
     back(){
+        setPage(homePage)
+    },
+    logOut(){
         setPage(homePage)
     },
 }
@@ -57,14 +66,14 @@ doe.head(
             width:540px;
             margin:0 auto;
         }
-        .userPanel{
+        /*.userPanel{
             box-shadow:
                 0 0 .1em rgba(0,0,0,.4),
                 .1em .1em .1em rgba(0,0,0,.2);
             padding:.5em;
-        }
+        }*/
         input.id:invalid{
-            color:red;
+            box-shadow:0 0 2px 1px red;
         }
     `)
 )
@@ -74,7 +83,7 @@ doe.body(
         currentPage=homePage=doe.div(
             doe.div(
                 n=>{doe(n.style,{textAlign:'right'})},
-                doe.div({className:'button',onclick:()=>{
+                userPanelButton=doe.div({className:'button',onclick:()=>{
                     setPage(userPanel.node)
                     userPanel.focus()
                 }},'Log In'),

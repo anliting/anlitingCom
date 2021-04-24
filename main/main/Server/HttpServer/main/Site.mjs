@@ -39,6 +39,7 @@ Site.prototype.cutCurrentUser=function(){
 Site.prototype.logIn=function(user,password){
     this._send(['logIn',user,password])
     this.credential=1
+    this.userId=user
     this.out.credential()
 }
 Site.prototype.logOut=function(){

@@ -3,9 +3,8 @@ function LogInPanel(site){
     function submit(){
         if(this._idInput.checkValidity()){
             site.logIn(+this._idInput.value,this._passwordInput.value)
-            this._idInput.required=false
-            this._idInput.value=''
-            this._passwordInput.value=''
+            this.clear()
+            this.out.submit()
         }
     }
     this.node=doe.div(
@@ -40,6 +39,11 @@ function LogInPanel(site){
             }}),
         ),
     )
+}
+LogInPanel.prototype.clear=function(){
+    this._idInput.required=false
+    this._idInput.value=''
+    this._passwordInput.value=''
 }
 LogInPanel.prototype.focus=function(){
     this._idInput.focus()
