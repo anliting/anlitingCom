@@ -18,6 +18,11 @@ function UserPanel(site){
     this._logInPanel=new LogInPanel(site)
     this._homePanel=doe.div(
         this._homePanelNotLoggedIn=doe.div(
+            doe.div('Cancel',{className:'button',onclick:()=>{
+                // clear log in panel
+                this.out.back()
+            }}),
+            ' ',
             doe.div('Register',{className:'button',onclick:()=>{
                 setPanel.call(this,registerPanel.node)
                 registerPanel.focus()

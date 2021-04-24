@@ -20,21 +20,22 @@ function LogInPanel(site){
                 className:'id',
                 placeholder:'ID',
                 pattern:'[0-9]+',
-                onblur(){
-                    this.required=true
-                },
             }),
         ),
         doe.div(
             n=>{doe(n.style,{marginTop:'.5em'})},
             this._passwordInput=doe.input({
                 placeholder:'Password',
-                type:'password'
+                type:'password',
+                onfocus:()=>{
+                    this._idInput.required=true
+                },
             }),
         ),
         doe.div(
             n=>{doe(n.style,{marginTop:'.5em'})},
             doe.div('Log In',{className:'button',onclick:()=>{
+                this._idInput.required=true
                 submit.call(this)
             }}),
         ),

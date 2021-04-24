@@ -7,6 +7,16 @@ site.out={
         userPanel.credential(site.credential)
     }
 }
+let main,homePage,currentPage
+function setPage(page){
+    doe(main,page,1,currentPage)
+    currentPage=page
+}
+userPanel.out={
+    back(){
+        setPage(homePage)
+    },
+}
 doe.head(
     doe.style(`
         body{
@@ -59,27 +69,31 @@ doe.head(
     `)
 )
 doe.body(
-    doe.div(
+    main=doe.div(
         {className:'main',},
-        doe.div('This is An-Li Ting\'s personal website.'),
-        doe.div(
-            n=>{doe(n.style,{marginTop:'1em'})},
-            'You might also want to visit ',
-            doe.a({href:'https://althea.anliting.com/'},'my blog'),
-            '.'
+        currentPage=homePage=doe.div(
+            doe.div(
+                n=>{doe(n.style,{textAlign:'right'})},
+                doe.div({className:'button',onclick:()=>{
+                    setPage(userPanel.node)
+                    userPanel.focus()
+                }},'Log In'),
+            ),
+            doe.div('This is An-Li Ting\'s personal website.'),
+            doe.div(
+                n=>{doe(n.style,{marginTop:'1em'})},
+                'You might also want to visit ',
+                doe.a({href:'https://althea.anliting.com/'},'my blog'),
+                '.'
+            ),
+            doe.div(
+                n=>{doe(n.style,{marginTop:'1em'})},
+                'Here are some services this website provides:',
+                doe.ul(
+                    doe.li(doe.a({href:'https://stopwatch.anliting.com/'},'Stopwatch'))
+                )
+            ),
         ),
-        doe.div(
-            n=>{doe(n.style,{marginTop:'1em'})},
-            userPanel.node,
-        ),
-        doe.div(
-            n=>{doe(n.style,{marginTop:'1em'})},
-            'Here are some services this website provides:',
-            doe.ul(
-                doe.li(doe.a({href:'https://stopwatch.anliting.com/'},'Stopwatch'))
-            )
-        )
     )
 )
-userPanel.focus()
 navigator.serviceWorker.register('%23sw')
