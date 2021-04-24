@@ -53,6 +53,9 @@ doe.head(
                 .1em .1em .1em rgba(0,0,0,.2);
             padding:.5em;
         }
+        input.id:invalid{
+            color:red;
+        }
     `)
 )
 doe.body(

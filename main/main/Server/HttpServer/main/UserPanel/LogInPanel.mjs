@@ -1,24 +1,29 @@
 import doe from         'doe'
-function LogInPanel(site,out){
-    this._out=out
-    function cancel(){
-        this._idInput.value=''
-        this._passwordInput.value=''
-        this._out.back()
-    }
+function LogInPanel(site){
     function submit(){
-        site.logIn(+this._idInput.value,this._passwordInput.value)
-        this._idInput.value=''
-        this._passwordInput.value=''
+        if(this._idInput.checkValidity()){
+            site.logIn(+this._idInput.value,this._passwordInput.value)
+            this._idInput.required=false
+            this._idInput.value=''
+            this._passwordInput.value=''
+        }
     }
     this.node=doe.div(
         {onkeydown:e=>{
-            if(e.key=='Enter')
+            if(e.key=='Enter'){
                 submit.call(this)
+            }
         }},
         doe.div(
             n=>{doe(n.style,{marginTop:'.5em'})},
-            this._idInput=doe.input({placeholder:'ID'}),
+            this._idInput=doe.input({
+                className:'id',
+                placeholder:'ID',
+                pattern:'[0-9]+',
+                onblur(){
+                    this.required=true
+                },
+            }),
         ),
         doe.div(
             n=>{doe(n.style,{marginTop:'.5em'})},

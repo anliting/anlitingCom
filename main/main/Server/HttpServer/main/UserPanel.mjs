@@ -15,11 +15,7 @@ function UserPanel(site){
                 this._logInPanel.focus()
             }
         })
-    this._logInPanel=new LogInPanel(site,{
-        back:()=>{
-            setPanel.call(this,this._homePanel)
-        }
-    })
+    this._logInPanel=new LogInPanel(site)
     this._homePanel=doe.div(
         this._homePanelNotLoggedIn=doe.div(
             doe.div('Register',{className:'button',onclick:()=>{
