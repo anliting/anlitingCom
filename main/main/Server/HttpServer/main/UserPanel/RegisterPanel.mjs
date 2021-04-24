@@ -34,7 +34,7 @@ function RegisterPanel(site,out){
                     submit.call(this)
             }},
             doe.div(
-                doe.div('Cancel',{className:'button',onclick:()=>{
+                doe.div('Back',{className:'button',onclick:()=>{
                     this._passwordInput.value=''
                     this._out.back()
                 }}),

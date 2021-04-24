@@ -27,7 +27,7 @@ function UserPanel(site){
     }
     this._homePanel=doe.div(
         this._homePanelNotLoggedIn=doe.div(
-            doe.div('Cancel',{className:'button',onclick:()=>{
+            doe.div('Back',{className:'button',onclick:()=>{
                 back.call(this)
             }}),
             ' ',

@@ -28,12 +28,19 @@ userPanel.out={
 }
 doe.head(
     doe.style(`
+        html{
+            height:100%;
+        }
         body{
+            margin:0;
+            height:100%;
             background-color:#7f7f7f;
+            line-height:1.2;
             color:#fff;
             text-shadow:
                 0 0 .05em rgba(0,0,0,.4),
                 .05em .05em .05em rgba(0,0,0,.2);
+            /*overflow:hidden;*/
         }
         a{
             color:#fff;
@@ -66,8 +73,11 @@ doe.head(
             width:540px;
             margin:0 auto;
         }
-        input.id:invalid{
+        .userPanel input.id:invalid{
             box-shadow:0 0 .125em .0625em red;
+        }
+        body>.main>.userPanel{
+            padding:1em;
         }
         /*.userPanel{
             box-shadow:
@@ -81,6 +91,7 @@ doe.body(
     main=doe.div(
         {className:'main',},
         currentPage=homePage=doe.div(
+            n=>{doe(n.style,{padding:'1em'})},
             doe.div(
                 n=>{doe(n.style,{textAlign:'right'})},
                 userPanelButton=doe.div({className:'button',onclick:()=>{
