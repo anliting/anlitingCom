@@ -46,6 +46,7 @@ function UserPanel(site){
             ' ',
             doe.div('Delete Current User',{className:'button',onclick:()=>{
                 site.cutCurrentUser()
+                back.call(this)
             }}),
         ),
     )
