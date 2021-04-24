@@ -78,4 +78,5 @@ doe.body(
         )
     )
 )
+userPanel.focus()
 navigator.serviceWorker.register('%23sw')

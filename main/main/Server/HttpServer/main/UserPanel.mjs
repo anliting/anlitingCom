@@ -11,41 +11,51 @@ function UserPanel(site){
     let
         registerPanel=new RegisterPanel(site,{
             back:()=>{
-                setPanel.call(this,this._notLoggedInPanel)
-            }
-        }),
-        logInPanel=new LogInPanel(site,{
-            back:()=>{
-                setPanel.call(this,this._notLoggedInPanel)
+                setPanel.call(this,this._homePanel)
+                this._logInPanel.focus()
             }
         })
-    this._notLoggedInPanel=doe.div(
-        doe.div('Register',{className:'button',onclick:()=>{
-            setPanel.call(this,registerPanel.node)
-            registerPanel.focus()
-        }}),
-        ' ',
-        doe.div('Log In',{className:'button',onclick:()=>{
-            setPanel.call(this,logInPanel.node)
-            logInPanel.focus()
-        }})
-    )
-    this._loggedInPanel=doe.div(
-        doe.div('Log Out',{className:'button',onclick(){
-            site.logOut()
-        }}),
-        ' ',
-        doe.div('Delete Current User',{className:'button',onclick:()=>{
-            site.cutCurrentUser()
-        }}),
+    this._logInPanel=new LogInPanel(site,{
+        back:()=>{
+            setPanel.call(this,this._homePanel)
+        }
+    })
+    this._homePanel=doe.div(
+        this._homePanelNotLoggedIn=doe.div(
+            doe.div('Register',{className:'button',onclick:()=>{
+                setPanel.call(this,registerPanel.node)
+                registerPanel.focus()
+            }}),
+            this._logInPanel.node,
+        ),
+        this._homePanelLoggedIn=doe.div(
+            n=>{doe(n.style,{display:'none'})},
+            doe.div('Log Out',{className:'button',onclick(){
+                site.logOut()
+            }}),
+            ' ',
+            doe.div('Delete Current User',{className:'button',onclick:()=>{
+                site.cutCurrentUser()
+            }}),
+        ),
     )
     this.node=doe.div(
         {className:'userPanel'},
         n=>{doe(n.style,{height:'8.5em'})},
-        this._currentPanel=this._notLoggedInPanel,
+        this._currentPanel=this._homePanel,
     )
 }
+UserPanel.prototype.focus=function(){
+    this._logInPanel.focus()
+}
 UserPanel.prototype.credential=function(status){
-    setPanel.call(this,status?this._loggedInPanel:this._notLoggedInPanel)
+    setPanel.call(this,this._homePanel)
+    if(status){
+        this._homePanelNotLoggedIn.style.display='none'
+        this._homePanelLoggedIn.style.display=''
+    }else{
+        this._homePanelNotLoggedIn.style.display=''
+        this._homePanelLoggedIn.style.display='none'
+    }
 }
 export default UserPanel

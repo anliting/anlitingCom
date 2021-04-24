@@ -17,11 +17,6 @@ function LogInPanel(site,out){
                 submit.call(this)
         }},
         doe.div(
-            doe.div('Cancel',{className:'button',onclick:()=>{
-                cancel.call(this)
-            }}),
-        ),
-        doe.div(
             n=>{doe(n.style,{marginTop:'.5em'})},
             this._idInput=doe.input({placeholder:'ID'}),
         ),
