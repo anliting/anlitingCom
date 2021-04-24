@@ -66,15 +66,15 @@ doe.head(
             width:540px;
             margin:0 auto;
         }
+        input.id:invalid{
+            box-shadow:0 0 .125em .0625em red;
+        }
         /*.userPanel{
             box-shadow:
                 0 0 .1em rgba(0,0,0,.4),
                 .1em .1em .1em rgba(0,0,0,.2);
             padding:.5em;
         }*/
-        input.id:invalid{
-            box-shadow:0 0 2px 1px red;
-        }
     `)
 )
 doe.body(
@@ -88,7 +88,10 @@ doe.body(
                     userPanel.focus()
                 }},'Log In'),
             ),
-            doe.div('This is An-Li Ting\'s personal website.'),
+            doe.div(
+                n=>{doe(n.style,{marginTop:'1em'})},
+                'This is An-Li Ting\'s personal website.'
+            ),
             doe.div(
                 n=>{doe(n.style,{marginTop:'1em'})},
                 'You might also want to visit ',
