@@ -76,7 +76,7 @@ doe.head(
         body>.homePage>.a{
             text-align:right;
         }
-        body>.homePage>.b,body>.homePage>.c,body>.homePage>.d{
+        body>.homePage>.b{
             margin-top:1em;
         }
         body>.userPanel input.id:invalid{
@@ -111,13 +111,13 @@ doe.body(
             'This is An-Li Ting\'s personal website.'
         ),
         doe.div(
-            {className:'c'},
+            {className:'b'},
             'You might also want to visit ',
             doe.a({href:'https://althea.anliting.com/'},'my blog'),
             '.'
         ),
         doe.div(
-            {className:'d'},
+            {className:'b'},
             'Here are some services this website provides:',
             doe.ul(
                 doe.li(doe.a({
