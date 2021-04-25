@@ -79,14 +79,20 @@ doe.head(
         body>.homePage>.b{
             margin-top:1em;
         }
-        body>.userPanel input.id:invalid{
-            box-shadow:0 0 .125em .0625em red;
-        }
         body>.userPanel{
             margin:0 auto;
             padding:1em;
             width:540px;
             height:8.5em;
+        }
+        body>.userPanel input.id:invalid{
+            box-shadow:0 0 .125em .0625em red;
+        }
+        body>.userPanel .registerPanel>*{
+            margin-top:.5em;
+        }
+        body>.userPanel .logInPanel>*{
+            margin-top:.5em;
         }
         /*.userPanel{
             box-shadow:

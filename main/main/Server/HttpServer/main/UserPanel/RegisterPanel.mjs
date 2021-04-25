@@ -40,18 +40,19 @@ function RegisterPanel(site,out){
                 }}),
             ),
             doe.div(
-                n=>{doe(n.style,{marginTop:'.5em'})},
-                this._passwordInput=doe.input({
-                    placeholder:'Password',
-                    type:'password'
-                }),
+                {className:'registerPanel'},
+                doe.div(
+                    this._passwordInput=doe.input({
+                        placeholder:'Password',
+                        type:'password'
+                    }),
+                ),
+                doe.div(
+                    doe.div('Register',{className:'button',onclick:()=>{
+                        submit.call(this)
+                    }}),
+                ),
             ),
-            doe.div(
-                n=>{doe(n.style,{marginTop:'.5em'})},
-                doe.div('Register',{className:'button',onclick:()=>{
-                    submit.call(this)
-                }}),
-            )
         )
     )
 }

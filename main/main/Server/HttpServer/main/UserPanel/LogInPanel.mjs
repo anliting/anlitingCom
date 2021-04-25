@@ -8,13 +8,14 @@ function LogInPanel(site){
         }
     }
     this.node=doe.div(
-        {onkeydown:e=>{
-            if(e.key=='Enter'){
-                submit.call(this)
-            }
-        }},
+        {
+            className:'logInPanel',
+            onkeydown:e=>{
+                if(e.key=='Enter')
+                    submit.call(this)
+            },
+        },
         doe.div(
-            n=>{doe(n.style,{marginTop:'.5em'})},
             this._idInput=doe.input({
                 className:'id',
                 placeholder:'ID',
@@ -22,7 +23,6 @@ function LogInPanel(site){
             }),
         ),
         doe.div(
-            n=>{doe(n.style,{marginTop:'.5em'})},
             this._passwordInput=doe.input({
                 placeholder:'Password',
                 type:'password',
@@ -32,7 +32,6 @@ function LogInPanel(site){
             }),
         ),
         doe.div(
-            n=>{doe(n.style,{marginTop:'.5em'})},
             doe.div('Log In',{className:'button',onclick:()=>{
                 this._idInput.required=true
                 submit.call(this)
