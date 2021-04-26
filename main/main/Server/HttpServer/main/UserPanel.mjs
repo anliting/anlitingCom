@@ -26,19 +26,34 @@ function UserPanel(site){
         },
     }
     this._homePanel=doe.div(
+        {className:'homePanel'},
         this._homePanelNotLoggedIn=doe.div(
+            {className:'notLoggedIn'},
+            doe.div(
+                {className:'a'},
+                doe.div(
+                    {className:'a'},
+                    doe.div('Back',{className:'button',onclick:()=>{
+                        back.call(this)
+                    }}),
+                ),
+                doe.div(
+                    {className:'b'},
+                    doe.div('Register',{className:'button',onclick:()=>{
+                        setPanel.call(this,registerPanel.node)
+                        registerPanel.focus()
+                    }}),
+                ),
+            ),
+            this._logInPanel.node,
+        ),
+        this._homePanelLoggedIn=doe.div(
+            {className:'loggedIn'},
+            n=>{doe(n.style,{display:'none'})},
             doe.div('Back',{className:'button',onclick:()=>{
                 back.call(this)
             }}),
             ' ',
-            doe.div('Register',{className:'button',onclick:()=>{
-                setPanel.call(this,registerPanel.node)
-                registerPanel.focus()
-            }}),
-            this._logInPanel.node,
-        ),
-        this._homePanelLoggedIn=doe.div(
-            n=>{doe(n.style,{display:'none'})},
             doe.div('Log Out',{className:'button',onclick:()=>{
                 site.logOut()
                 this.out.logOut()

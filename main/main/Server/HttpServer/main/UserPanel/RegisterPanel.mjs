@@ -42,12 +42,14 @@ function RegisterPanel(site,out){
             doe.div(
                 {className:'registerPanel'},
                 doe.div(
+                    {className:'a'},
                     this._passwordInput=doe.input({
                         placeholder:'Password',
                         type:'password'
                     }),
                 ),
                 doe.div(
+                    {className:'b'},
                     doe.div('Register',{className:'button',onclick:()=>{
                         submit.call(this)
                     }}),
