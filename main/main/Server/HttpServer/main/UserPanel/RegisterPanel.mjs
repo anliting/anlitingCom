@@ -1,44 +1,57 @@
 import doe from         'doe'
 async function submit(){
+    this._status='inProgress'
+    this._backButton.classList.add('disabled')
     let putUser=this._site.putUser(this._passwordInput.value)
     this._passwordInput.value=''
-    let beingRegisteredDiv,completeDiv
+    let beingRegisteredDiv
     doe(this.node,
         1,this._form,0,
         beingRegisteredDiv=doe.div(
+            n=>{doe(n.style,{marginTop:'.5em'})},
             'The registration is in progress.'
         )
     )
     let userId=await putUser
+    await new Promise(rs=>setTimeout(rs,1e3))
+    this._status='done'
+    this._backButton.classList.remove('disabled')
     doe(this.node,
         1,beingRegisteredDiv,0,
-        completeDiv=doe.div(
-            `The registration is complete. The user ID is ${userId}. `,
-            doe.div({className:'button',onclick:()=>{
-                doe(this.node,
-                    1,completeDiv,0,
-                    this._form
-                )
-                this._out.back()
-            }},'Back')
+        this._completeDiv=doe.div(
+            n=>{doe(n.style,{marginTop:'.5em'})},
+            `The registration is complete. The user ID is ${userId}.`,
         )
     )
 }
-function RegisterPanel(site,out){
+function RegisterPage(site,out){
     this._out=out
     this._site=site
+    this._status='form'
     this.node=doe.div(
+        doe.div(
+            this._backButton=doe.div('Back',{
+                className:'button',
+                onclick:()=>{
+                    if(this._status=='form'){
+                        this._passwordInput.value=''
+                        this._out.back()
+                    }else if(this._status=='inProgress'){
+                    }else if(this._status=='done'){
+                        doe(this.node,
+                            this._form,
+                            1,this._completeDiv
+                        )
+                        this._out.back()
+                    }
+                }
+            }),
+        ),
         this._form=doe.div(
             {onkeydown:e=>{
                 if(e.key=='Enter')
                     submit.call(this)
             }},
-            doe.div(
-                doe.div('Back',{className:'button',onclick:()=>{
-                    this._passwordInput.value=''
-                    this._out.back()
-                }}),
-            ),
             doe.div(
                 {className:'registerPanel'},
                 doe.div(
@@ -58,7 +71,7 @@ function RegisterPanel(site,out){
         )
     )
 }
-RegisterPanel.prototype.focus=function(){
+RegisterPage.prototype.focus=function(){
     this._passwordInput.focus()
 }
-export default RegisterPanel
+export default RegisterPage

@@ -40,6 +40,9 @@ export default`
         line-height:1.5em;
         vertical-align:top;
     }
+    .button.disabled{
+        color:#7f7f7f;
+    }
     body>.homePage{
         margin:0 auto;
         padding:1em;
