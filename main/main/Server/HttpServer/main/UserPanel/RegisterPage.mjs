@@ -13,7 +13,6 @@ async function submit(){
         )
     )
     let userId=await putUser
-    await new Promise(rs=>setTimeout(rs,1e3))
     this._status='done'
     this._backButton.classList.remove('disabled')
     doe(this.node,

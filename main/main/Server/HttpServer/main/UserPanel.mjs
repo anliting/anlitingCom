@@ -1,5 +1,5 @@
 import doe from             'doe'
-import RegisterPanel from   './UserPanel/RegisterPanel.mjs'
+import RegisterPage from    './UserPanel/RegisterPage.mjs'
 import LogInPanel from      './UserPanel/LogInPanel.mjs'
 function setPanel(p){
     doe(this.node,
@@ -13,7 +13,7 @@ function back(){
 }
 function UserPanel(site){
     let
-        registerPanel=new RegisterPanel(site,{
+        registerPanel=new RegisterPage(site,{
             back:()=>{
                 setPanel.call(this,this._homePanel)
                 this._logInPanel.focus()
