@@ -1,40 +1,6 @@
 import doe from             'doe'
 import RegisterPage from    './UserPanel/RegisterPage.mjs'
-import LogInPanel from      './UserPanel/LogInPanel.mjs'
-function LogInPage(site,out){
-    this._out=out
-    this._logInPanel=new LogInPanel(site)
-    this._logInPanel.out={
-        submit:()=>{
-            this._out.submit()
-        },
-    }
-    this.node=doe.div(
-        {className:'notLoggedIn'},
-        doe.div(
-            {className:'a'},
-            doe.div(
-                {className:'a'},
-                doe.div('Back',{className:'button',onclick:()=>{
-                    this._out.back()
-                }}),
-            ),
-            doe.div(
-                {className:'b'},
-                doe.div('Register',{className:'button',onclick:()=>{
-                    this._out.register()
-                }}),
-            ),
-        ),
-        this._logInPanel.node,
-    )
-}
-LogInPage.prototype.clear=function(){
-    this._logInPanel.clear()
-}
-LogInPage.prototype.focus=function(){
-    this._logInPanel.focus()
-}
+import LogInPage from      './UserPanel/LogInPage.mjs'
 function setPanel(p){
     doe(this.node,1,this._currentPanel,0,p)
     this._currentPanel=p
