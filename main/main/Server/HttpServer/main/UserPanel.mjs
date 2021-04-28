@@ -14,7 +14,7 @@ function back(){
 }
 function UserPanel(site){
     let
-        registerPanel=new RegisterPage(site,{
+        registerPage=new RegisterPage(site,{
             back:()=>{
                 setPanel.call(this,this._homePanel)
                 this._logInPanel.focus()
@@ -41,8 +41,8 @@ function UserPanel(site){
                 doe.div(
                     {className:'b'},
                     doe.div('Register',{className:'button',onclick:()=>{
-                        setPanel.call(this,registerPanel.node)
-                        registerPanel.focus()
+                        setPanel.call(this,registerPage.node)
+                        registerPage.focus()
                     }}),
                 ),
             ),
