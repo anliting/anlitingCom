@@ -24,7 +24,7 @@ function LogInPanel(site){
             }),
         ),
         doe.div(
-            {className:'a',},
+            {className:'b',},
             this._passwordInput=doe.input({
                 placeholder:'Password',
                 type:'password',
@@ -34,7 +34,7 @@ function LogInPanel(site){
             }),
         ),
         doe.div(
-            {className:'b',},
+            {className:'c',},
             doe.div('Log In',{className:'button',onclick:()=>{
                 this._idInput.required=true
                 submit.call(this)

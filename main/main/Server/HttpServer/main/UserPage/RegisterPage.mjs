@@ -5,7 +5,7 @@ async function submit(){
     let putUser=this._site.putUser(this._passwordInput.value)
     this._passwordInput.value=''
     let beingRegisteredDiv
-    doe(this._registerPanelNode,
+    doe(this.node,
         1,this._form,0,
         beingRegisteredDiv=doe.div(
             'The registration is in progress.'
@@ -14,7 +14,7 @@ async function submit(){
     let userId=await putUser
     this._status='done'
     this._out.status('done')
-    doe(this._registerPanelNode,
+    doe(this.node,
         1,beingRegisteredDiv,0,
         this._completeDiv=doe.div(
             `The registration is complete. The user ID is ${userId}.`,
@@ -25,12 +25,12 @@ function RegisterPanel(site,out){
     this._out=out
     this._site=site
     this._status='form'
-    this.node=this._registerPanelNode=doe.div(
-        {className:'body',},
+    this.node=doe.div(
+        {className:'registerPanel',},
         this._form=doe.div(
+            {className:'form',},
             doe.div(
                 {
-                    className:'registerPanel',
                     onkeydown:e=>{
                         if(e.key=='Enter')
                             submit.call(this)
@@ -40,7 +40,7 @@ function RegisterPanel(site,out){
                     {className:'a'},
                     this._passwordInput=doe.input({
                         placeholder:'Password',
-                        type:'password'
+                        type:'password',
                     }),
                 ),
                 doe.div(
@@ -57,7 +57,7 @@ RegisterPanel.prototype.clear=function(){
     if(this._status=='form'){
         this._passwordInput.value=''
     }else if(this._status=='done'){
-        doe(this._registerPanelNode,
+        doe(this.node,
             1,this._completeDiv,0,
             this._form,
         )

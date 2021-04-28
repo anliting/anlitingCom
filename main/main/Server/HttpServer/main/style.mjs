@@ -63,41 +63,53 @@ export default`
     body>.userPage input.id:invalid{
         box-shadow:0 0 .125em .0625em red;
     }
-    body>.userPage>.homePanel>.notLoggedIn>.a{
+    body>.userPage>.homePanel>.logInPage>.a{
         display:table;
         width:100%;
     }
-    body>.userPage>.homePanel>.notLoggedIn>.a>*{
+    body>.userPage>.homePanel>.logInPage>.a>*{
         display:table-cell;
     }
-    body>.userPage>.homePanel>.notLoggedIn>.a>.a{
+    body>.userPage>.homePanel>.logInPage>.a>.a{
         text-align:left;
     }
-    body>.userPage>.homePanel>.notLoggedIn>.a>.b{
+    body>.userPage>.homePanel>.logInPage>.a>.b{
         text-align:right;
     }
-    body>.userPage .registerPage>.body{
+    body>.userPage .registerPage>.registerPanel{
         margin-top:1em;
     }
-    body>.userPage .registerPanel>*{
-        margin-top:.5em;
+    body>.userPage .registerPanel{
+        box-shadow:
+            0 0 .1em rgba(0,0,0,.4),
+            .1em .1em .1em rgba(0,0,0,.2);
+        padding:.5em;
     }
-    body>.userPage .registerPanel>.a{
+    body>.userPage .registerPanel>.form>*>.a{
         text-align:center;
     }
-    body>.userPage .registerPanel>.b{
+    body>.userPage .registerPanel>.form>*>.b{
+        margin-top:.5em;
         text-align:right;
     }
-    body>.userPage .logInPanel{
+    body>.userPage .logInPage>.logInPanel{
         margin-top:1em;
     }
-    body>.userPage .logInPanel>*{
-        margin-top:.5em;
+    body>.userPage .logInPanel{
+        box-shadow:
+            0 0 .1em rgba(0,0,0,.4),
+            .1em .1em .1em rgba(0,0,0,.2);
+        padding:.5em;
     }
     body>.userPage .logInPanel>.a{
         text-align:center;
     }
     body>.userPage .logInPanel>.b{
+        margin-top:.5em;
+        text-align:center;
+    }
+    body>.userPage .logInPanel>.c{
+        margin-top:.5em;
         text-align:right;
     }
     /*.userPage{

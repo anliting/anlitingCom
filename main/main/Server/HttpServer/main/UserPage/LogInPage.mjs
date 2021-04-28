@@ -9,7 +9,7 @@ function LogInPage(site,out){
         },
     }
     this.node=doe.div(
-        {className:'notLoggedIn'},
+        {className:'logInPage'},
         doe.div(
             {className:'a'},
             doe.div(
