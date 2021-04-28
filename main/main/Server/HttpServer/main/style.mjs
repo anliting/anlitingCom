@@ -54,53 +54,53 @@ export default`
     body>.homePage>.b{
         margin-top:1em;
     }
-    body>.userPanel{
+    body>.userPage{
         margin:0 auto;
         padding:1em;
         width:540px;
         height:8.5em;
     }
-    body>.userPanel input.id:invalid{
+    body>.userPage input.id:invalid{
         box-shadow:0 0 .125em .0625em red;
     }
-    body>.userPanel>.homePanel>.notLoggedIn>.a{
+    body>.userPage>.homePanel>.notLoggedIn>.a{
         display:table;
         width:100%;
     }
-    body>.userPanel>.homePanel>.notLoggedIn>.a>*{
+    body>.userPage>.homePanel>.notLoggedIn>.a>*{
         display:table-cell;
     }
-    body>.userPanel>.homePanel>.notLoggedIn>.a>.a{
+    body>.userPage>.homePanel>.notLoggedIn>.a>.a{
         text-align:left;
     }
-    body>.userPanel>.homePanel>.notLoggedIn>.a>.b{
+    body>.userPage>.homePanel>.notLoggedIn>.a>.b{
         text-align:right;
     }
-    body>.userPanel .registerPage>.body{
+    body>.userPage .registerPage>.body{
         margin-top:1em;
     }
-    body>.userPanel .registerPanel>*{
+    body>.userPage .registerPanel>*{
         margin-top:.5em;
     }
-    body>.userPanel .registerPanel>.a{
+    body>.userPage .registerPanel>.a{
         text-align:center;
     }
-    body>.userPanel .registerPanel>.b{
+    body>.userPage .registerPanel>.b{
         text-align:right;
     }
-    body>.userPanel .logInPanel{
+    body>.userPage .logInPanel{
         margin-top:1em;
     }
-    body>.userPanel .logInPanel>*{
+    body>.userPage .logInPanel>*{
         margin-top:.5em;
     }
-    body>.userPanel .logInPanel>.a{
+    body>.userPage .logInPanel>.a{
         text-align:center;
     }
-    body>.userPanel .logInPanel>.b{
+    body>.userPage .logInPanel>.b{
         text-align:right;
     }
-    /*.userPanel{
+    /*.userPage{
         box-shadow:
             0 0 .1em rgba(0,0,0,.4),
             .1em .1em .1em rgba(0,0,0,.2);

@@ -51,7 +51,7 @@ function UserPage(site){
         ),
     )
     this.node=doe.div(
-        {className:'userPanel'},
+        {className:'userPage'},
         this._currentPanel=this._homePanel,
     )
 }

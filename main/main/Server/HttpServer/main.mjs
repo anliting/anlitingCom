@@ -4,13 +4,13 @@ import UserPage from       './main/UserPage.mjs'
 import style from           './main/style.mjs'
 let
     site=new Site,
-    userPanel=new UserPage(site),
+    userPage=new UserPage(site),
     currentPage,
     homePage,
     userPanelButton
 site.out={
     credential(){
-        userPanel.credential(site.credential)
+        userPage.credential(site.credential)
         userPanelButton.textContent=site.credential?site.userId:'Log In'
     }
 }
@@ -18,7 +18,7 @@ function setPage(page){
     doe.body(page,1,currentPage)
     currentPage=page
 }
-userPanel.out={
+userPage.out={
     back(){
         setPage(homePage)
     },
@@ -35,8 +35,8 @@ doe.body(
         doe.div(
             {className:'a'},
             userPanelButton=doe.div({className:'button',onclick:()=>{
-                setPage(userPanel.node)
-                userPanel.focus()
+                setPage(userPage.node)
+                userPage.focus()
             }},'Log In'),
         ),
         doe.div(
