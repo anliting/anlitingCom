@@ -76,6 +76,9 @@ export default`
     body>.userPanel>.homePanel>.notLoggedIn>.a>.b{
         text-align:right;
     }
+    body>.userPanel .registerPage>.body{
+        margin-top:1em;
+    }
     body>.userPanel .registerPanel>*{
         margin-top:.5em;
     }
@@ -84,6 +87,9 @@ export default`
     }
     body>.userPanel .registerPanel>.b{
         text-align:right;
+    }
+    body>.userPanel .logInPanel{
+        margin-top:1em;
     }
     body>.userPanel .logInPanel>*{
         margin-top:.5em;

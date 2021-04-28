@@ -4,8 +4,9 @@ import LogInPanel from      './UserPanel/LogInPanel.mjs'
 function setPanel(p){
     doe(this.node,
         1,this._currentPanel,
-        0,this._currentPanel=p
+        0,p
     )
+    this._currentPanel=p
 }
 function back(){
     this._logInPanel.clear()

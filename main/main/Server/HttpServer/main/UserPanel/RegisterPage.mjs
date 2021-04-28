@@ -6,21 +6,21 @@ async function submit(){
     this._passwordInput.value=''
     let beingRegisteredDiv
     doe(this.node,
-        1,this._form,0,
         beingRegisteredDiv=doe.div(
-            n=>{doe(n.style,{marginTop:'.5em'})},
+            {className:'body',},
             'The registration is in progress.'
-        )
+        ),
+        1,this._form,
     )
     let userId=await putUser
     this._status='done'
     this._backButton.classList.remove('disabled')
     doe(this.node,
-        1,beingRegisteredDiv,0,
         this._completeDiv=doe.div(
-            n=>{doe(n.style,{marginTop:'.5em'})},
+            {className:'body',},
             `The registration is complete. The user ID is ${userId}.`,
-        )
+        ),
+        1,beingRegisteredDiv,
     )
 }
 function RegisterPage(site,out){
@@ -28,6 +28,7 @@ function RegisterPage(site,out){
     this._site=site
     this._status='form'
     this.node=doe.div(
+        {className:'registerPage',},
         doe.div(
             this._backButton=doe.div('Back',{
                 className:'button',
@@ -37,6 +38,7 @@ function RegisterPage(site,out){
                         this._out.back()
                     }else if(this._status=='inProgress'){
                     }else if(this._status=='done'){
+                        this._status='form'
                         doe(this.node,
                             this._form,
                             1,this._completeDiv
@@ -47,12 +49,15 @@ function RegisterPage(site,out){
             }),
         ),
         this._form=doe.div(
-            {onkeydown:e=>{
-                if(e.key=='Enter')
-                    submit.call(this)
-            }},
+            {className:'body',},
             doe.div(
-                {className:'registerPanel'},
+                {
+                    className:'registerPanel',
+                    onkeydown:e=>{
+                        if(e.key=='Enter')
+                            submit.call(this)
+                    },
+                },
                 doe.div(
                     {className:'a'},
                     this._passwordInput=doe.input({
