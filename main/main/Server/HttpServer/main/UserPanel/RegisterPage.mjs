@@ -1,55 +1,33 @@
 import doe from         'doe'
 async function submit(){
     this._status='inProgress'
-    this._backButton.classList.add('disabled')
+    this._out.status('inProgress')
     let putUser=this._site.putUser(this._passwordInput.value)
     this._passwordInput.value=''
     let beingRegisteredDiv
-    doe(this.node,
+    doe(this._registerPanelNode,
         beingRegisteredDiv=doe.div(
-            {className:'body',},
             'The registration is in progress.'
         ),
         1,this._form,
     )
     let userId=await putUser
     this._status='done'
-    this._backButton.classList.remove('disabled')
-    doe(this.node,
+    this._out.status('done')
+    doe(this._registerPanelNode,
         this._completeDiv=doe.div(
-            {className:'body',},
             `The registration is complete. The user ID is ${userId}.`,
         ),
         1,beingRegisteredDiv,
     )
 }
-function RegisterPage(site,out){
+function RegisterPanel(site,out){
     this._out=out
     this._site=site
     this._status='form'
-    this.node=doe.div(
-        {className:'registerPage',},
-        doe.div(
-            this._backButton=doe.div('Back',{
-                className:'button',
-                onclick:()=>{
-                    if(this._status=='form'){
-                        this._passwordInput.value=''
-                        this._out.back()
-                    }else if(this._status=='inProgress'){
-                    }else if(this._status=='done'){
-                        this._status='form'
-                        doe(this.node,
-                            this._form,
-                            1,this._completeDiv
-                        )
-                        this._out.back()
-                    }
-                }
-            }),
-        ),
+    this.node=this._registerPanelNode=doe.div(
+        {className:'body',},
         this._form=doe.div(
-            {className:'body',},
             doe.div(
                 {
                     className:'registerPanel',
@@ -75,7 +53,57 @@ function RegisterPage(site,out){
         )
     )
 }
-RegisterPage.prototype.focus=function(){
+RegisterPanel.prototype.clear=function(){
+    if(this._status=='form'){
+        this._passwordInput.value=''
+    }else if(this._status=='done'){
+        doe(this._registerPanelNode,
+            this._form,
+            1,this._completeDiv
+        )
+    }
+}
+RegisterPanel.prototype.focus=function(){
     this._passwordInput.focus()
+}
+function RegisterPage(site,out){
+    this._out=out
+    this._status='form'
+    this._registerPanel=new RegisterPanel(site,{
+        status:status=>{
+            this._status=status
+            if(this._status=='form'){
+                this._backButton.classList.remove('disabled')
+            }else if(this._status=='inProgress'){
+                if(!this._backButton.classList.contains('disabled'))
+                    this._backButton.classList.add('disabled')
+            }else if(this._status=='done'){
+                this._backButton.classList.remove('disabled')
+            }
+        },
+    })
+    this.node=doe.div(
+        {className:'registerPage',},
+        doe.div(
+            this._backButton=doe.div('Back',{
+                className:'button',
+                onclick:()=>{
+                    if(this._status=='form'){
+                        this._registerPanel.clear()
+                        this._out.back()
+                    }else if(this._status=='inProgress'){
+                    }else if(this._status=='done'){
+                        this._status='form'
+                        this._registerPanel.clear()
+                        this._out.back()
+                    }
+                }
+            }),
+        ),
+        this._registerPanel.node
+    )
+}
+RegisterPage.prototype.focus=function(){
+    this._registerPanel.focus()
 }
 export default RegisterPage
