@@ -6,19 +6,19 @@ async function submit(){
     this._passwordInput.value=''
     let beingRegisteredDiv
     doe(this._registerPanelNode,
+        1,this._form,0,
         beingRegisteredDiv=doe.div(
             'The registration is in progress.'
         ),
-        1,this._form,
     )
     let userId=await putUser
     this._status='done'
     this._out.status('done')
     doe(this._registerPanelNode,
+        1,beingRegisteredDiv,0,
         this._completeDiv=doe.div(
             `The registration is complete. The user ID is ${userId}.`,
         ),
-        1,beingRegisteredDiv,
     )
 }
 function RegisterPanel(site,out){
@@ -58,8 +58,8 @@ RegisterPanel.prototype.clear=function(){
         this._passwordInput.value=''
     }else if(this._status=='done'){
         doe(this._registerPanelNode,
+            1,this._completeDiv,0,
             this._form,
-            1,this._completeDiv
         )
     }
     this._status='form'

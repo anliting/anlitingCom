@@ -1,15 +1,46 @@
 import doe from             'doe'
 import RegisterPage from    './UserPanel/RegisterPage.mjs'
 import LogInPanel from      './UserPanel/LogInPanel.mjs'
-function setPanel(p){
-    doe(this.node,
-        1,this._currentPanel,
-        0,p
+function LogInPage(site,out){
+    this._out=out
+    this._logInPanel=new LogInPanel(site)
+    this._logInPanel.out={
+        submit:()=>{
+            this._out.submit()
+        },
+    }
+    this.node=doe.div(
+        {className:'notLoggedIn'},
+        doe.div(
+            {className:'a'},
+            doe.div(
+                {className:'a'},
+                doe.div('Back',{className:'button',onclick:()=>{
+                    this._out.back()
+                }}),
+            ),
+            doe.div(
+                {className:'b'},
+                doe.div('Register',{className:'button',onclick:()=>{
+                    this._out.register()
+                }}),
+            ),
+        ),
+        this._logInPanel.node,
     )
+}
+LogInPage.prototype.clear=function(){
+    this._logInPanel.clear()
+}
+LogInPage.prototype.focus=function(){
+    this._logInPanel.focus()
+}
+function setPanel(p){
+    doe(this.node,1,this._currentPanel,0,p)
     this._currentPanel=p
 }
 function back(){
-    this._logInPanel.clear()
+    this._logInPage.clear()
     this.out.back()
 }
 function UserPanel(site){
@@ -17,37 +48,24 @@ function UserPanel(site){
         registerPage=new RegisterPage(site,{
             back:()=>{
                 setPanel.call(this,this._homePanel)
-                this._logInPanel.focus()
-            }
+                this._logInPage.focus()
+            },
         })
-    this._logInPanel=new LogInPanel(site)
-    this._logInPanel.out={
+    this._logInPage=new LogInPage(site,{
+        back:()=>{
+            back.call(this)
+        },
         submit:()=>{
             back.call(this)
         },
-    }
+        register:()=>{
+            setPanel.call(this,registerPage.node)
+            registerPage.focus()
+        },
+    })
     this._homePanel=doe.div(
         {className:'homePanel'},
-        this._homePanelNotLoggedIn=doe.div(
-            {className:'notLoggedIn'},
-            doe.div(
-                {className:'a'},
-                doe.div(
-                    {className:'a'},
-                    doe.div('Back',{className:'button',onclick:()=>{
-                        back.call(this)
-                    }}),
-                ),
-                doe.div(
-                    {className:'b'},
-                    doe.div('Register',{className:'button',onclick:()=>{
-                        setPanel.call(this,registerPage.node)
-                        registerPage.focus()
-                    }}),
-                ),
-            ),
-            this._logInPanel.node,
-        ),
+        this._homePanelNotLoggedIn=this._logInPage.node,
         this._homePanelLoggedIn=doe.div(
             {className:'loggedIn'},
             n=>{doe(n.style,{display:'none'})},
@@ -72,7 +90,7 @@ function UserPanel(site){
     )
 }
 UserPanel.prototype.focus=function(){
-    this._logInPanel.focus()
+    this._logInPage.focus()
 }
 UserPanel.prototype.credential=function(status){
     setPanel.call(this,this._homePanel)
