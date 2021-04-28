@@ -1,6 +1,6 @@
 import doe from             'doe'
-import RegisterPage from    './UserPanel/RegisterPage.mjs'
-import LogInPage from      './UserPanel/LogInPage.mjs'
+import RegisterPage from    './UserPage/RegisterPage.mjs'
+import LogInPage from       './UserPage/LogInPage.mjs'
 function setPanel(p){
     doe(this.node,1,this._currentPanel,0,p)
     this._currentPanel=p
@@ -9,7 +9,7 @@ function back(){
     this._logInPage.clear()
     this.out.back()
 }
-function UserPanel(site){
+function UserPage(site){
     let
         registerPage=new RegisterPage(site,{
             back:()=>{
@@ -55,10 +55,10 @@ function UserPanel(site){
         this._currentPanel=this._homePanel,
     )
 }
-UserPanel.prototype.focus=function(){
+UserPage.prototype.focus=function(){
     this._logInPage.focus()
 }
-UserPanel.prototype.credential=function(status){
+UserPage.prototype.credential=function(status){
     setPanel.call(this,this._homePanel)
     if(status){
         this._homePanelNotLoggedIn.style.display='none'
@@ -68,4 +68,4 @@ UserPanel.prototype.credential=function(status){
         this._homePanelLoggedIn.style.display='none'
     }
 }
-export default UserPanel
+export default UserPage

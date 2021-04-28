@@ -1,10 +1,10 @@
 import doe from             'doe'
 import Site from            './main/Site.mjs'
-import UserPanel from       './main/UserPanel.mjs'
+import UserPage from       './main/UserPage.mjs'
 import style from           './main/style.mjs'
 let
     site=new Site,
-    userPanel=new UserPanel(site),
+    userPanel=new UserPage(site),
     currentPage,
     homePage,
     userPanelButton
