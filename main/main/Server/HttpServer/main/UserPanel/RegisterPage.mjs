@@ -62,6 +62,7 @@ RegisterPanel.prototype.clear=function(){
             1,this._completeDiv
         )
     }
+    this._status='form'
 }
 RegisterPanel.prototype.focus=function(){
     this._passwordInput.focus()
@@ -71,15 +72,15 @@ function RegisterPage(site,out){
     this._status='form'
     this._registerPanel=new RegisterPanel(site,{
         status:status=>{
-            this._status=status
-            if(this._status=='form'){
+            if(status=='form'){
                 this._backButton.classList.remove('disabled')
-            }else if(this._status=='inProgress'){
+            }else if(status=='inProgress'){
                 if(!this._backButton.classList.contains('disabled'))
                     this._backButton.classList.add('disabled')
-            }else if(this._status=='done'){
+            }else if(status=='done'){
                 this._backButton.classList.remove('disabled')
             }
+            this._status=status
         },
     })
     this.node=doe.div(
@@ -88,12 +89,7 @@ function RegisterPage(site,out){
             this._backButton=doe.div('Back',{
                 className:'button',
                 onclick:()=>{
-                    if(this._status=='form'){
-                        this._registerPanel.clear()
-                        this._out.back()
-                    }else if(this._status=='inProgress'){
-                    }else if(this._status=='done'){
-                        this._status='form'
+                    if(['form','done'].includes(this._status)){
                         this._registerPanel.clear()
                         this._out.back()
                     }
