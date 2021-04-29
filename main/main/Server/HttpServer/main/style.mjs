@@ -1,4 +1,15 @@
 export default`
+    .logInPanel>.a{
+        text-align:center;
+    }
+    .logInPanel>.b{
+        margin-top:.5em;
+        text-align:center;
+    }
+    .logInPanel>.c{
+        margin-top:.5em;
+        text-align:right;
+    }
     html{
         height:100%;
     }
@@ -58,23 +69,29 @@ export default`
         margin:0 auto;
         padding:1em;
         width:540px;
-        height:8.5em;
     }
     body>.userPage input.id:invalid{
         box-shadow:0 0 .125em .0625em red;
     }
-    body>.userPage>.homePanel>.logInPage>.a{
+    body>.userPage>.logInPage>.a{
         display:table;
         width:100%;
     }
-    body>.userPage>.homePanel>.logInPage>.a>*{
+    body>.userPage>.logInPage>.a>*{
         display:table-cell;
     }
-    body>.userPage>.homePanel>.logInPage>.a>.a{
+    body>.userPage>.logInPage>.a>.a{
         text-align:left;
     }
-    body>.userPage>.homePanel>.logInPage>.a>.b{
+    body>.userPage>.logInPage>.a>.b{
         text-align:right;
+    }
+    body>.userPage>.logInPage>.logInPanel{
+        margin-top:1em;
+        box-shadow:
+            0 0 .1em rgba(0,0,0,.4),
+            .1em .1em .1em rgba(0,0,0,.2);
+        padding:.5em;
     }
     body>.userPage .registerPage>.registerPanel{
         margin-top:1em;
@@ -92,30 +109,9 @@ export default`
         margin-top:.5em;
         text-align:right;
     }
-    body>.userPage .logInPage>.logInPanel{
-        margin-top:1em;
+    body>.loggedInUserPage{
+        margin:0 auto;
+        padding:1em;
+        width:540px;
     }
-    body>.userPage .logInPanel{
-        box-shadow:
-            0 0 .1em rgba(0,0,0,.4),
-            .1em .1em .1em rgba(0,0,0,.2);
-        padding:.5em;
-    }
-    body>.userPage .logInPanel>.a{
-        text-align:center;
-    }
-    body>.userPage .logInPanel>.b{
-        margin-top:.5em;
-        text-align:center;
-    }
-    body>.userPage .logInPanel>.c{
-        margin-top:.5em;
-        text-align:right;
-    }
-    /*.userPage{
-        box-shadow:
-            0 0 .1em rgba(0,0,0,.4),
-            .1em .1em .1em rgba(0,0,0,.2);
-        padding:.5em;
-    }*/
 `

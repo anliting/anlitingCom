@@ -13,7 +13,7 @@ function UserPage(site){
     let
         registerPage=new RegisterPage(site,{
             back:()=>{
-                setPanel.call(this,this._homePanel)
+                setPanel.call(this,this._logInPage.node)
                 this._logInPage.focus()
             },
         })
@@ -29,43 +29,12 @@ function UserPage(site){
             registerPage.focus()
         },
     })
-    this._homePanel=doe.div(
-        {className:'homePanel'},
-        this._homePanelNotLoggedIn=this._logInPage.node,
-        this._homePanelLoggedIn=doe.div(
-            {className:'loggedIn'},
-            n=>{doe(n.style,{display:'none'})},
-            doe.div('Back',{className:'button',onclick:()=>{
-                back.call(this)
-            }}),
-            ' ',
-            doe.div('Log Out',{className:'button',onclick:()=>{
-                site.logOut()
-                this.out.logOut()
-            }}),
-            ' ',
-            doe.div('Delete Current User',{className:'button',onclick:()=>{
-                site.cutCurrentUser()
-                back.call(this)
-            }}),
-        ),
-    )
     this.node=doe.div(
         {className:'userPage'},
-        this._currentPanel=this._homePanel,
+        this._currentPanel=this._logInPage.node,
     )
 }
 UserPage.prototype.focus=function(){
     this._logInPage.focus()
-}
-UserPage.prototype.credential=function(status){
-    setPanel.call(this,this._homePanel)
-    if(status){
-        this._homePanelNotLoggedIn.style.display='none'
-        this._homePanelLoggedIn.style.display=''
-    }else{
-        this._homePanelNotLoggedIn.style.display=''
-        this._homePanelLoggedIn.style.display='none'
-    }
 }
 export default UserPage

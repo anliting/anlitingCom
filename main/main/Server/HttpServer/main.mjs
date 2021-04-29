@@ -1,17 +1,44 @@
-import doe from             'doe'
-import Site from            './main/Site.mjs'
-import UserPage from       './main/UserPage.mjs'
-import style from           './main/style.mjs'
+import doe from                 'doe'
+import Site from                './main/Site.mjs'
+import UserPage from            './main/UserPage.mjs'
+import LoggedInUserPage from    './main/LoggedInUserPage.mjs'
+import style from               './main/style.mjs'
 let
     site=new Site,
     userPage=new UserPage(site),
+    loggedInUserPage=new LoggedInUserPage(site),
     currentPage,
     homePage,
-    userPanelButton
+    userPanelButton=doe.div({
+        className:'button',
+        onclick:()=>{
+            setPage(userPage.node)
+            userPage.focus()
+        }
+    },'Log In'),
+    loggedInUserPageButton=doe.div({
+        className:'button',
+        onclick:()=>{
+            setPage(loggedInUserPage.node)
+        }
+    }),
+    credential=site.credential,
+    head
 site.out={
     credential(){
-        userPage.credential(site.credential)
-        userPanelButton.textContent=site.credential?site.userId:'Log In'
+        if(!credential&&site.credential)
+            doe(head,1,userPanelButton,0,loggedInUserPageButton)
+        if(credential&&!site.credential)
+            doe(head,1,loggedInUserPageButton,0,userPanelButton)
+        if(site.credential)
+            loggedInUserPageButton.textContent=site.userId
+        else{
+            if(currentPage==userPage)
+                setPage(homePage)
+            if(currentPage==loggedInUserPage)
+                setPage(homePage)
+        }
+        credential=site.credential
     }
 }
 function setPage(page){
@@ -26,18 +53,23 @@ userPage.out={
         setPage(homePage)
     },
 }
+loggedInUserPage.out={
+    back(){
+        setPage(homePage)
+    },
+    logOut(){
+        setPage(homePage)
+    },
+}
 doe.head(
     doe.style(style)
 )
 doe.body(
     currentPage=homePage=doe.div(
         {className:'homePage'},
-        doe.div(
+        head=doe.div(
             {className:'a'},
-            userPanelButton=doe.div({className:'button',onclick:()=>{
-                setPage(userPage.node)
-                userPage.focus()
-            }},'Log In'),
+            userPanelButton,
         ),
         doe.div(
             {className:'b'},
