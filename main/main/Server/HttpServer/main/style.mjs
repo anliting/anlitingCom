@@ -51,6 +51,12 @@ export default`
         line-height:1.5em;
         vertical-align:top;
     }
+    .button:hover{
+        background-color:#4f4f4f;
+    }
+    .button:active{
+        background-color:#2f2f2f;
+    }
     .button.disabled{
         color:#7f7f7f;
     }
@@ -71,7 +77,9 @@ export default`
         width:540px;
     }
     body>.userPage input.id:invalid{
-        box-shadow:0 0 .125em .0625em red;
+        box-shadow:
+            0 0 .125em rgba(255,0,0,.8),
+            .125em .125em .125em rgba(255,0,0,.4);
     }
     body>.userPage>.logInPage>.a{
         display:table;
