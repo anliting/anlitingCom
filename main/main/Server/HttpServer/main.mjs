@@ -10,34 +10,20 @@ let
     loggedInUserPage=new LoggedInUserPage(site),
     currentPage,
     homePage,
-    userPanelButton=doe.div({
-        className:'button',
-        onclick:()=>{
-            setPage(userPage.node)
-            userPage.focus()
-        }
-    },'Log In'),
-    loggedInUserPageButton=doe.div({
-        className:'button',
-        onclick:()=>{
-            setPage(loggedInUserPage.node)
-        }
-    }),
     credentialHolder=new StatusHolder
 site.out={
     credential(){
         credentialHolder.map.credential=site.credential
-        if(site.credential)
-            loggedInUserPageButton.textContent=site.userId
-        else
-            if([userPage,loggedInUserPage].includes(currentPage))
-                setPage(homePage)
     }
 }
 function setPage(page){
     doe.body(page,1,currentPage)
     currentPage=page
 }
+credentialHolder.for(a=>{
+    if(!a.credential&&[userPage,loggedInUserPage].includes(currentPage))
+        setPage(homePage)
+})
 userPage.out={
     back(){
         setPage(homePage)
@@ -59,13 +45,30 @@ doe.body(
         {className:'homePage'},
         doe.div(
             {className:'a'},
-            userPanelButton,
             n=>{
                 credentialHolder.iff(
-                    a=>!a.credential,n,userPanelButton
+                    a=>!a.credential,n,
+                    doe.div({
+                        className:'button',
+                        onclick:()=>{
+                            setPage(userPage.node)
+                            userPage.focus()
+                        }
+                    },'Log In')
                 )
                 credentialHolder.iff(
-                    a=>a.credential,n,loggedInUserPageButton
+                    a=>a.credential,n,
+                    doe.div({
+                        className:'button',
+                        onclick:()=>{
+                            setPage(loggedInUserPage.node)
+                        },
+                    },n=>{
+                        credentialHolder.for(a=>{
+                            if(a.credential)
+                                n.textContent=site.userId
+                        })
+                    })
                 )
             },
         ),

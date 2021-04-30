@@ -8,6 +8,8 @@ function _react(rule){
             doe(rule.parent,1,rule.child)
         rule.status=v
     }
+    if(rule.type=='for')
+        rule.function(this.map)
 }
 function StatusHolder(){
     this._rule=[]
@@ -17,9 +19,14 @@ function StatusHolder(){
         return true
     }})
 }
+StatusHolder.prototype.for=function(f){
+    let rule={type:'for',function:f}
+    this._rule.push(rule)
+    _react.call(this,rule)
+}
 StatusHolder.prototype.iff=function(expression,parent,child){
-    let iff={type:'iff',parent,child,expression,status:0}
-    this._rule.push(iff)
-    _react.call(this,iff)
+    let rule={type:'iff',parent,child,expression,status:0}
+    this._rule.push(rule)
+    _react.call(this,rule)
 }
 export default StatusHolder
