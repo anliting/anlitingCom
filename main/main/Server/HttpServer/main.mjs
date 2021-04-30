@@ -23,26 +23,17 @@ let
             setPage(loggedInUserPage.node)
         }
     }),
-    head=doe.div(
-        {className:'a'},
-        userPanelButton,
-    ),
     credentialHolder=new StatusHolder
 site.out={
     credential(){
         credentialHolder.map.credential=site.credential
         if(site.credential)
             loggedInUserPageButton.textContent=site.userId
-        else{
-            if(currentPage==userPage)
+        else
+            if([userPage,loggedInUserPage].includes(currentPage))
                 setPage(homePage)
-            if(currentPage==loggedInUserPage)
-                setPage(homePage)
-        }
     }
 }
-credentialHolder.iff(head,userPanelButton,a=>!a.credential)
-credentialHolder.iff(head,loggedInUserPageButton,a=>a.credential)
 function setPage(page){
     doe.body(page,1,currentPage)
     currentPage=page
@@ -66,7 +57,18 @@ doe.head(
 doe.body(
     currentPage=homePage=doe.div(
         {className:'homePage'},
-        head,
+        doe.div(
+            {className:'a'},
+            userPanelButton,
+            n=>{
+                credentialHolder.iff(
+                    a=>!a.credential,n,userPanelButton
+                )
+                credentialHolder.iff(
+                    a=>a.credential,n,loggedInUserPageButton
+                )
+            },
+        ),
         doe.div(
             {className:'b'},
             'This is An-Li Ting\'s personal website.'

@@ -17,7 +17,7 @@ function StatusHolder(){
         return true
     }})
 }
-StatusHolder.prototype.iff=function(parent,child,expression){
+StatusHolder.prototype.iff=function(expression,parent,child){
     let iff={type:'iff',parent,child,expression,status:0}
     this._rule.push(iff)
     _react.call(this,iff)
