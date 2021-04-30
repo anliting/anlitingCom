@@ -3,6 +3,7 @@ import Site from                './main/Site.mjs'
 import UserPage from            './main/UserPage.mjs'
 import LoggedInUserPage from    './main/LoggedInUserPage.mjs'
 import style from               './main/style.mjs'
+import StatusHolder from        './main/StatusHolder.mjs'
 let
     site=new Site,
     userPage=new UserPage(site),
@@ -22,14 +23,14 @@ let
             setPage(loggedInUserPage.node)
         }
     }),
-    credential=site.credential,
-    head
+    head=doe.div(
+        {className:'a'},
+        userPanelButton,
+    ),
+    credentialHolder=new StatusHolder
 site.out={
     credential(){
-        if(!credential&&site.credential)
-            doe(head,1,userPanelButton,0,loggedInUserPageButton)
-        if(credential&&!site.credential)
-            doe(head,1,loggedInUserPageButton,0,userPanelButton)
+        credentialHolder.map.credential=site.credential
         if(site.credential)
             loggedInUserPageButton.textContent=site.userId
         else{
@@ -38,18 +39,16 @@ site.out={
             if(currentPage==loggedInUserPage)
                 setPage(homePage)
         }
-        credential=site.credential
     }
 }
+credentialHolder.iff(head,userPanelButton,a=>!a.credential)
+credentialHolder.iff(head,loggedInUserPageButton,a=>a.credential)
 function setPage(page){
     doe.body(page,1,currentPage)
     currentPage=page
 }
 userPage.out={
     back(){
-        setPage(homePage)
-    },
-    logOut(){
         setPage(homePage)
     },
 }
@@ -67,10 +66,7 @@ doe.head(
 doe.body(
     currentPage=homePage=doe.div(
         {className:'homePage'},
-        head=doe.div(
-            {className:'a'},
-            userPanelButton,
-        ),
+        head,
         doe.div(
             {className:'b'},
             'This is An-Li Ting\'s personal website.'
