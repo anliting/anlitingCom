@@ -35,7 +35,7 @@ let
                     doe.div({
                         className:'button',
                         onclick:()=>{
-                            currentPage.value=userPage.node
+                            currentPage.bind(userPage.node)
                             userPage.focus()
                         }
                     },'Log In'),
@@ -87,7 +87,5 @@ credential.for(to=>{
 doe.head(
     doe.style(style)
 )
-currentPage.for((to,from)=>
-    doe.body(from&&[1,from,0],to)
-)
+currentPage.child(doe.body())
 navigator.serviceWorker.register('%23sw')

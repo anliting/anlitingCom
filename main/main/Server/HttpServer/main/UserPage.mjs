@@ -1,20 +1,18 @@
 import doe from             'doe'
 import RegisterPage from    './UserPage/RegisterPage.mjs'
 import LogInPage from       './UserPage/LogInPage.mjs'
-function setPanel(p){
-    doe(this.node,1,this._currentPanel,0,p)
-    this._currentPanel=p
-}
+import Variable from        './Variable.mjs'
 function back(){
     this._logInPage.clear()
     this.out.back()
 }
 function UserPage(site,out){
+    let currentPage=new Variable
     this.out=out
     let
         registerPage=new RegisterPage(site,{
             back:()=>{
-                setPanel.call(this,this._logInPage.node)
+                currentPage.value=this._logInPage.node
                 this._logInPage.focus()
             },
         })
@@ -26,14 +24,12 @@ function UserPage(site,out){
             back.call(this)
         },
         register:()=>{
-            setPanel.call(this,registerPage.node)
+            currentPage.value=registerPage.node
             registerPage.focus()
         },
     })
-    this.node=doe.div(
-        {className:'userPage'},
-        this._currentPanel=this._logInPage.node,
-    )
+    currentPage.value=this._logInPage.node
+    this.node=currentPage
 }
 UserPage.prototype.focus=function(){
     this._logInPage.focus()

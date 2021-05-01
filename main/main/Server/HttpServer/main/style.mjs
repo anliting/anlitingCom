@@ -10,6 +10,13 @@ export default`
         margin-top:.5em;
         text-align:right;
     }
+    .registerPanel>.form>*>.a{
+        text-align:center;
+    }
+    .registerPanel>.form>*>.b{
+        margin-top:.5em;
+        text-align:right;
+    }
     html{
         height:100%;
     }
@@ -71,51 +78,47 @@ export default`
     body>.homePage>.b{
         margin-top:1em;
     }
-    body>.userPage{
+    body>.logInPage{
         margin:0 auto;
         padding:1em;
         width:540px;
     }
-    body>.userPage input.id:invalid{
+    body>.logInPage input.id:invalid{
         box-shadow:
             0 0 .125em rgba(255,0,0,.8),
             .125em .125em .125em rgba(255,0,0,.4);
     }
-    body>.userPage>.logInPage>.a{
+    body>.logInPage>.a{
         display:table;
         width:100%;
     }
-    body>.userPage>.logInPage>.a>*{
+    body>.logInPage>.a>*{
         display:table-cell;
     }
-    body>.userPage>.logInPage>.a>.a{
+    body>.logInPage>.a>.a{
         text-align:left;
     }
-    body>.userPage>.logInPage>.a>.b{
+    body>.logInPage>.a>.b{
         text-align:right;
     }
-    body>.userPage>.logInPage>.logInPanel{
+    body>.logInPage>.logInPanel{
         margin-top:1em;
         box-shadow:
             0 0 .1em rgba(0,0,0,.4),
             .1em .1em .1em rgba(0,0,0,.2);
         padding:.5em;
     }
-    body>.userPage .registerPage>.registerPanel{
-        margin-top:1em;
+    body>.registerPage{
+        margin:0 auto;
+        padding:1em;
+        width:540px;
     }
-    body>.userPage .registerPanel{
+    body>.registerPage>.registerPanel{
+        margin-top:1em;
         box-shadow:
             0 0 .1em rgba(0,0,0,.4),
             .1em .1em .1em rgba(0,0,0,.2);
         padding:.5em;
-    }
-    body>.userPage .registerPanel>.form>*>.a{
-        text-align:center;
-    }
-    body>.userPage .registerPanel>.form>*>.b{
-        margin-top:.5em;
-        text-align:right;
     }
     body>.loggedInUserPage{
         margin:0 auto;
