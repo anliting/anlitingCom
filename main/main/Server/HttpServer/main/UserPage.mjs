@@ -9,7 +9,8 @@ function back(){
     this._logInPage.clear()
     this.out.back()
 }
-function UserPage(site){
+function UserPage(site,out){
+    this.out=out
     let
         registerPage=new RegisterPage(site,{
             back:()=>{

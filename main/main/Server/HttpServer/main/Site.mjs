@@ -1,5 +1,6 @@
 import Connection from  './Site/Connection.mjs'
-function Site(){
+function Site(out){
+    this.out=out
     this._toSend=[]
     this._connection=new Connection
     this._connection.out={

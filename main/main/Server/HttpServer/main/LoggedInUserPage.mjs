@@ -1,5 +1,6 @@
 import doe from             'doe'
-function UserPage(site){
+function UserPage(site,out){
+    this.out=out
     this.node=doe.div(
         {className:'loggedInUserPage'},
         doe.div('Back',{
