@@ -44,6 +44,10 @@ function RegisterPanel(site,out){
                     }),
                 ),
                 doe.div(
+                    {className:'c'},
+                    "For an account, its password is a secret character string used to authenticate user's identity. You have to provide it when you log in.",
+                ),
+                doe.div(
                     {className:'b'},
                     doe.div('Register',{className:'button',onclick:()=>{
                         submit.call(this)

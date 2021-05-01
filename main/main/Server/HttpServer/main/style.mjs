@@ -11,7 +11,12 @@ export default`
         text-align:right;
     }
     .registerPanel>.form>*>.a{
-        text-align:center;
+        margin:0 auto;
+        width:20em;
+    }
+    .registerPanel>.form>*>.c{
+        margin:.25em auto 0;
+        width:20em;
     }
     .registerPanel>.form>*>.b{
         margin-top:.5em;
