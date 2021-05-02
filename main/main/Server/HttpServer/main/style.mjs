@@ -74,8 +74,9 @@ export default`
     }
     body>.homePage{
         margin:0 auto;
-        padding:1em;
-        width:540px;
+        padding:15px;
+        width:450px;
+        height:450px;
     }
     body>.homePage>.a{
         text-align:right;
@@ -85,8 +86,9 @@ export default`
     }
     body>.logInPage{
         margin:0 auto;
-        padding:1em;
-        width:540px;
+        padding:15px;
+        width:450px;
+        height:450px;
     }
     body>.logInPage input.id:invalid{
         box-shadow:
@@ -115,8 +117,9 @@ export default`
     }
     body>.registerPage{
         margin:0 auto;
-        padding:1em;
-        width:540px;
+        padding:15px;
+        width:450px;
+        height:450px;
     }
     body>.registerPage>.registerPanel{
         margin-top:1em;
@@ -127,7 +130,8 @@ export default`
     }
     body>.loggedInUserPage{
         margin:0 auto;
-        padding:1em;
-        width:540px;
+        padding:15px;
+        width:450px;
+        height:450px;
     }
 `
