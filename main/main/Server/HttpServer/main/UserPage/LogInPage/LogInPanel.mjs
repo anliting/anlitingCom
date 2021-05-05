@@ -18,6 +18,7 @@ function LogInPanel(site){
         doe.div(
             {className:'a',},
             this._idInput=doe.input({
+                autocomplete:'username',
                 className:'id',
                 placeholder:'ID',
                 pattern:'[0-9]+',
@@ -26,6 +27,7 @@ function LogInPanel(site){
         doe.div(
             {className:'b',},
             this._passwordInput=doe.input({
+                autocomplete:'current-password',
                 placeholder:'Password',
                 type:'password',
                 onfocus:()=>{

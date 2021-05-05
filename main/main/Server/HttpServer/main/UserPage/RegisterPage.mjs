@@ -39,6 +39,7 @@ function RegisterPanel(site,out){
                 doe.div(
                     {className:'a'},
                     this._passwordInput=doe.input({
+                        autocomplete:'new-password',
                         placeholder:'Password',
                         type:'password',
                     }),
