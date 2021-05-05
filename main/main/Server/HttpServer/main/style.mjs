@@ -67,7 +67,7 @@ export default`
         background-color:#4f4f4f;
     }
     .button:active{
-        background-color:#2f2f2f;
+        background-color:#1f1f1f;
     }
     .button.disabled{
         color:#7f7f7f;
