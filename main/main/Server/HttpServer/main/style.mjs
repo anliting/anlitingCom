@@ -35,6 +35,10 @@ export default`
             0 0 .05em rgba(0,0,0,.4),
             .05em .05em .05em rgba(0,0,0,.2);
         overflow:hidden;
+        text-align:center;
+    }
+    body>*{
+        text-align:left;
     }
     body::after{
         content:'';
