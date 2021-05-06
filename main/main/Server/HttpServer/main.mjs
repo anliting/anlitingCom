@@ -88,4 +88,10 @@ doe.head(
     doe.style(style)
 )
 currentPage.child(doe.body())
+function outSize(){
+    let bcr=document.body.getBoundingClientRect()
+    console.log(bcr.width,bcr.height)
+}
+outSize()
+onresize=outSize
 navigator.serviceWorker.register('%23sw')

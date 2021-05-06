@@ -74,9 +74,9 @@ export default`
     body>.homePage{
         --zoom:352;
         margin:0 auto;
-        padding:calc(var(--zoom) * 1 / 22 * 1px);
-        width:calc(var(--zoom) * 20 / 22 * 1px);
-        height:calc(var(--zoom) * 20 / 22 * 1px);
+        padding:1em;
+        width:20em;
+        height:20em;
         font-size:calc(var(--zoom) * 1 / 22 * 1px);
     }
     body>.homePage>.a{
@@ -86,10 +86,12 @@ export default`
         margin-top:1em;
     }
     body>.logInPage{
+        --zoom:352;
         margin:0 auto;
-        padding:15px;
-        width:450px;
-        height:450px;
+        padding:1em;
+        width:20em;
+        height:20em;
+        font-size:calc(var(--zoom) * 1 / 22 * 1px);
     }
     body>.logInPage input.id:invalid{
         box-shadow:
@@ -117,10 +119,12 @@ export default`
         padding:.5em;
     }
     body>.registerPage{
+        --zoom:352;
         margin:0 auto;
-        padding:15px;
-        width:450px;
-        height:450px;
+        padding:1em;
+        width:20em;
+        height:20em;
+        font-size:calc(var(--zoom) * 1 / 22 * 1px);
     }
     body>.registerPage>.registerPanel{
         margin-top:1em;
@@ -130,9 +134,11 @@ export default`
         padding:.5em;
     }
     body>.loggedInUserPage{
+        --zoom:352;
         margin:0 auto;
-        padding:15px;
-        width:450px;
-        height:450px;
+        padding:1em;
+        width:20em;
+        height:20em;
+        font-size:calc(var(--zoom) * 1 / 22 * 1px);
     }
 `
