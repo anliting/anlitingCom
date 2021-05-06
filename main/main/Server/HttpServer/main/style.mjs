@@ -34,7 +34,7 @@ export default`
         text-shadow:
             0 0 .05em rgba(0,0,0,.4),
             .05em .05em .05em rgba(0,0,0,.2);
-        /*overflow:hidden;*/
+        overflow:hidden;
     }
     a{
         color:#fff;
@@ -45,7 +45,7 @@ export default`
         padding:.125em .5em;
         border:none;
         outline:none;
-        font-size:16px;
+        font-size:1em;
         vertical-align:top;
     }
     .button{
@@ -59,7 +59,7 @@ export default`
         user-select:none;
         text-align:center;
         font-family:sans-serif;
-        font-size:16px;
+        font-size:1em;
         line-height:1.5em;
         vertical-align:top;
     }
@@ -73,10 +73,12 @@ export default`
         color:#7f7f7f;
     }
     body>.homePage{
+        --zoom:352;
         margin:0 auto;
-        padding:15px;
-        width:450px;
-        height:450px;
+        padding:calc(var(--zoom) * 1 / 22 * 1px);
+        width:calc(var(--zoom) * 20 / 22 * 1px);
+        height:calc(var(--zoom) * 20 / 22 * 1px);
+        font-size:calc(var(--zoom) * 1 / 22 * 1px);
     }
     body>.homePage>.a{
         text-align:right;
