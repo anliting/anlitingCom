@@ -59,7 +59,6 @@ export default`
         user-select:none;
         text-align:center;
         font-family:sans-serif;
-        font-size:1em;
         line-height:1.5em;
         vertical-align:top;
     }
