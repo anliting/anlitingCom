@@ -1,4 +1,5 @@
 import doe from             'doe'
+import Variable from        './Variable.mjs'
 function UserPage(site,out){
     this.out=out
     this.node=doe.div(
@@ -24,6 +25,10 @@ function UserPage(site,out){
                 this.out.back()
             },
         }),
+    )
+    this.size=new Variable([1,1])
+    this.size.for(a=>
+        this.node.style.setProperty('--zoom',''+Math.min(...a))
     )
 }
 export default UserPage

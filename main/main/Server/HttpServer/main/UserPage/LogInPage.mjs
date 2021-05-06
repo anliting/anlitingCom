@@ -1,5 +1,6 @@
 import doe from             'doe'
 import LogInPanel from      './LogInPage/LogInPanel.mjs'
+import Variable from        '../Variable.mjs'
 function LogInPage(site,out){
     this._out=out
     this._logInPanel=new LogInPanel(site)
@@ -26,6 +27,10 @@ function LogInPage(site,out){
             ),
         ),
         this._logInPanel.node,
+    )
+    this.size=new Variable([1,1])
+    this.size.for(a=>
+        this.node.style.setProperty('--zoom',''+Math.min(...a))
     )
 }
 LogInPage.prototype.clear=function(){

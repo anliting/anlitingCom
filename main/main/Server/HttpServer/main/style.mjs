@@ -36,6 +36,12 @@ export default`
             .05em .05em .05em rgba(0,0,0,.2);
         overflow:hidden;
     }
+    body::after{
+        content:'';
+        display:inline-block;
+        height:100%;
+        vertical-align:middle;
+    }
     a{
         color:#fff;
     }
@@ -72,12 +78,13 @@ export default`
         color:#7f7f7f;
     }
     body>.homePage{
-        --zoom:352;
+        display:inline-block;
         margin:0 auto;
         padding:1em;
         width:20em;
         height:20em;
         font-size:calc(var(--zoom) * 1 / 22 * 1px);
+        vertical-align:middle;
     }
     body>.homePage>.a{
         text-align:right;
@@ -86,12 +93,13 @@ export default`
         margin-top:1em;
     }
     body>.logInPage{
-        --zoom:352;
+        display:inline-block;
         margin:0 auto;
         padding:1em;
         width:20em;
         height:20em;
         font-size:calc(var(--zoom) * 1 / 22 * 1px);
+        vertical-align:middle;
     }
     body>.logInPage input.id:invalid{
         box-shadow:
@@ -119,12 +127,13 @@ export default`
         padding:.5em;
     }
     body>.registerPage{
-        --zoom:352;
+        display:inline-block;
         margin:0 auto;
         padding:1em;
         width:20em;
         height:20em;
         font-size:calc(var(--zoom) * 1 / 22 * 1px);
+        vertical-align:middle;
     }
     body>.registerPage>.registerPanel{
         margin-top:1em;
@@ -134,11 +143,12 @@ export default`
         padding:.5em;
     }
     body>.loggedInUserPage{
-        --zoom:352;
+        display:inline-block;
         margin:0 auto;
         padding:1em;
         width:20em;
         height:20em;
         font-size:calc(var(--zoom) * 1 / 22 * 1px);
+        vertical-align:middle;
     }
 `

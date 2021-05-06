@@ -1,4 +1,5 @@
 import doe from         'doe'
+import Variable from    '../Variable.mjs'
 async function submit(){
     this._status='inProgress'
     this._out.status('inProgress')
@@ -102,6 +103,10 @@ function RegisterPage(site,out){
             }),
         ),
         this._registerPanel.node
+    )
+    this.size=new Variable([1,1])
+    this.size.for(a=>
+        this.node.style.setProperty('--zoom',''+Math.min(...a))
     )
 }
 RegisterPage.prototype.focus=function(){

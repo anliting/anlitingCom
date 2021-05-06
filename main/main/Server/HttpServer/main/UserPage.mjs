@@ -12,7 +12,7 @@ function UserPage(site,out){
     let
         registerPage=new RegisterPage(site,{
             back:()=>{
-                currentPage.value=this._logInPage.node
+                currentPage.value=this._logInPage
                 this._logInPage.focus()
             },
         })
@@ -24,12 +24,12 @@ function UserPage(site,out){
             back.call(this)
         },
         register:()=>{
-            currentPage.value=registerPage.node
+            currentPage.value=registerPage
             registerPage.focus()
         },
     })
-    currentPage.value=this._logInPage.node
-    this.node=currentPage
+    currentPage.value=this._logInPage
+    this.page=currentPage
 }
 UserPage.prototype.focus=function(){
     this._logInPage.focus()
