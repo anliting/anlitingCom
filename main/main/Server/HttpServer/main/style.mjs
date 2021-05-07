@@ -1,4 +1,27 @@
 export default`
+    .button{
+        display:inline-block;
+        padding:.125em .5em;
+        background-color:#3f3f3f;
+        color:#fff;
+        text-shadow:
+            0 0 .05em rgba(0,0,0,.4),
+            .05em .05em .05em rgba(0,0,0,.2);
+        user-select:none;
+        text-align:center;
+        font-family:sans-serif;
+        line-height:1.5em;
+        vertical-align:top;
+    }
+    .button:hover{
+        background-color:#4f4f4f;
+    }
+    .button:active{
+        background-color:#1f1f1f;
+    }
+    .button.disabled{
+        color:#7f7f7f;
+    }
     .logInPanel>.a{
         text-align:center;
     }
@@ -49,6 +72,9 @@ export default`
     a{
         color:#fff;
     }
+    ul{
+        padding-left:1em;
+    }
     input{
         height:1.5em;
         background-color:#bfbfbf;
@@ -58,35 +84,12 @@ export default`
         font-size:1em;
         vertical-align:top;
     }
-    .button{
-        display:inline-block;
-        padding:.125em .5em;
-        background-color:#3f3f3f;
-        color:#fff;
-        text-shadow:
-            0 0 .05em rgba(0,0,0,.4),
-            .05em .05em .05em rgba(0,0,0,.2);
-        user-select:none;
-        text-align:center;
-        font-family:sans-serif;
-        line-height:1.5em;
-        vertical-align:top;
-    }
-    .button:hover{
-        background-color:#4f4f4f;
-    }
-    .button:active{
-        background-color:#1f1f1f;
-    }
-    .button.disabled{
-        color:#7f7f7f;
-    }
     body>.homePage{
         display:inline-block;
         margin:0 auto;
         padding:1em;
         width:20em;
-        height:20em;
+        height:14em;
         font-size:calc(var(--zoom) * 1 / 22 * 1px);
         vertical-align:middle;
     }
@@ -101,7 +104,7 @@ export default`
         margin:0 auto;
         padding:1em;
         width:20em;
-        height:20em;
+        height:14em;
         font-size:calc(var(--zoom) * 1 / 22 * 1px);
         vertical-align:middle;
     }
@@ -135,7 +138,7 @@ export default`
         margin:0 auto;
         padding:1em;
         width:20em;
-        height:20em;
+        height:14em;
         font-size:calc(var(--zoom) * 1 / 22 * 1px);
         vertical-align:middle;
     }
@@ -151,7 +154,7 @@ export default`
         margin:0 auto;
         padding:1em;
         width:20em;
-        height:20em;
+        height:14em;
         font-size:calc(var(--zoom) * 1 / 22 * 1px);
         vertical-align:middle;
     }
