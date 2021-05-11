@@ -35,11 +35,9 @@ export default`
     }
     .registerPanel>.form>*>.a{
         margin:0 auto;
-        width:20em;
     }
     .registerPanel>.form>*>.c{
         margin:.25em auto 0;
-        width:20em;
     }
     .registerPanel>.form>*>.b{
         margin-top:.5em;
@@ -86,7 +84,6 @@ export default`
     }
     body>.homePage{
         display:inline-block;
-        margin:0 auto;
         padding:1em;
         width:20em;
         height:14em;
@@ -105,7 +102,7 @@ export default`
         padding:1em;
         width:20em;
         height:14em;
-        font-size:calc(var(--zoom) * 1 / 22 * 1px);
+        font-size:calc(var(--zoom) * 1 / 23 * 1px);
         vertical-align:middle;
     }
     body>.logInPage input.id:invalid{
@@ -139,7 +136,7 @@ export default`
         padding:1em;
         width:20em;
         height:14em;
-        font-size:calc(var(--zoom) * 1 / 22 * 1px);
+        font-size:calc(var(--zoom) * 1 / 23 * 1px);
         vertical-align:middle;
     }
     body>.registerPage>.registerPanel{
