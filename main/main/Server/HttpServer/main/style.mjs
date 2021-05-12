@@ -74,6 +74,7 @@ export default`
         padding-left:1em;
     }
     input{
+        width:12em;
         height:1.5em;
         background-color:#bfbfbf;
         padding:.125em .5em;
@@ -102,7 +103,7 @@ export default`
         padding:1em;
         width:20em;
         height:14em;
-        font-size:calc(var(--zoom) * 1 / 23 * 1px);
+        font-size:calc(var(--zoom) * 1 / 22 * 1px);
         vertical-align:middle;
     }
     body>.logInPage input.id:invalid{
@@ -125,10 +126,8 @@ export default`
     }
     body>.logInPage>.logInPanel{
         margin-top:1em;
-        box-shadow:
-            0 0 .1em rgba(0,0,0,.4),
-            .1em .1em .1em rgba(0,0,0,.2);
-        padding:.5em;
+        box-shadow:0 -.2em .1em -.2em rgba(0,0,0,.4);
+        padding-top:1em;
     }
     body>.registerPage{
         display:inline-block;
@@ -136,15 +135,13 @@ export default`
         padding:1em;
         width:20em;
         height:14em;
-        font-size:calc(var(--zoom) * 1 / 23 * 1px);
+        font-size:calc(var(--zoom) * 1 / 22 * 1px);
         vertical-align:middle;
     }
     body>.registerPage>.registerPanel{
         margin-top:1em;
-        box-shadow:
-            0 0 .1em rgba(0,0,0,.4),
-            .1em .1em .1em rgba(0,0,0,.2);
-        padding:.5em;
+        box-shadow:0 -.2em .1em -.2em rgba(0,0,0,.4);
+        padding-top:1em;
     }
     body>.loggedInUserPage{
         display:inline-block;
@@ -154,5 +151,8 @@ export default`
         height:14em;
         font-size:calc(var(--zoom) * 1 / 22 * 1px);
         vertical-align:middle;
+    }
+    body>.loggedInUserPage>*+*{
+        margin-top:1em;
     }
 `
