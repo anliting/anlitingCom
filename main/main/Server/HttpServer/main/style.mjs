@@ -126,7 +126,7 @@ export default`
     }
     body>.logInPage>.logInPanel{
         margin-top:1em;
-        box-shadow:0 -.2em .1em -.2em rgba(0,0,0,.4);
+        box-shadow:0 -.05em rgba(0,0,0,.1);
         padding-top:1em;
     }
     body>.registerPage{
