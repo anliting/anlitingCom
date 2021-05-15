@@ -90,7 +90,7 @@ let
             userPage.focus()
         },
         loggedInUserPage(){
-            currentPage.value=loggedInUserPage
+            currentPage.bind(loggedInUserPage.page)
         },
     })
 currentPage.value=homePage

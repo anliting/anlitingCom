@@ -1,6 +1,6 @@
 import doe from             'doe'
 import Variable from        './Variable.mjs'
-function UserPage(site,out){
+function HomePage(site,out){
     this.out=out
     this.node=doe.div(
         {className:'loggedInUserPage'},
@@ -39,6 +39,11 @@ function UserPage(site,out){
     this.size=new Variable([1,1])
     this.size.for(a=>
         this.node.style.setProperty('--zoom',''+Math.min(a[0],a[1]/(16/22)))
+    )
+}
+function UserPage(site,out){
+    this.page=new Variable(
+        this._homePage=new HomePage(site,out)
     )
 }
 export default UserPage

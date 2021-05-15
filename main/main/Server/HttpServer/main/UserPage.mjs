@@ -7,12 +7,12 @@ function back(){
     this.out.back()
 }
 function UserPage(site,out){
-    let currentPage=new Variable
+    this.page=new Variable
     this.out=out
     let
         registerPage=new RegisterPage(site,{
             back:()=>{
-                currentPage.value=this._logInPage
+                this.page.value=this._logInPage
                 this._logInPage.focus()
             },
         })
@@ -24,12 +24,11 @@ function UserPage(site,out){
             back.call(this)
         },
         register:()=>{
-            currentPage.value=registerPage
+            this.page.value=registerPage
             registerPage.focus()
         },
     })
-    currentPage.value=this._logInPage
-    this.page=currentPage
+    this.page.value=this._logInPage
 }
 UserPage.prototype.focus=function(){
     this._logInPage.focus()
