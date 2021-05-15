@@ -1,5 +1,6 @@
 import doe from             'doe'
 import Variable from        './Variable.mjs'
+import ChatPage from        './LoggedInUserPage/ChatPage.mjs'
 function HomePage(site,out){
     this.out=out
     this.node=doe.div(
@@ -32,6 +33,7 @@ function HomePage(site,out){
             doe.div('Chat',{
                 className:'button',
                 onclick:()=>{
+                    this.out.chat()
                 },
             }),
         ),
@@ -41,9 +43,24 @@ function HomePage(site,out){
         this.node.style.setProperty('--zoom',''+Math.min(a[0],a[1]/(16/22)))
     )
 }
-function UserPage(site,out){
-    this.page=new Variable(
-        this._homePage=new HomePage(site,out)
-    )
+function LoggedInUserPage(site,out){
+    let chatPage,homePage
+    chatPage=new ChatPage(site,{
+        back:_=>{
+            this.page.value=homePage
+        },
+    })
+    homePage=new HomePage(site,{
+        back(){
+            out.back()
+        },
+        chat:_=>{
+            this.page.value=chatPage
+        },
+        logOut(){
+            out.logOut()
+        },
+    })
+    this.page=new Variable(homePage)
 }
-export default UserPage
+export default LoggedInUserPage

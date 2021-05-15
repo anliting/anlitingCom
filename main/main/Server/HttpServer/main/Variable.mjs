@@ -4,6 +4,12 @@ function transformValue(value){
         t(value,this._value)
     this._value=value
 }
+function removeBindIfExist(){
+    if(this._bind){
+        this.unfor(this._bind)
+        this._bind=0
+    }
+}
 function Variable(value){
     this._value=value
     this._transform=new Set
@@ -20,6 +26,7 @@ Variable.prototype.for=function(transform){
 }
 Variable.prototype.unfor=Variable.prototype.cutTransform
 Variable.prototype.bind=function(v){
+    removeBindIfExist.call(this)
     v.for(this._bind=to=>{
         transformValue.call(this,to)
     })
@@ -27,10 +34,7 @@ Variable.prototype.bind=function(v){
 Object.defineProperty(Variable.prototype,'value',{get(){
     return this._value
 },set(value){
-    if(this._bind){
-        this.unfor(this._bind)
-        this._bind=0
-    }
+    removeBindIfExist.call(this)
     transformValue.call(this,value)
 }})
 Variable.prototype.child=function(n){

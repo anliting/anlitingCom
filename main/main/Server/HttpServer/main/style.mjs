@@ -155,4 +155,13 @@ export default`
     body>.loggedInUserPage>*+*{
         margin-top:1em;
     }
+    body>.chatPage{
+        display:inline-block;
+        margin:0 auto;
+        padding:1em;
+        width:20em;
+        height:14em;
+        font-size:calc(var(--zoom) * 1 / 22 * 1px);
+        vertical-align:middle;
+    }
 `
