@@ -12,6 +12,14 @@ function ChatPage(site,out){
                 }
             }),
         ),
+        doe.div(
+            doe.div('Create Room',{
+                className:'button',
+                onclick:()=>{
+                    out.createRoom()
+                }
+            }),
+        ),
     )
     this.size.for(a=>
         this.node.style.setProperty('--zoom',''+Math.min(a[0],a[1]/(16/22)))

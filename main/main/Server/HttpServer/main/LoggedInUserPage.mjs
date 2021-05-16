@@ -49,6 +49,8 @@ function LoggedInUserPage(site,out){
         back:_=>{
             this.page.value=homePage
         },
+        createRoom:_=>{
+        },
     })
     homePage=new HomePage(site,{
         back(){

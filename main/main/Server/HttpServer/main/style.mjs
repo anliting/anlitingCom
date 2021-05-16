@@ -164,4 +164,7 @@ export default`
         font-size:calc(var(--zoom) * 1 / 22 * 1px);
         vertical-align:middle;
     }
+    body>.chatPage>*+*{
+        margin-top:1em;
+    }
 `
