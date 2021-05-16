@@ -16,13 +16,16 @@ function Variable(value){
 }
 Variable.prototype.putTransform=function(transform){
     this._transform.add(transform)
+    return this
 }
 Variable.prototype.cutTransform=function(transform){
     this._transform.delete(transform)
+    return this
 }
 Variable.prototype.for=function(transform){
     transform(this._value)
     this.putTransform(transform)
+    return this
 }
 Variable.prototype.unfor=Variable.prototype.cutTransform
 Variable.prototype.bind=function(v){
@@ -30,15 +33,21 @@ Variable.prototype.bind=function(v){
     v.for(this._bind=to=>{
         transformValue.call(this,to)
     })
+    return this
+}
+Variable.prototype.setValue=function(value){
+    removeBindIfExist.call(this)
+    transformValue.call(this,value)
+    return this
 }
 Object.defineProperty(Variable.prototype,'value',{get(){
     return this._value
 },set(value){
-    removeBindIfExist.call(this)
-    transformValue.call(this,value)
+    this.setValue(value)
 }})
 Variable.prototype.child=function(n){
     this.for((to,from)=>doe(n,1,from,0,to))
+    return this
 }
 Variable.prototype.iff=function(parent,child,expression=a=>a){
     if(expression(this._value))
@@ -50,5 +59,6 @@ Variable.prototype.iff=function(parent,child,expression=a=>a){
         if(fromRes&&!toRes)
             doe(parent,1,child)
     })
+    return this
 }
 export default Variable

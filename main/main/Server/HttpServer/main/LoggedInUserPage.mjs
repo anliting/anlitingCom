@@ -38,8 +38,7 @@ function HomePage(site,out){
             }),
         ),
     )
-    this.size=new Variable([1,1])
-    this.size.for(a=>
+    this.size=new Variable([1,1]).for(a=>
         this.node.style.setProperty('--zoom',''+Math.min(a[0],a[1]/(16/22)))
     )
 }
@@ -57,7 +56,7 @@ function LoggedInUserPage(site,out){
             out.back()
         },
         chat:_=>{
-            this.page.value=chatPage
+            this.page.bind(chatPage.page)
         },
         logOut(){
             out.logOut()

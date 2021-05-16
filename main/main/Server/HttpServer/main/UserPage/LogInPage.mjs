@@ -28,8 +28,7 @@ function LogInPage(site,out){
         ),
         this._logInPanel.node,
     )
-    this.size=new Variable([1,1])
-    this.size.for(a=>
+    this.size=new Variable([1,1]).for(a=>
         this.node.style.setProperty('--zoom',''+Math.min(a[0],a[1]/(16/22)))
     )
 }
