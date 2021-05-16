@@ -12,65 +12,6 @@ let
     userPage,
     loggedInUserPage,
     homePage
-function HomePage(out){
-    this.crendential=new Variable
-    this.userId=new Variable
-    this._out=out
-    this.node=doe.div(
-        {className:'homePage'},
-        doe.div(
-            {className:'a'},
-            n=>{
-                this._credential.iff(
-                    n,
-                    doe.div({
-                        className:'button',
-                        onclick:()=>{
-                            this._out.logIn()
-                        }
-                    },'Log In'),
-                    a=>!a
-                )
-                this._credential.iff(
-                    n,
-                    doe.div({
-                        className:'button',
-                        onclick:()=>{
-                            this._out.loggedInUserPage()
-                        },
-                    },n=>{
-                        let userIdListener=a=>n.textContent=a
-                        credential.for(to=>{
-                            this.userId[to?'for':'unfor'](userIdListener)
-                        })
-                    })
-                )
-            },
-        ),
-        doe.div(
-            {className:'b'},
-            'This is An-Li Ting\'s personal website.'
-        ),
-        doe.div(
-            {className:'b'},
-            'You might also want to visit ',
-            doe.a({href:'https://althea.anliting.com/'},'my blog'),
-            '.'
-        ),
-        doe.div(
-            {className:'b'},
-            'Here are some services this website provides:',
-            doe.ul(
-                doe.li(doe.a({
-                    href:'https://stopwatch.anliting.com/'
-                },'Stopwatch'))
-            )
-        ),
-    )
-    this.size=new Variable([1,1]).for(a=>
-        this.node.style.setProperty('--zoom',''+Math.min(a[0],a[1]/(16/22)))
-    )
-}
 currentPage=new Variable
 windowSize=new Variable
 credential=new Variable().for(to=>{
@@ -84,14 +25,17 @@ site=new Site({
         credential.value=site.credential
     }
 })
-homePage=new HomePage({
-    logIn(){
-        currentPage.bind(userPage.page)
-        userPage.focus()
-    },
-    loggedInUserPage(){
-        currentPage.bind(loggedInUserPage.page)
-    },
+homePage=new HomePage
+homePage.out.out(a=>{
+    switch(a){
+        case'logIn':
+            currentPage.bind(userPage.page)
+            userPage.focus()
+            break
+        case'loggedInUserPage':
+            currentPage.bind(loggedInUserPage.page)
+            break
+    }
 })
 homePage.credential.bind(credential)
 credential.for(()=>{
