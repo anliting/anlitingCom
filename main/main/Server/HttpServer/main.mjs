@@ -1,5 +1,6 @@
 import doe from                 'doe'
 import Site from                './main/Site.mjs'
+import HomePage from            './main/HomePage.mjs'
 import UserPage from            './main/UserPage.mjs'
 import LoggedInUserPage from    './main/LoggedInUserPage.mjs'
 import style from               './main/style.mjs'
@@ -39,7 +40,7 @@ homePage.out.out(a=>{
 })
 homePage.credential.bind(credential)
 credential.for(()=>{
-    homePage.userId.value=site.userID
+    homePage.userId.value=site.userId
 })
 userPage=new UserPage(site,{
     back(){

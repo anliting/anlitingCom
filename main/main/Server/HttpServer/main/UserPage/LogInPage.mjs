@@ -3,12 +3,16 @@ import LogInPanel from      './LogInPage/LogInPanel.mjs'
 import Variable from        '../Variable.mjs'
 function LogInPage(site,out){
     this._out=out
-    this._logInPanel=new LogInPanel(site)
+    this._logInPanel=new LogInPanel
     this._logInPanel.out={
         submit:()=>{
             this._out.submit()
         },
     }
+    this._logInPanel.outStream.out(a=>{
+        if(a[0]=='logIn')
+            site.logIn(a[1],a[2])
+    })
     this.node=doe.div(
         {className:'logInPage'},
         doe.div(

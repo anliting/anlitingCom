@@ -1,8 +1,8 @@
 import doe from                 'doe'
-import Variable from            './main/Variable.mjs'
-import Stream from              './main/Stream.mjs'
+import Variable from            './Variable.mjs'
+import Stream from              './Stream.mjs'
 function HomePage(){
-    this.crendential=new Variable
+    this.credential=new Variable
     this.userId=new Variable
     this.out=new Stream
     this.node=doe.div(
@@ -10,7 +10,7 @@ function HomePage(){
         doe.div(
             {className:'a'},
             n=>{
-                this._credential.iff(
+                this.credential.iff(
                     n,
                     doe.div({
                         className:'button',
@@ -20,7 +20,7 @@ function HomePage(){
                     },'Log In'),
                     a=>!a
                 )
-                this._credential.iff(
+                this.credential.iff(
                     n,
                     doe.div({
                         className:'button',
@@ -29,7 +29,7 @@ function HomePage(){
                         },
                     },n=>{
                         let userIdListener=a=>n.textContent=a
-                        credential.for(to=>{
+                        this.credential.for(to=>{
                             this.userId[to?'for':'unfor'](userIdListener)
                         })
                     })
