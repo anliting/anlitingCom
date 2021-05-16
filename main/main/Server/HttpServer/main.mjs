@@ -4,14 +4,24 @@ import UserPage from            './main/UserPage.mjs'
 import LoggedInUserPage from    './main/LoggedInUserPage.mjs'
 import style from               './main/style.mjs'
 import Variable from            './main/Variable.mjs'
-function HomePage(site,out){
+let
+    currentPage,
+    credential,
+    windowSize,
+    site,
+    userPage,
+    loggedInUserPage,
+    homePage
+function HomePage(out){
+    this.crendential=new Variable
+    this.userId=new Variable
     this._out=out
     this.node=doe.div(
         {className:'homePage'},
         doe.div(
             {className:'a'},
             n=>{
-                credential.iff(
+                this._credential.iff(
                     n,
                     doe.div({
                         className:'button',
@@ -21,7 +31,7 @@ function HomePage(site,out){
                     },'Log In'),
                     a=>!a
                 )
-                credential.iff(
+                this._credential.iff(
                     n,
                     doe.div({
                         className:'button',
@@ -29,9 +39,9 @@ function HomePage(site,out){
                             this._out.loggedInUserPage()
                         },
                     },n=>{
+                        let userIdListener=a=>n.textContent=a
                         credential.for(to=>{
-                            if(to)
-                                n.textContent=site.userId
+                            this.userId[to?'for':'unfor'](userIdListener)
                         })
                     })
                 )
@@ -61,14 +71,6 @@ function HomePage(site,out){
         this.node.style.setProperty('--zoom',''+Math.min(a[0],a[1]/(16/22)))
     )
 }
-let
-    currentPage,
-    credential,
-    windowSize,
-    site,
-    userPage,
-    loggedInUserPage,
-    homePage
 currentPage=new Variable
 windowSize=new Variable
 credential=new Variable().for(to=>{
@@ -82,7 +84,7 @@ site=new Site({
         credential.value=site.credential
     }
 })
-homePage=new HomePage(site,{
+homePage=new HomePage({
     logIn(){
         currentPage.bind(userPage.page)
         userPage.focus()
@@ -90,6 +92,10 @@ homePage=new HomePage(site,{
     loggedInUserPage(){
         currentPage.bind(loggedInUserPage.page)
     },
+})
+homePage.credential.bind(credential)
+credential.for(()=>{
+    homePage.userId.value=site.userID
 })
 userPage=new UserPage(site,{
     back(){
