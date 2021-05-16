@@ -1,16 +1,16 @@
 import doe from         'doe'
 import Stream from      '../../Stream.mjs'
 function LogInPanel(){
-    this.outStream=new Stream
+    this.out=new Stream
     function submit(){
         if(this._idInput.checkValidity()){
-            this.outStream.in([
+            let a=[
                 'logIn',
                 +this._idInput.value,
                 this._passwordInput.value
-            ])
+            ]
             this.clear()
-            this.out.submit()
+            this.out.in(a)
         }
     }
     this.node=doe.div(

@@ -32,10 +32,10 @@ homePage.out.out(a=>{
         case'logIn':
             currentPage.bind(userPage.page)
             userPage.focus()
-            break
+        break
         case'loggedInUserPage':
             currentPage.bind(loggedInUserPage.page)
-            break
+        break
     }
 })
 homePage.credential.bind(credential)

@@ -4,14 +4,13 @@ import Variable from        '../Variable.mjs'
 function LogInPage(site,out){
     this._out=out
     this._logInPanel=new LogInPanel
-    this._logInPanel.out={
-        submit:()=>{
-            this._out.submit()
-        },
-    }
-    this._logInPanel.outStream.out(a=>{
-        if(a[0]=='logIn')
-            site.logIn(a[1],a[2])
+    this._logInPanel.out.out(a=>{
+        switch(a[0]){
+            case'logIn':
+                site.logIn(a[1],a[2])
+                this._out.submit()
+            break
+        }
     })
     this.node=doe.div(
         {className:'logInPage'},
