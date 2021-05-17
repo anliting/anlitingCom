@@ -10,7 +10,7 @@ function HomePage(){
             doe.div('Back',{
                 className:'button',
                 onclick:()=>{
-                    this.out.back()
+                    this.out.in(['back'])
                 }
             }),
         ),
@@ -57,6 +57,9 @@ function LoggedInUserPage(){
     homePage=new HomePage
     homePage.out.out(a=>{
         switch(a[0]){
+            case'back':
+                this.out.in(a)
+            break
             case'chat':
                 this.page.bind(chatPage.page)
             break

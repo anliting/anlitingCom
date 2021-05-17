@@ -59,6 +59,9 @@ userPage.out.out(a=>{
 loggedInUserPage=new LoggedInUserPage
 loggedInUserPage.out.out(a=>{
     switch(a[0]){
+        case'back':
+            currentPage.value=homePage
+        break
         case'cutCurrentUser':
             site.cutCurrentUser()
             currentPage.value=homePage
