@@ -1,6 +1,6 @@
 import doe from                 'doe'
-import Variable from            './Variable.mjs'
-import Stream from              './Stream.mjs'
+import Variable from            '../Variable.mjs'
+import Stream from              '../Stream.mjs'
 function HomePage(){
     this.credential=new Variable
     this.userId=new Variable

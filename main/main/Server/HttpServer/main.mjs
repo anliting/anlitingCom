@@ -4,18 +4,14 @@ import style from               './main/style.mjs'
 import Variable from            './main/Variable.mjs'
 import SitePage from            './main/SitePage.mjs'
 let
-    credential=new Variable,
-    windowSize=new Variable,
-    userId=new Variable,
-    site=new Site({
-        credential(){
-            credential.value=site.credential
-            userId.value=site.userId
-        }
-    })
-let sitePage=new SitePage
-sitePage.credential.bind(credential)
-sitePage.userId.bind(userId)
+    site=new Site,
+    sitePage=new SitePage
+site.out={
+    credential(){
+        sitePage.credential.value=site.credential
+        sitePage.userId.value=site.userId
+    }
+}
 sitePage.out.out(a=>{
     switch(a[0]){
         case'putUser':
@@ -35,6 +31,7 @@ sitePage.out.out(a=>{
 doe.head(
     doe.style(style)
 )
+let windowSize=new Variable
 function outSize(){
     let bcr=document.body.getBoundingClientRect()
     windowSize.value=[bcr.width,bcr.height]

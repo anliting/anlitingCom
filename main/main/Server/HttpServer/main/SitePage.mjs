@@ -1,15 +1,15 @@
 import doe from                 'doe'
-import HomePage from            './HomePage.mjs'
-import UserPage from            './UserPage.mjs'
-import LoggedInUserPage from    './LoggedInUserPage.mjs'
+import HomePage from            './SitePage/HomePage.mjs'
+import UserPage from            './SitePage/UserPage.mjs'
+import LoggedInUserPage from    './SitePage/LoggedInUserPage.mjs'
 import Stream from              './Stream.mjs'
 import Variable from            './Variable.mjs'
 function SitePage(){
-    this.page=new Variable
     let
         userPage=new UserPage,
         loggedInUserPage=new LoggedInUserPage,
         homePage=new HomePage
+    this.page=new Variable
     this.credential=new Variable
     this.credential.for(to=>{
         if(!to&&[userPage.page.value,loggedInUserPage.page.value].includes(
@@ -37,10 +37,8 @@ function SitePage(){
             case'back':
                 this.page.value=homePage
             break
-            case'putUser':
-                this.out.in(a)
-            break
             case'logIn':
+            case'putUser':
                 this.out.in(a)
             break
         }

@@ -1,6 +1,6 @@
 import doe from                 'doe'
-import Stream from              '../Stream.mjs'
-import Variable from            '../Variable.mjs'
+import Stream from              '../../Stream.mjs'
+import Variable from            '../../Variable.mjs'
 function HomePage(){
     this.out=new Stream
     this.node=doe.div(

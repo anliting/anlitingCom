@@ -1,6 +1,6 @@
 import doe from         'doe'
-import Stream from      '../Stream.mjs'
-import Variable from    '../Variable.mjs'
+import Stream from      '../../Stream.mjs'
+import Variable from    '../../Variable.mjs'
 async function submit(){
     this._status='inProgress'
     this.out.in(['status','inProgress'])

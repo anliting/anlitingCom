@@ -1,7 +1,7 @@
 import doe from             'doe'
 import LogInPanel from      './LogInPage/LogInPanel.mjs'
-import Stream from          '../Stream.mjs'
-import Variable from        '../Variable.mjs'
+import Stream from          '../../Stream.mjs'
+import Variable from        '../../Variable.mjs'
 function LogInPage(){
     this.out=new Stream
     this._logInPanel=new LogInPanel

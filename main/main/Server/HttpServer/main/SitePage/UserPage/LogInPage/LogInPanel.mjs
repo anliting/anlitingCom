@@ -1,5 +1,5 @@
 import doe from         'doe'
-import Stream from      '../../Stream.mjs'
+import Stream from      '../../../Stream.mjs'
 function LogInPanel(){
     this.out=new Stream
     function submit(){
