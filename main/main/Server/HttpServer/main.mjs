@@ -42,10 +42,13 @@ homePage.credential.bind(credential)
 credential.for(()=>{
     homePage.userId.value=site.userId
 })
-userPage=new UserPage(site,{
-    back(){
-        currentPage.value=homePage
-    },
+userPage=new UserPage(site)
+userPage.out.out(a=>{
+    switch(a[0]){
+        case'back':
+            currentPage.value=homePage
+        break
+    }
 })
 loggedInUserPage=new LoggedInUserPage(site,{
     back(){

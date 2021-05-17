@@ -2,12 +2,13 @@ import doe from             'doe'
 import RegisterPage from    './UserPage/RegisterPage.mjs'
 import LogInPage from       './UserPage/LogInPage.mjs'
 import Variable from        './Variable.mjs'
+import Stream from          './Stream.mjs'
 function back(){
     this._logInPage.clear()
-    this.out.back()
+    this.out.in(['back'])
 }
-function UserPage(site,out){
-    this.out=out
+function UserPage(site){
+    this.out=new Stream
     let
         registerPage=new RegisterPage(site,{
             back:()=>{
