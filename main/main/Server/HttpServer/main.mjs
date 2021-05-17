@@ -6,25 +6,22 @@ import LoggedInUserPage from    './main/LoggedInUserPage.mjs'
 import style from               './main/style.mjs'
 import Variable from            './main/Variable.mjs'
 let
-    currentPage,
-    credential,
-    windowSize,
-    site,
+    currentPage=new Variable,
+    credential=new Variable,
+    windowSize=new Variable,
     userPage=new UserPage,
     loggedInUserPage=new LoggedInUserPage,
-    homePage=new HomePage
-currentPage=new Variable
-windowSize=new Variable
-credential=new Variable().for(to=>{
+    homePage=new HomePage,
+    site=new Site({
+        credential(){
+            credential.value=site.credential
+        }
+    })
+credential.for(to=>{
     if(!to&&[userPage.page.value,loggedInUserPage.page.value].includes(
         currentPage.value
     ))
         currentPage.value=homePage
-})
-site=new Site({
-    credential(){
-        credential.value=site.credential
-    }
 })
 homePage.out.out(a=>{
     switch(a){
