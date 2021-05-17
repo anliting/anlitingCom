@@ -23,6 +23,10 @@ credential.for(to=>{
     ))
         currentPage.value=homePage
 })
+homePage.credential.bind(credential)
+credential.for(()=>{
+    homePage.userId.value=site.userId
+})
 homePage.out.out(a=>{
     switch(a){
         case'logIn':
@@ -33,10 +37,6 @@ homePage.out.out(a=>{
             currentPage.bind(loggedInUserPage.page)
         break
     }
-})
-homePage.credential.bind(credential)
-credential.for(()=>{
-    homePage.userId.value=site.userId
 })
 userPage.out.out(a=>{
     switch(a[0]){
