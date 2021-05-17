@@ -9,12 +9,14 @@ let
     currentPage=new Variable,
     credential=new Variable,
     windowSize=new Variable,
+    userId=new Variable,
     userPage=new UserPage,
     loggedInUserPage=new LoggedInUserPage,
     homePage=new HomePage,
     site=new Site({
         credential(){
             credential.value=site.credential
+            userId.value=site.userId
         }
     })
 credential.for(to=>{
@@ -24,9 +26,7 @@ credential.for(to=>{
         currentPage.value=homePage
 })
 homePage.credential.bind(credential)
-credential.for(()=>{
-    homePage.userId.value=site.userId
-})
+homePage.userId.bind(userId)
 homePage.out.out(a=>{
     switch(a){
         case'logIn':
