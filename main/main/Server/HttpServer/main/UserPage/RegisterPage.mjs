@@ -4,7 +4,9 @@ import Variable from    '../Variable.mjs'
 async function submit(){
     this._status='inProgress'
     this.out.in(['status','inProgress'])
-    let putUser=this._site.putUser(this._passwordInput.value)
+    let putUser=new Promise(rs=>
+        this.out.in(['putUser',this._passwordInput.value,rs])
+    )
     this._passwordInput.value=''
     let beingRegisteredDiv
     doe(this.node,
@@ -23,9 +25,8 @@ async function submit(){
         ),
     )
 }
-function RegisterPanel(site){
+function RegisterPanel(){
     this.out=new Stream
-    this._site=site
     this._status='form'
     this.node=doe.div(
         {className:'registerPanel',},
@@ -74,10 +75,10 @@ RegisterPanel.prototype.clear=function(){
 RegisterPanel.prototype.focus=function(){
     this._passwordInput.focus()
 }
-function RegisterPage(site,out){
-    this._out=out
+function RegisterPage(site){
+    this.out=new Stream
     this._status='form'
-    this._registerPanel=new RegisterPanel(site)
+    this._registerPanel=new RegisterPanel
     this._registerPanel.out.out(a=>{
         switch(a[0]){
             case'status':
@@ -91,6 +92,9 @@ function RegisterPage(site,out){
                 }
                 this._status=a[1]
             break
+            case'putUser':
+                this.out.in(a)
+            break
         }
     })
     this.node=doe.div(
@@ -101,7 +105,7 @@ function RegisterPage(site,out){
                 onclick:()=>{
                     if(['form','done'].includes(this._status)){
                         this._registerPanel.clear()
-                        this._out.back()
+                        this.out.in(['back'])
                     }
                 }
             }),

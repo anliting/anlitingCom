@@ -1,8 +1,9 @@
 import doe from             'doe'
+import Stream from          './Stream.mjs'
 import Variable from        './Variable.mjs'
 import ChatPage from        './LoggedInUserPage/ChatPage.mjs'
-function HomePage(site,out){
-    this.out=out
+function HomePage(){
+    this.out=new Stream
     this.node=doe.div(
         {className:'loggedInUserPage'},
         doe.div(
@@ -16,16 +17,14 @@ function HomePage(site,out){
         doe.div(
             doe.div('Log Out',{
                 className:'button',onclick:()=>{
-                    site.logOut()
-                    this.out.logOut()
+                    this.out.in(['logOut'])
                 }
             }),
             ' ',
             doe.div('Delete Current User',{
                 className:'button',
                 onclick:()=>{
-                    site.cutCurrentUser()
-                    this.out.back()
+                    this.out.in(['cutCurrentUser'])
                 },
             }),
         ),
@@ -33,7 +32,7 @@ function HomePage(site,out){
             doe.div('Chat',{
                 className:'button',
                 onclick:()=>{
-                    this.out.chat()
+                    this.out.in(['chat'])
                 },
             }),
         ),
@@ -42,25 +41,32 @@ function HomePage(site,out){
         this.node.style.setProperty('--zoom',''+Math.min(a[0],a[1]/(16/22)))
     )
 }
-function LoggedInUserPage(site,out){
+function LoggedInUserPage(){
+    this.out=new Stream
     let chatPage,homePage
-    chatPage=new ChatPage(site,{
-        back:_=>{
-            this.page.value=homePage
-        },
-        createRoom:_=>{
-        },
+    chatPage=new ChatPage
+    chatPage.out.out(a=>{
+        switch(a[0]){
+            case'back':
+                this.page.value=homePage
+            break
+            case'createRoom':
+            break
+        }
     })
-    homePage=new HomePage(site,{
-        back(){
-            out.back()
-        },
-        chat:_=>{
-            this.page.bind(chatPage.page)
-        },
-        logOut(){
-            out.logOut()
-        },
+    homePage=new HomePage
+    homePage.out.out(a=>{
+        switch(a[0]){
+            case'chat':
+                this.page.bind(chatPage.page)
+            break
+            case'cutCurrentUser':
+                this.out.in(['cutCurrentUser'])
+            break
+            case'logOut':
+                this.out.in(['logOut'])
+            break
+        }
     })
     this.page=new Variable(homePage)
 }

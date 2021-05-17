@@ -1,13 +1,15 @@
 import doe from                 'doe'
+import Stream from              '../Stream.mjs'
 import Variable from            '../Variable.mjs'
-function HomePage(site,out){
+function HomePage(){
+    this.out=new Stream
     this.node=doe.div(
         {className:'chatPage'},
         doe.div(
             doe.div('Back',{
                 className:'button',
                 onclick:()=>{
-                    out.back()
+                    this.out.in(['back'])
                 }
             }),
         ),
@@ -15,7 +17,7 @@ function HomePage(site,out){
             doe.div('Create Room',{
                 className:'button',
                 onclick:()=>{
-                    out.createRoom()
+                    this.out.in(['createRoom'])
                 }
             }),
         ),
@@ -26,7 +28,9 @@ function HomePage(site,out){
         )
     )
 }
-function ChatPage(site,out){
-    this.page=new Variable(new HomePage(site,out))
+function ChatPage(){
+    let homepage=new HomePage()
+    this.page=new Variable(homepage)
+    this.out=homepage.out
 }
 export default ChatPage

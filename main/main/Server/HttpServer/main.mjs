@@ -42,21 +42,31 @@ homePage.credential.bind(credential)
 credential.for(()=>{
     homePage.userId.value=site.userId
 })
-userPage=new UserPage(site)
+userPage=new UserPage
 userPage.out.out(a=>{
     switch(a[0]){
         case'back':
             currentPage.value=homePage
         break
+        case'putUser':
+            site.putUser(a[1]).then(a[2])
+        break
+        case'logIn':
+            site.logIn(a[1],a[2])
+        break
     }
 })
-loggedInUserPage=new LoggedInUserPage(site,{
-    back(){
-        currentPage.value=homePage
-    },
-    logOut(){
-        currentPage.value=homePage
-    },
+loggedInUserPage=new LoggedInUserPage
+loggedInUserPage.out.out(a=>{
+    switch(a[0]){
+        case'cutCurrentUser':
+            site.cutCurrentUser()
+            currentPage.value=homePage
+        break
+        case'logOut':
+            site.logOut()
+        break
+    }
 })
 doe.head(
     doe.style(style)
