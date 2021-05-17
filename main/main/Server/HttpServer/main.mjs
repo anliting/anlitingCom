@@ -10,13 +10,13 @@ let
     credential,
     windowSize,
     site,
-    userPage,
-    loggedInUserPage,
-    homePage
+    userPage=new UserPage,
+    loggedInUserPage=new LoggedInUserPage,
+    homePage=new HomePage
 currentPage=new Variable
 windowSize=new Variable
 credential=new Variable().for(to=>{
-    if(!to&&[userPage,loggedInUserPage].includes(
+    if(!to&&[userPage.page.value,loggedInUserPage.page.value].includes(
         currentPage.value
     ))
         currentPage.value=homePage
@@ -26,7 +26,6 @@ site=new Site({
         credential.value=site.credential
     }
 })
-homePage=new HomePage
 homePage.out.out(a=>{
     switch(a){
         case'logIn':
@@ -42,7 +41,6 @@ homePage.credential.bind(credential)
 credential.for(()=>{
     homePage.userId.value=site.userId
 })
-userPage=new UserPage
 userPage.out.out(a=>{
     switch(a[0]){
         case'back':
@@ -56,7 +54,6 @@ userPage.out.out(a=>{
         break
     }
 })
-loggedInUserPage=new LoggedInUserPage
 loggedInUserPage.out.out(a=>{
     switch(a[0]){
         case'back':
