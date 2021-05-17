@@ -16,4 +16,7 @@ Stream.prototype.out=function(f){
     this._out=f
     return this
 }
+Stream.prototype.to=function(s){
+    this.out(this.in.bind(s))
+}
 export default Stream

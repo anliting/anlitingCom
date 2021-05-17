@@ -94,6 +94,9 @@ export default`
     body>.homePage>.a{
         text-align:right;
     }
+    body>.homePage>.a>.loggedInUserPageButton{
+        min-width:2em;
+    }
     body>.homePage>.b{
         margin-top:1em;
     }

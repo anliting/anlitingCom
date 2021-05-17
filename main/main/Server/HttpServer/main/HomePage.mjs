@@ -23,7 +23,7 @@ function HomePage(){
                 this.credential.iff(
                     n,
                     doe.div({
-                        className:'button',
+                        className:'button loggedInUserPageButton',
                         onclick:()=>{
                             this.out.in('loggedInUserPage')
                         },

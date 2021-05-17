@@ -15,17 +15,21 @@ function UserPage(site,out){
                 this._logInPage.focus()
             },
         })
-    this._logInPage=new LogInPage(site,{
-        back:()=>{
-            back.call(this)
-        },
-        submit:()=>{
-            back.call(this)
-        },
-        register:()=>{
-            this.page.value=registerPage
-            registerPage.focus()
-        },
+    this._logInPage=new LogInPage
+    this._logInPage.out.out(a=>{
+        switch(a[0]){
+            case'back':
+                back.call(this)
+            break
+            case'logIn':
+                site.logIn(a[1],a[2])
+                back.call(this)
+            break
+            case'register':
+                this.page.value=registerPage
+                registerPage.focus()
+            break
+        }
     })
     this.page=new Variable(this._logInPage)
 }
