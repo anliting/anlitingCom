@@ -3,7 +3,7 @@ import Stream from      '../Stream.mjs'
 import Variable from    '../Variable.mjs'
 async function submit(){
     this._status='inProgress'
-    this._out.status('inProgress')
+    this.out.in(['status','inProgress'])
     let putUser=this._site.putUser(this._passwordInput.value)
     this._passwordInput.value=''
     let beingRegisteredDiv
@@ -15,7 +15,7 @@ async function submit(){
     )
     let userId=await putUser
     this._status='done'
-    this._out.status('done')
+    this.out.in(['status','done'])
     doe(this.node,
         1,beingRegisteredDiv,0,
         this._completeDiv=doe.div(
@@ -23,8 +23,8 @@ async function submit(){
         ),
     )
 }
-function RegisterPanel(site,out){
-    this._out=out
+function RegisterPanel(site){
+    this.out=new Stream
     this._site=site
     this._status='form'
     this.node=doe.div(
@@ -77,18 +77,21 @@ RegisterPanel.prototype.focus=function(){
 function RegisterPage(site,out){
     this._out=out
     this._status='form'
-    this._registerPanel=new RegisterPanel(site,{
-        status:status=>{
-            if(status=='form'){
-                this._backButton.classList.remove('disabled')
-            }else if(status=='inProgress'){
-                if(!this._backButton.classList.contains('disabled'))
-                    this._backButton.classList.add('disabled')
-            }else if(status=='done'){
-                this._backButton.classList.remove('disabled')
-            }
-            this._status=status
-        },
+    this._registerPanel=new RegisterPanel(site)
+    this._registerPanel.out.out(a=>{
+        switch(a[0]){
+            case'status':
+                if(a[1]=='form'){
+                    this._backButton.classList.remove('disabled')
+                }else if(a[1]=='inProgress'){
+                    if(!this._backButton.classList.contains('disabled'))
+                        this._backButton.classList.add('disabled')
+                }else if(a[1]=='done'){
+                    this._backButton.classList.remove('disabled')
+                }
+                this._status=a[1]
+            break
+        }
     })
     this.node=doe.div(
         {className:'registerPage',},
