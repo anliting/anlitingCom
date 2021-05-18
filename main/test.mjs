@@ -15,7 +15,19 @@ import Database from'./main/Server/Database.mjs'
         )
     }{
         let room=await database.getRoom()
-        console.log(room.index==0&&room.array.length==0,'database.chat')
+        console.log(+(room.index==0&&room.array.length==0),'database.chat')
+        let id=await database.putRoom(0)
+        console.log(+(id==0),'database.chat')
+        room=await database.getRoom()
+        console.log(+(
+            room.index==1&&
+            room.array.length==1&&
+            room.array[0].id==0&&
+            room.array[0].user.length==1&&
+            room.array[0].user[0]==0
+        ),'database.chat')
+        let message=await database.getRoomMessage(0)
+        console.log(+(message.length==0),'database.chat')
     }
     await database.end()
 })()

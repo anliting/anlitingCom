@@ -143,20 +143,49 @@ chat/room/room/0/message/0
     content:'hello, world',
 }
 */
-Database.prototype.getRoom=function(){
-    //chat/room/main
-    console.log('getRoom')
+Database.prototype._getRoom=async function(){
+    return JSON.parse(
+        await fs.promises.readFile(`data/chat/room/main`)
+    )
 }
-Database.prototype.getRoomMessage=function(room){
-    console.log('getRoomMessage',room)
+Database.prototype.getRoom=function(){
+    return this._ready=(async()=>{
+        await this._ready
+        return this._getRoom()
+    })()
+}
+Database.prototype.getRoomMessage=async function(room){
+    return this._ready=(async()=>{
+        await this._ready
+        let main=await fs.promises.readFile(
+            `data/chat/room/room/${room}/main`
+        )
+        return[]
+    })()
 }
 Database.prototype.putMessage=function(room,user,content){
     console.log('putMessage',room,user,content)
 }
 Database.prototype.putRoom=function(user){
-    console.log('putRoom',user)
-}
-Database.prototype.setRoom=function(o){
-    console.log('setRoom',o)
+    return this._ready=(async()=>{
+        await this._ready
+        let
+            room=await this._getRoom(),
+            id=room.index
+        room.array.push({
+            id,
+            user:[user],
+        })
+        room.index++
+        await this._atomicDirectoryUpdater.update([
+            [0,`data/chat/room/main`,JSON.stringify(room)],
+            [1,`data/chat/room/room/${id}`],
+            [0,`data/chat/room/room/${id}/main`,JSON.stringify({
+                index:0,
+            })],
+            [1,`data/chat/room/room/${id}/message`],
+        ])
+        return id
+    })()
 }
 export default Database
