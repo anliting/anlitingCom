@@ -91,27 +91,6 @@ Database.prototype.putSuperUser=function(password){
 Database.prototype.putUser=function(password){
     return this._putUser(password,'{}')
 }
-/*
-chat
-chat/room
-chat/room/main
-{
-    index:0,
-    array:[{
-        id:0,
-        user:[0],
-    }],
-}
-chat/room/room/0/main
-{
-    index:0,
-}
-chat/room/room/0/message/0
-hello, world
-*/
-Database.prototype.putRoom=function(user){
-    console.log('putRoom',user)
-}
 Database.prototype.setOwn=function(user,buffer){
     return this._ready=(async()=>{
         await this._ready
@@ -142,5 +121,41 @@ Database.prototype.testCredential=function(user,password){
             throw e
         }
     })()
+}
+/*
+chat
+chat/room
+chat/room/main
+{
+    index:0,
+    array:[{
+        id:0,
+        user:[0],
+    }],
+}
+chat/room/room/0/main
+{
+    index:0,
+}
+chat/room/room/0/message/0
+{
+    user:0,
+    content:'hello, world',
+}
+*/
+Database.prototype.getRoom=function(){
+    console.log('getRoom')
+}
+Database.prototype.getRoomMessage=function(room){
+    console.log('getRoomMessage',room)
+}
+Database.prototype.putMessage=function(room,user,content){
+    console.log('putMessage',room,user,content)
+}
+Database.prototype.putRoom=function(user){
+    console.log('putRoom',user)
+}
+Database.prototype.setRoom=function(o){
+    console.log('setRoom',o)
 }
 export default Database
