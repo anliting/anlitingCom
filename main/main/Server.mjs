@@ -8,6 +8,10 @@ import putSession from      './Server/putSession.mjs'
 async function load(){
     this._session=new Map
     this._database=new Database
+    this._chat={
+        room:await this._database.getRoom(),
+    }
+    console.log(this._chat)
     this._ipcServer=new IpcServer
     this._ipcServer.out=async b=>{
         await this._load
