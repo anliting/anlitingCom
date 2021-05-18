@@ -43,6 +43,12 @@ function putSession(session){
                 }
             })()
         },
+        putRoom:()=>
+            doc.ready=(async()=>{
+                await doc.ready
+                console.log('putRoom')
+            })()
+        ,
         putUser:password=>
             doc.ready=(async()=>{
                 await doc.ready

@@ -34,6 +34,9 @@ async function putUser(connection,message){
     buf.writeUInt32BE(await doc.session.out.putUser(message.slice(1)))
     reply(connection,i,buf)
 }
+async function putRoom(connection){
+    this._connectionMap.get(connection).session.out.putRoom()
+}
 async function setOwn(connection,message){
     let
         doc=this._connectionMap.get(connection),
@@ -51,10 +54,12 @@ function onMessage(connection,message){
         putUser.call(this,connection,message)
     if(operationCode==3)
         cutCurrentUser.call(this,connection)
-    if(operationCode==5)
+    if(operationCode==4)
+        putRoom.call(this,connection)
+    /*if(operationCode==5)
         setOwn.call(this,connection,message)
     if(operationCode==6)
-        getOwn.call(this,connection)
+        getOwn.call(this,connection)*/
 }
 function syncLoggedOut(connection){
     let buf=Buffer.allocUnsafe(1)

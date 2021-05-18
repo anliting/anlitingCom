@@ -49,9 +49,14 @@ function SitePage(){
                 this.page.value=homePage
             break
             case'cutCurrentUser':
-                this.out.in(a)
-                this.page.value=homePage
+                ;(async()=>{
+                    await new Promise(rs=>
+                        this.out.in(['cutCurrentUser',rs])
+                    )
+                    this.page.value=homePage
+                })()
             break
+            case'putRoom':
             case'logOut':
                 this.out.in(a)
             break

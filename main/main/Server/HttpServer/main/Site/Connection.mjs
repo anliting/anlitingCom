@@ -66,6 +66,11 @@ Connection.prototype.logOut=function(){
     dataView.setUint8(0,1)
     this._ws.send(buf)
 }
+Connection.prototype.putRoom=async function(){
+    let buf=new ArrayBuffer(1),dataView=new DataView(buf)
+    dataView.setUint8(0,4)
+    this._ws.send(buf)
+}
 Connection.prototype.putUser=async function(password){
     password=textEncoder.encode(password)
     let
@@ -80,7 +85,7 @@ Connection.prototype.putUser=async function(password){
         this._onPort[port]=rs
     )
 }
-/*Connection.prototype.getOwn=function(){
+Connection.prototype.getOwn=function(){
     let port=this._port++,buf=new ArrayBuffer(1),dataView=new DataView(buf)
     dataView.setUint8(0,6)
     this._ws.send(buf)
@@ -101,5 +106,5 @@ Connection.prototype.setOwn=async function(own){
     return new Promise(rs=>
         this._onPort[port]=rs
     )
-}*/
+}
 export default Connection

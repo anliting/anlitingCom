@@ -17,8 +17,8 @@ function HomePage(){
             doe.div('Create Room',{
                 className:'button',
                 onclick:()=>{
-                    this.out.in(['createRoom'])
-                }
+                    this.out.in(['putRoom'])
+                },
             }),
         ),
     )

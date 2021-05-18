@@ -21,10 +21,13 @@ sitePage.out.out(a=>{
             site.logIn(a[1],a[2])
         break
         case'cutCurrentUser':
-            site.cutCurrentUser()
+            site.cutCurrentUser().then(a[1])
         break
         case'logOut':
             site.logOut()
+        break
+        case'putRoom':
+            site.in.in(a)
         break
     }
 })

@@ -50,7 +50,8 @@ function LoggedInUserPage(){
             case'back':
                 this.page.value=homePage
             break
-            case'createRoom':
+            case'putRoom':
+                this.out.in(a)
             break
         }
     })

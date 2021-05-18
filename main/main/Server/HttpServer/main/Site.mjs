@@ -1,5 +1,7 @@
 import Connection from  './Site/Connection.mjs'
+import Stream from      './Stream.mjs'
 function Site(out){
+    this.in=new Stream
     this.out=out
     this._toSend=[]
     this._connection=new Connection
@@ -11,6 +13,13 @@ function Site(out){
             }
         },
     }
+    this.in.out(a=>{
+        switch(a[0]){
+            case'putRoom':
+                this._send(a)
+            break
+        }
+    })
 }
 Site.prototype._send=async function(a){
     this._toSend.push(a)
@@ -23,6 +32,8 @@ Site.prototype._send=async function(a){
                 this._connection.logIn(a[1],a[2])
             if(a[0]=='logOut')
                 this._connection.logOut()
+            if(a[0]=='putRoom')
+                this._connection.putRoom()
             if(a[0]=='putUser')
                 a[2](this._connection.putUser(a[1]))
         })
