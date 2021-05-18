@@ -1,4 +1,4 @@
-import Database from'./start/Server/Database.mjs'
+import Database from'./main/Server/Database.mjs'
 ;(async()=>{
     let database=new Database
     let id=await database.putUser('password')
@@ -13,6 +13,4 @@ import Database from'./start/Server/Database.mjs'
         'database.user'
     )
     await database.end()
-    /*let database=new Database
-    let id=await database.putUser()*/
 })()
