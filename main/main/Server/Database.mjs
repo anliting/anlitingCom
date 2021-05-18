@@ -81,6 +81,27 @@ Database.prototype.putSuperUser=function(password){
 Database.prototype.putUser=function(password){
     return this._putUser(password,'{}')
 }
+/*
+chat
+chat/room
+chat/room/main
+{
+    index:0,
+    array:[{
+        id:0,
+        user:[0],
+    }],
+}
+chat/room/room/0/main
+{
+    index:0,
+}
+chat/room/room/0/message/0
+hello, world
+*/
+Database.prototype.putRoom=function(user){
+    console.log('putRoom',user)
+}
 Database.prototype.setOwn=function(user,buffer){
     return this._ready=(async()=>{
         await this._ready

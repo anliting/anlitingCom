@@ -46,7 +46,8 @@ function putSession(session){
         putRoom:()=>
             doc.ready=(async()=>{
                 await doc.ready
-                console.log('putRoom')
+                if(doc.user!=undefined)
+                    this._database.putRoom(doc.user)
             })()
         ,
         putUser:password=>
