@@ -122,31 +122,15 @@ Database.prototype.testCredential=function(user,password){
         }
     })()
 }
-/*
-chat
-chat/room
-chat/room/main
-{
-    index:0,
-    array:[{
-        id:0,
-        user:[0],
-    }],
-}
-chat/room/room/0/main
-{
-    index:0,
-}
-chat/room/room/0/message/0
-{
-    user:0,
-    content:'hello, world',
-}
-*/
 Database.prototype._getRoom=async function(){
     return JSON.parse(
         await fs.promises.readFile(`data/chat/room/main`)
     )
+}
+Database.prototype._getRoomMain=async function(room){
+    return JSON.parse(await fs.promises.readFile(
+        `data/chat/room/room/${room}/main`
+    ))
 }
 Database.prototype.getRoom=function(){
     return this._ready=(async()=>{
@@ -157,14 +141,32 @@ Database.prototype.getRoom=function(){
 Database.prototype.getRoomMessage=async function(room){
     return this._ready=(async()=>{
         await this._ready
-        let main=await fs.promises.readFile(
-            `data/chat/room/room/${room}/main`
-        )
-        return[]
+        let main=await this._getRoomMain(room)
+        let result=[]
+        for(let i=0;i<main.index;i++)
+            result[i]=JSON.parse(await fs.promises.readFile(
+                `data/chat/room/room/${room}/message/${i}`
+            ))
+        return result
     })()
 }
-Database.prototype.putMessage=function(room,user,content){
-    console.log('putMessage',room,user,content)
+Database.prototype.putRoomMessage=function(room,user,content){
+    return this._ready=(async()=>{
+        await this._ready
+        let main=await this._getRoomMain(room)
+        let id=main.index++
+        await this._atomicDirectoryUpdater.update([
+            [0,`data/chat/room/room/${room}/main`,JSON.stringify(main)],
+            [
+                0,
+                `data/chat/room/room/${room}/message/${id}`,
+                JSON.stringify({
+                    user,
+                    content,
+                })
+            ],
+        ])
+    })()
 }
 Database.prototype.putRoom=function(user){
     return this._ready=(async()=>{

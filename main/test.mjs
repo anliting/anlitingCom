@@ -27,7 +27,10 @@ import Database from'./main/Server/Database.mjs'
             room.array[0].user[0]==0
         ),'database.chat')
         let message=await database.getRoomMessage(0)
-        console.log(+(message.length==0),'database.chat')
+        console.log(+(message.length==0),'database.chat.getRoomMessage')
+        await database.putRoomMessage(0,0,'hello, world')
+        message=await database.getRoomMessage(0)
+        console.log(+(message.length==1),'database.chat.putRoomMessage')
     }
     await database.end()
 })()
