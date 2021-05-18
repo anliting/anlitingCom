@@ -144,6 +144,7 @@ chat/room/room/0/message/0
 }
 */
 Database.prototype.getRoom=function(){
+    //chat/room/main
     console.log('getRoom')
 }
 Database.prototype.getRoomMessage=function(room){
