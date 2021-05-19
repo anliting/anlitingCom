@@ -21,6 +21,11 @@ function putSession(session){
                 return this._database.getOwn(doc.user)
             })()
         },
+        listenRoomList:()=>
+            doc.ready=(async()=>{
+                await doc.ready
+            })()
+        ,
         logIn:(user,password)=>{
             doc.ready=(async()=>{
                 await doc.ready
@@ -62,6 +67,11 @@ function putSession(session){
                 if(doc.user==undefined)
                     return never
                 await this._database.setOwn(doc.user,buffer)
+            })()
+        ,
+        unlistenRoomList:()=>
+            doc.ready=(async()=>{
+                await doc.ready
             })()
         ,
     }

@@ -11,7 +11,6 @@ async function load(){
     this._chat={
         room:await this._database.getRoom(),
     }
-    console.log(this._chat)
     this._ipcServer=new IpcServer
     this._ipcServer.out=async b=>{
         await this._load
