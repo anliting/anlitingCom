@@ -29,20 +29,24 @@ function HomePage(){
                 ),
             ),
         ),
-        doe.div({className:'roomList'},n=>{
-            this.roomList.for(a=>{
-                if(a){
+        doe.div({className:'roomList'},
+            doe.div(n=>{
+                this.roomList.for(a=>{
+                    if(!a)
+                        return
                     n.textContent=''
                     a.map(a=>
                         doe(n,
                             doe.div(
-                                doe.div({className:'button item'},''+a.id)
+                                doe.div({
+                                    className:'button item'
+                                },''+a.id)
                             )
                         )
                     )
-                }
+                })
             })
-        })
+        )
     )
     this.size=new Variable([1,1]).for(a=>
         this.node.style.setProperty(

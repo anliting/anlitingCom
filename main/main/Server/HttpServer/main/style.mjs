@@ -198,11 +198,16 @@ export default`
         height:11.25em;
     }
     body>.chatPage>.roomList>*{
-        text-align:center;
+        padding:.125em;
     }
     body>.chatPage>.roomList>*>*{
+        text-align:center;
+    }
+    body>.chatPage>.roomList>*>*+*{
+        margin-top:.5em;
+    }
+    body>.chatPage>.roomList>*>*>*{
         text-align:left;
-        margin:.5em auto;
         width:10em;
     }
 `
