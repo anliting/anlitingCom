@@ -2,25 +2,47 @@ import doe from                 'doe'
 import Stream from              '../../Stream.mjs'
 import Variable from            '../../Variable.mjs'
 function HomePage(){
+    this.roomList=new Variable
     this.out=new Stream
     this.node=doe.div(
         {className:'chatPage'},
         doe.div(
-            doe.div('Back',{
-                className:'button',
-                onclick:()=>{
-                    this.out.in(['back'])
+            {className:'controlPanel'},
+            doe.div(
+                doe.div(
+                    {className:'a'},
+                    doe.div('Back',{
+                        className:'button',
+                        onclick:()=>{
+                            this.out.in(['back'])
+                        }
+                    }),
+                ),
+                doe.div(
+                    {className:'b'},
+                    doe.div('Create Room',{
+                        className:'button',
+                        onclick:()=>{
+                            this.out.in(['putRoom'])
+                        },
+                    }),
+                ),
+            ),
+        ),
+        doe.div({className:'roomList'},n=>{
+            this.roomList.for(a=>{
+                if(a){
+                    n.textContent=''
+                    a.map(a=>
+                        doe(n,
+                            doe.div(
+                                doe.div({className:'button item'},''+a.id)
+                            )
+                        )
+                    )
                 }
-            }),
-        ),
-        doe.div(
-            doe.div('Create Room',{
-                className:'button',
-                onclick:()=>{
-                    this.out.in(['putRoom'])
-                },
-            }),
-        ),
+            })
+        })
     )
     this.size=new Variable([1,1]).for(a=>
         this.node.style.setProperty(
@@ -29,8 +51,25 @@ function HomePage(){
     )
 }
 function ChatPage(){
-    let homepage=new HomePage()
+    let homepage=new HomePage
+    homepage.roomList.value=[
+        {id:0,user:[0]},
+        {id:1,user:[0]},
+        {id:2,user:[0]},
+        {id:3,user:[0]},
+        {id:4,user:[0]},
+        {id:5,user:[0]},
+        {id:6,user:[0]},
+        {id:7,user:[0]},
+        {id:8,user:[0]},
+        {id:9,user:[0]},
+        {id:10,user:[0]},
+        {id:11,user:[0]},
+    ]
     this.page=new Variable(homepage)
-    this.out=homepage.out
+    this.out=new Stream
+    homepage.out.out(a=>
+        this.out.in(a)
+    )
 }
 export default ChatPage

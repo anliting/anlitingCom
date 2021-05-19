@@ -5,8 +5,8 @@ export default`
         background-color:#3f3f3f;
         color:#fff;
         text-shadow:
-            0 0 .05em rgba(0,0,0,.4),
-            .05em .05em .05em rgba(0,0,0,.2);
+            0 0 .0625em rgba(0,0,0,.4),
+            .0625em .0625em .0625em rgba(0,0,0,.2);
         user-select:none;
         text-align:center;
         font-family:sans-serif;
@@ -21,6 +21,18 @@ export default`
     }
     .button.disabled{
         color:#7f7f7f;
+    }
+    .item{
+        box-shadow:
+            0 0 .0625em rgba(0,0,0,.4),
+            .0625em .0625em .0625em rgba(0,0,0,.2);
+        background-color:#9f9f9f;
+    }
+    .button.item:hover{
+        background-color:#afafaf;
+    }
+    .button.item:active{
+        background-color:#8f8f8f;
     }
     .logInPanel>.a{
         text-align:center;
@@ -53,8 +65,8 @@ export default`
         line-height:1.2;
         color:#fff;
         text-shadow:
-            0 0 .05em rgba(0,0,0,.4),
-            .05em .05em .05em rgba(0,0,0,.2);
+            0 0 .0625em rgba(0,0,0,.4),
+            .0625em .0625em .0625em rgba(0,0,0,.2);
         overflow:hidden;
         text-align:center;
     }
@@ -167,7 +179,30 @@ export default`
         font-size:calc(var(--zoom) * 1 / 22 * 1px);
         vertical-align:middle;
     }
-    body>.chatPage>*+*{
+    body>.chatPage>.controlPanel>*{
+        display:table;
+        width:100%;
+    }
+    body>.chatPage>.controlPanel>*>*{
+        display:table-cell;
+    }
+    body>.chatPage>.controlPanel>*>.a{
+        text-align:left;
+    }
+    body>.chatPage>.controlPanel>*>.b{
+        text-align:right;
+    }
+    body>.chatPage>.roomList{
         margin-top:1em;
+        overflow-y:auto;
+        height:11.25em;
+    }
+    body>.chatPage>.roomList>*{
+        text-align:center;
+    }
+    body>.chatPage>.roomList>*>*{
+        text-align:left;
+        margin:.5em auto;
+        width:10em;
     }
 `
