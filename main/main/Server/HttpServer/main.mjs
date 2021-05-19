@@ -23,6 +23,9 @@ sitePage.out.out(a=>{
         case'cutCurrentUser':
             site.cutCurrentUser().then(a[1])
         break
+        case'listenRoomList':
+            site.listenRoomList(a[1])
+        break
         case'logOut':
             site.logOut()
         break

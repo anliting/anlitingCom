@@ -21,9 +21,14 @@ function putSession(session){
                 return this._database.getOwn(doc.user)
             })()
         },
-        listenRoomList:()=>
+        listenRoomList:cb=>
             doc.ready=(async()=>{
                 await doc.ready
+                if(doc.user==undefined)
+                    return never
+                cb(this._chat.room.array.filter(a=>
+                    a.user.includes(doc.user)
+                ))
             })()
         ,
         logIn:(user,password)=>{

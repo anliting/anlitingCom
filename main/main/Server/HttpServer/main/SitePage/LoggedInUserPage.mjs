@@ -53,6 +53,11 @@ function LoggedInUserPage(){
             case'putRoom':
                 this.out.in(a)
             break
+            case'listenRoomList':
+                this.out.in(a)
+            break
+            case'unlistenRoomList':
+            break
         }
     })
     homePage=new HomePage

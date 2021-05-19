@@ -15,7 +15,7 @@ function HomePage(){
                         className:'button',
                         onclick:()=>{
                             this.out.in(['back'])
-                        }
+                        },
                     }),
                 ),
                 doe.div(
@@ -75,5 +75,8 @@ function ChatPage(){
     homepage.out.out(a=>
         this.out.in(a)
     )
+    this.out.in(['listenRoomList',roomList=>{
+        homepage.roomList.value=roomList
+    }])
 }
 export default ChatPage

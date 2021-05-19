@@ -8,7 +8,8 @@ function SitePage(){
     let
         userPage=new UserPage,
         loggedInUserPage=new LoggedInUserPage,
-        homePage=new HomePage
+        homePage=new HomePage,
+        roomListListener=new Variable
     this.page=new Variable
     this.credential=new Variable
     this.credential.for(to=>{
@@ -16,6 +17,11 @@ function SitePage(){
             this.page.value
         ))
             this.page.value=homePage
+        roomListListener[to?'for':'unfor'](l=>{
+            if(!l)
+                return
+            this.out.in(['listenRoomList',l])
+        })
     })
     this.userId=new Variable
     this.out=new Stream
@@ -59,6 +65,9 @@ function SitePage(){
             case'putRoom':
             case'logOut':
                 this.out.in(a)
+            break
+            case'listenRoomList':
+                roomListListener.value=a[1]
             break
         }
     })
