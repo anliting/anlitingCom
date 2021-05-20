@@ -23,7 +23,6 @@ function Connection(){
             if(operation==0){
                 let port=dataView.getUint32(1)
                 this._onPort[port](a.slice(5))
-                delete this._onPort[port]
             }
             // syncLoggedOut
             if(operation==1){

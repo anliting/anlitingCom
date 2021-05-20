@@ -26,6 +26,7 @@ function putSession(session){
                 await doc.ready
                 if(doc.user==undefined)
                     return never
+                doc.listenRoomList=cb
                 cb(this._chat.room.array.filter(a=>
                     a.user.includes(doc.user)
                 ))
@@ -48,6 +49,7 @@ function putSession(session){
             doc.ready=(async()=>{
                 await doc.ready
                 if(doc.user!=undefined){
+                    doc.listenRoomList=0
                     doc.user=undefined
                     session.logOut()
                 }
@@ -56,8 +58,19 @@ function putSession(session){
         putRoom:()=>
             doc.ready=(async()=>{
                 await doc.ready
-                if(doc.user!=undefined)
+                if(doc.user!=undefined){
                     this._database.putRoom(doc.user)
+                    this._chat={
+                        room:await this._database.getRoom(),
+                    }
+                    for(let doc of this._session.values())
+                        if(doc.listenRoomList)
+                            doc.listenRoomList(
+                                this._chat.room.array.filter(a=>
+                                    a.user.includes(doc.user)
+                                )
+                            )
+                }
             })()
         ,
         putUser:password=>
