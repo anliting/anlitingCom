@@ -1,6 +1,7 @@
 import fs from'fs'
 import AtomicDirectoryUpdater from'./AtomicDirectoryUpdater.mjs'
-function ChatDatabase(){
+function ChatDatabase(ready){
+    this._ready=ready
     this._atomicDirectoryUpdater=new AtomicDirectoryUpdater
 }
 ChatDatabase.prototype._getRoom=async function(){

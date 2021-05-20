@@ -34,7 +34,7 @@ async function load(){
 }
 function Database(){
     this._ready=load.call(this)
-    this.chat=new ChatDatabase
+    this.chat=new ChatDatabase(this._ready)
 }
 Database.prototype._getUserIndex=async function(){
     return JSON.parse(
