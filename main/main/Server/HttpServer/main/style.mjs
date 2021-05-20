@@ -151,7 +151,7 @@ export default`
     }
     body>.chatPage>.roomList{
         margin-top:1em;
-        overflow-y:auto;
+        overflow-y:scroll;
         height:11.25em;
     }
     body>.chatPage>.roomList>*{
