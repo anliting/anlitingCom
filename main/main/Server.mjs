@@ -9,7 +9,7 @@ async function load(){
     this._session=new Map
     this._database=new Database
     this._chat={
-        room:await this._database.getRoom(),
+        room:await this._database.chat.getRoom(),
     }
     this._ipcServer=new IpcServer
     this._ipcServer.out=async b=>{

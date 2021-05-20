@@ -59,9 +59,9 @@ function putSession(session){
             doc.ready=(async()=>{
                 await doc.ready
                 if(doc.user!=undefined){
-                    this._database.putRoom(doc.user)
+                    this._database.chat.putRoom(doc.user)
                     this._chat={
-                        room:await this._database.getRoom(),
+                        room:await this._database.chat.getRoom(),
                     }
                     for(let doc of this._session.values())
                         if(doc.listenRoomList)
