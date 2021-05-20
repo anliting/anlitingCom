@@ -42,4 +42,49 @@ function UserPage(){
 UserPage.prototype.focus=function(){
     this._logInPage.focus()
 }
+UserPage.style=`
+    .logInPanel>.a{
+        text-align:center;
+    }
+    .logInPanel>.b{
+        margin-top:.5em;
+        text-align:center;
+    }
+    .logInPanel>.c{
+        margin-top:.5em;
+        text-align:right;
+    }
+    body>.logInPage{
+        display:inline-block;
+        margin:0 auto;
+        padding:1em;
+        width:20em;
+        height:14em;
+        font-size:calc(var(--zoom) * 1 / 22 * 1px);
+        vertical-align:middle;
+    }
+    body>.logInPage input.id:invalid{
+        box-shadow:
+            0 0 .125em rgba(255,0,0,.8),
+            .125em .125em .125em rgba(255,0,0,.4);
+    }
+    body>.logInPage>.a{
+        display:table;
+        width:100%;
+    }
+    body>.logInPage>.a>*{
+        display:table-cell;
+    }
+    body>.logInPage>.a>.a{
+        text-align:left;
+    }
+    body>.logInPage>.a>.b{
+        text-align:right;
+    }
+    body>.logInPage>.logInPanel{
+        margin-top:1em;
+        box-shadow:0 -.05em rgba(0,0,0,.2);
+        padding-top:1em;
+    }
+`
 export default UserPage

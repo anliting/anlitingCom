@@ -35,7 +35,10 @@ sitePage.out.out(a=>{
     }
 })
 doe.head(
-    doe.style(style)
+    doe.style(
+        style+
+        SitePage.style
+    )
 )
 let windowSize=new Variable
 function outSize(){

@@ -73,4 +73,5 @@ function SitePage(){
     })
     this.page.value=homePage
 }
+SitePage.style=UserPage.style
 export default SitePage
