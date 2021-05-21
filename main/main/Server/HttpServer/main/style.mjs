@@ -127,44 +127,4 @@ export default`
     body>.loggedInUserPage>*+*{
         margin-top:1em;
     }
-    body>.chatPage{
-        display:inline-block;
-        margin:0 auto;
-        padding:1em;
-        width:20em;
-        height:14em;
-        font-size:calc(var(--zoom) * 1 / 22 * 1px);
-        vertical-align:middle;
-    }
-    body>.chatPage>.controlPanel>*{
-        display:table;
-        width:100%;
-    }
-    body>.chatPage>.controlPanel>*>*{
-        display:table-cell;
-    }
-    body>.chatPage>.controlPanel>*>.a{
-        text-align:left;
-    }
-    body>.chatPage>.controlPanel>*>.b{
-        text-align:right;
-    }
-    body>.chatPage>.roomList{
-        margin-top:1em;
-        overflow-y:scroll;
-        height:11.25em;
-    }
-    body>.chatPage>.roomList>*{
-        padding:.125em;
-    }
-    body>.chatPage>.roomList>*>*{
-        text-align:center;
-    }
-    body>.chatPage>.roomList>*>*+*{
-        margin-top:.5em;
-    }
-    body>.chatPage>.roomList>*>*>*{
-        text-align:left;
-        width:10em;
-    }
 `

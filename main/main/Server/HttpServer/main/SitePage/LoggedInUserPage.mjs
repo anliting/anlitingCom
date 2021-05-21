@@ -79,4 +79,5 @@ function LoggedInUserPage(){
     })
     this.page=new Variable(homePage)
 }
+LoggedInUserPage.style=ChatPage.style
 export default LoggedInUserPage
