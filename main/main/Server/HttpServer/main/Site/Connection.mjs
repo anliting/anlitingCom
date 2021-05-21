@@ -36,7 +36,7 @@ function Connection(){
         )
     })()
 }
-Connection.prototype.cutCurrentUser=async function(){
+Connection.prototype.cutCurrentUser=function(){
     let
         port=this._port++,
         buf=new ArrayBuffer(1),
@@ -81,15 +81,15 @@ Connection.prototype.logOut=function(){
     dataView.setUint8(0,1)
     this._ws.send(buf)
 }
-Connection.prototype.putMessage=async function(room,message){
+Connection.prototype.putMessage=function(room,message){
     console.log(room,message)
 }
-Connection.prototype.putRoom=async function(){
+Connection.prototype.putRoom=function(){
     let buf=new ArrayBuffer(1),dataView=new DataView(buf)
     dataView.setUint8(0,4)
     this._ws.send(buf)
 }
-Connection.prototype.putUser=async function(password){
+Connection.prototype.putUser=function(password){
     password=textEncoder.encode(password)
     let
         port=this._port++,
