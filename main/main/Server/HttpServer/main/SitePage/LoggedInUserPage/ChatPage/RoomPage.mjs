@@ -21,7 +21,7 @@ function RoomPage(){
                 doe.div(
                     {className:'b'},
                     doe.div('Leave',{
-                        className:'button',
+                        className:'button disabled',
                         onclick:()=>{
                             this.out.in(['leave'])
                         },
@@ -45,7 +45,12 @@ function RoomPage(){
         ),
         doe.div(
             {className:'sendPanel'},
-            doe.input(),
+            doe.input({onkeydown:e=>{
+                if(e.key=='Enter'){
+                    this.out.in(['putMessage',e.target.value])
+                    e.target.value=''
+                }
+            }}),
         ),
     )
     this.size=new Variable([1,1]).for(a=>

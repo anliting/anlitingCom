@@ -13,10 +13,10 @@ export default`
         line-height:1.5em;
         vertical-align:top;
     }
-    .button:hover{
+    .button:not(.disabled):hover{
         background-color:#4f4f4f;
     }
-    .button:active{
+    .button:not(.disabled):active{
         background-color:#1f1f1f;
     }
     .button.disabled{
@@ -28,10 +28,10 @@ export default`
             .0625em .0625em .0625em rgba(0,0,0,.2);
         background-color:#9f9f9f;
     }
-    .button.item:hover{
+    .button.item:not(.disabled):hover{
         background-color:#afafaf;
     }
-    .button.item:active{
+    .button.item:not(.disabled):active{
         background-color:#8f8f8f;
     }
     .registerPanel>.form>*>.a{

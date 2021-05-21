@@ -15,6 +15,7 @@ function Site(out){
     }
     this.in.out(a=>{
         switch(a[0]){
+            case'putMessage':
             case'putRoom':
                 this._send(a)
             break
@@ -34,6 +35,8 @@ Site.prototype._send=async function(a){
                 this._connection.logIn(a[1],a[2])
             if(a[0]=='logOut')
                 this._connection.logOut()
+            if(a[0]=='putMessage')
+                this._connection.putMessage(a[1],a[2])
             if(a[0]=='putRoom')
                 this._connection.putRoom()
             if(a[0]=='putUser')

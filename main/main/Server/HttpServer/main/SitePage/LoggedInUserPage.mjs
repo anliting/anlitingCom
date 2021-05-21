@@ -50,13 +50,13 @@ function LoggedInUserPage(){
             case'back':
                 this.page.value=homePage
             break
-            case'putRoom':
-                this.out.in(a)
-            break
+            case'listenMessageList':
             case'listenRoomList':
-                this.out.in(a)
-            break
+            case'putMessage':
+            case'putRoom':
+            case'unlistenMessageList':
             case'unlistenRoomList':
+                this.out.in(a)
             break
         }
     })

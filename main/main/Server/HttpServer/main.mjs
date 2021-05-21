@@ -29,6 +29,7 @@ sitePage.out.out(a=>{
         case'logOut':
             site.logOut()
         break
+        case'putMessage':
         case'putRoom':
             site.in.in(a)
         break

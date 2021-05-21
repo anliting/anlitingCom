@@ -81,6 +81,9 @@ Connection.prototype.logOut=function(){
     dataView.setUint8(0,1)
     this._ws.send(buf)
 }
+Connection.prototype.putMessage=async function(room,message){
+    console.log(room,message)
+}
 Connection.prototype.putRoom=async function(){
     let buf=new ArrayBuffer(1),dataView=new DataView(buf)
     dataView.setUint8(0,4)
