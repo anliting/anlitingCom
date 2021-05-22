@@ -2,6 +2,7 @@ import doe from                 'doe'
 import Stream from              '../../../Stream.mjs'
 import Variable from            '../../../Variable.mjs'
 function RoomPage(){
+    this._node={}
     this.messageList=new Variable([])
     this.out=new Stream
     this.node=doe.div(
@@ -38,8 +39,11 @@ function RoomPage(){
             ),
         ),
         doe.div({className:'messageList'},
-            doe.div(n=>{
+            this._node.messageList=doe.div(n=>{
                 this.messageList.for(a=>{
+                    let bottom=
+                        n.scrollHeight<
+                        n.scrollTop+n.getBoundingClientRect().height+1
                     n.textContent=''
                     a.map(a=>
                         doe(n,
@@ -48,6 +52,8 @@ function RoomPage(){
                             )
                         )
                     )
+                    if(bottom)
+                        n.scrollTop=n.scrollHeight
                 })
             })
         ),
@@ -61,11 +67,17 @@ function RoomPage(){
             }}),
         ),
     )
-    this.size=new Variable([1,1]).for(a=>
+    this.size=new Variable([1,1]).for(a=>{
+        this._scrollRatio=
+            this._node.messageList.scrollTop/
+            this._node.messageList.scrollHeight
         this.node.style.setProperty(
             '--zoom',''+Math.min(a[0],a[1]/(16/22))
         )
-    )
+        this._node.messageList.scrollTop=
+            this._scrollRatio*
+            this._node.messageList.scrollHeight
+    })
 }
 RoomPage.style=`
     body>.chatRoomPage{
