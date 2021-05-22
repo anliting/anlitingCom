@@ -11,9 +11,8 @@ function ChatPage(){
     homepage.out.out(a=>{
         if(a[0]=='room'){
             this.page.value=roomPage
-            this._messageListListener=messageList=>{
-                console.log(messageList)
-            }
+            this._messageListListener=messageList=>
+                roomPage.messageList.value=messageList
             currentRoom=a[1]
             this.out.in([
                 'listenMessageList',a[1],this._messageListListener

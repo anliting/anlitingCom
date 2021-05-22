@@ -44,7 +44,7 @@ function RoomPage(){
                     a.map(a=>
                         doe(n,
                             doe.div(
-                                a.content,
+                                `${a.user}: ${a.content}`,
                             )
                         )
                     )
@@ -90,7 +90,15 @@ RoomPage.style=`
         text-align:right;
     }
     body>.chatRoomPage>.messageList{
+        padding:.25em 0;
+    }
+    body>.chatRoomPage>.messageList>*{
         height:10.5em;
+        overflow-y:scroll;
+    }
+    body>.chatRoomPage>.messageList>*>*{
+        line-height:1.5;
+        margin:.25em 0;
     }
     body>.chatRoomPage>.sendPanel>*{
         width:19em;
