@@ -9,8 +9,7 @@ function SitePage(){
         userPage=new UserPage,
         loggedInUserPage=new LoggedInUserPage,
         homePage=new HomePage,
-        roomListListener=new Variable,
-        messageListListener=new Variable
+        roomListListener=new Variable
     this.page=new Variable
     this.credential=new Variable
     this.credential.for(to=>{
@@ -65,14 +64,12 @@ function SitePage(){
             break
             case'putMessage':
             case'putRoom':
+            case'listenMessageList':
             case'logOut':
                 this.out.in(a)
             break
             case'listenRoomList':
                 roomListListener.value=a[1]
-            break
-            case'listenMessageList':
-                messageListListener.value=[a[1],a[2]]
             break
             case'unlistenMessageList':
             case'unlistenRoomList':

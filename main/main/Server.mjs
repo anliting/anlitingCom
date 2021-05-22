@@ -10,7 +10,11 @@ async function load(){
     this._database=new Database
     this._chat={
         room:await this._database.chat.getRoom(),
+        roomMessage:{},
     }
+    for(let room of this._chat.room.array)
+        this._chat.roomMessage[room.id]=
+            await this._database.chat.getRoomMessage(room.id)
     this._ipcServer=new IpcServer
     this._ipcServer.out=async b=>{
         await this._load

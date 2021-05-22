@@ -18,7 +18,15 @@ async function getOwn(connection){
         i=doc.get++
     reply(connection,i,await doc.session.out.getOwn())
 }
-async function listenRoomList(connection){
+function listenMessageList(connection,message){
+    let
+        doc=this._connectionMap.get(connection),
+        i=doc.get++
+    doc.session.out.listenMessageList(message.readUInt32BE(1),a=>{
+        reply(connection,i,Buffer.from(JSON.stringify(a)))
+    })
+}
+function listenRoomList(connection){
     let
         doc=this._connectionMap.get(connection),
         i=doc.get++
@@ -77,6 +85,8 @@ function onMessage(connection,message){
         listenRoomList.call(this,connection)
     if(operationCode==8)
         putMessage.call(this,connection,message)
+    if(operationCode==9)
+        listenMessageList.call(this,connection,message)
 }
 function syncLoggedOut(connection){
     let buf=Buffer.allocUnsafe(1)

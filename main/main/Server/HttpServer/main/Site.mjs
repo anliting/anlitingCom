@@ -31,6 +31,8 @@ Site.prototype._send=async function(a){
                 a[1](this._connection.cutCurrentUser())
             if(a[0]=='listenRoomList')
                 this._connection.listenRoomList(a[1])
+            if(a[0]=='listenMessageList')
+                this._connection.listenMessageList(a[1],a[2])
             if(a[0]=='logIn')
                 this._connection.logIn(a[1],a[2])
             if(a[0]=='logOut')
@@ -52,6 +54,9 @@ Site.prototype.cutCurrentUser=function(){
     return new Promise(rs=>{
         this._send(['cutCurrentUser',rs])
     })
+}
+Site.prototype.listenMessageList=function(room,cb){
+    this._send(['listenMessageList',room,cb])
 }
 Site.prototype.listenRoomList=function(cb){
     this._send(['listenRoomList',cb])

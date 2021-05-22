@@ -53,6 +53,21 @@ Connection.prototype.cutCurrentUser=function(){
 Connection.prototype.end=function(){
     this._ws.close()
 }
+Connection.prototype.listenMessageList=function(room,cb){
+    let
+        port=this._port++,
+        buf=new ArrayBuffer(5),
+        dataView=new DataView(buf)
+    dataView.setUint8(0,9)
+    dataView.setUint32(1,room)
+    this._ws.send(buf)
+    this._onPort[port]=a=>{
+        cb(JSON.parse(textDecoder.decode(a)))
+    }
+    this._onceLogOut.push(()=>{
+        delete this._onPort[port]
+    })
+}
 Connection.prototype.listenRoomList=function(cb){
     let port=this._port++,buf=new ArrayBuffer(1),dataView=new DataView(buf)
     dataView.setUint8(0,7)

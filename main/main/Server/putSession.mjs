@@ -1,4 +1,3 @@
-let never=new Promise(()=>{})
 function putSession(session){
     let doc={}
     this._session.set(session,doc)
@@ -17,15 +16,24 @@ function putSession(session){
             return doc.ready=(async()=>{
                 await doc.ready
                 if(doc.user==undefined)
-                    return never
+                    return
                 return this._database.getOwn(doc.user)
             })()
         },
+        listenMessageList:(room,cb)=>
+            doc.ready=(async()=>{
+                await doc.ready
+                if(doc.user==undefined)
+                    return
+                doc.listenMessageList=[room,cb]
+                cb(this._chat.roomMessage[room])
+            })()
+        ,
         listenRoomList:cb=>
             doc.ready=(async()=>{
                 await doc.ready
                 if(doc.user==undefined)
-                    return never
+                    return
                 doc.listenRoomList=cb
                 cb(this._chat.room.array.filter(a=>
                     a.user.includes(doc.user)
@@ -63,10 +71,20 @@ function putSession(session){
                     this._chat.room.array.some(a=>
                         a.id==room&&a.user.includes(doc.user)
                     )
-                )
+                ){
                     await this._database.chat.putRoomMessage(
                         room,doc.user,''+message
                     )
+                    this._chat.roomMessage[room]=
+                        await this._database.chat.getRoomMessage(room)
+                    for(let doc of this._session.values())
+                        if(doc.listenMessageList)
+                            doc.listenMessageList[1](
+                                this._chat.roomMessage[
+                                    doc.listenMessageList[0]
+                                ]
+                            )
+                }
             })()
         ,
         putRoom:()=>
@@ -97,7 +115,7 @@ function putSession(session){
             doc.ready=(async()=>{
                 await doc.ready
                 if(doc.user==undefined)
-                    return never
+                    return
                 await this._database.setOwn(doc.user,buffer)
             })()
         ,
