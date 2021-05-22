@@ -55,6 +55,20 @@ function putSession(session){
                 }
             })()
         },
+        putMessage:(room,message)=>
+            doc.ready=(async()=>{
+                await doc.ready
+                if(
+                    doc.user!=undefined&&
+                    this._chat.room.array.some(a=>
+                        a.id==room&&a.user.includes(doc.user)
+                    )
+                )
+                    await this._database.chat.putRoomMessage(
+                        room,doc.user,''+message
+                    )
+            })()
+        ,
         putRoom:()=>
             doc.ready=(async()=>{
                 await doc.ready

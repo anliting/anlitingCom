@@ -34,6 +34,11 @@ async function logIn(connection,message){
 async function logOut(connection){
     this._connectionMap.get(connection).session.out.logOut()
 }
+async function putMessage(connection,message){
+    this._connectionMap.get(connection).session.out.putMessage(
+        message.readUInt32BE(1),message.slice(5)
+    )
+}
 async function putUser(connection,message){
     let
         doc=this._connectionMap.get(connection),
@@ -70,6 +75,8 @@ function onMessage(connection,message){
         getOwn.call(this,connection)*/
     if(operationCode==7)
         listenRoomList.call(this,connection)
+    if(operationCode==8)
+        putMessage.call(this,connection,message)
 }
 function syncLoggedOut(connection){
     let buf=Buffer.allocUnsafe(1)

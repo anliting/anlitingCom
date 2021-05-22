@@ -82,7 +82,15 @@ Connection.prototype.logOut=function(){
     this._ws.send(buf)
 }
 Connection.prototype.putMessage=function(room,message){
-    console.log(room,message)
+    message=textEncoder.encode(message)
+    let
+        buf=new ArrayBuffer(5+message.length),
+        dataView=new DataView(buf),
+        array=new Uint8Array(buf)
+    dataView.setUint8(0,8)
+    dataView.setUint32(1,room)
+    array.set(message,5)
+    this._ws.send(buf)
 }
 Connection.prototype.putRoom=function(){
     let buf=new ArrayBuffer(1),dataView=new DataView(buf)
