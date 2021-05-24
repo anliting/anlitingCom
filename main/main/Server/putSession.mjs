@@ -2,7 +2,7 @@ function putSession(session){
     let doc={}
     this._session.set(session,doc)
     session.out={
-        cutCurrentUser:()=>{
+        cutCurrentUser:cb=>{
             doc.ready=(async()=>{
                 await doc.ready
                 if(doc.user==undefined)
@@ -10,14 +10,15 @@ function putSession(session){
                 await this._database.cutUser(doc.user)
                 doc.user=undefined
                 session.logOut()
+                cb()
             })()
         },
-        getOwn:()=>{
-            return doc.ready=(async()=>{
+        getOwn:cb=>{
+            doc.ready=(async()=>{
                 await doc.ready
                 if(doc.user==undefined)
                     return
-                return this._database.getOwn(doc.user)
+                cb(this._database.getOwn(doc.user))
             })()
         },
         listenMessageList:(room,cb)=>

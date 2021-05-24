@@ -1,4 +1,5 @@
 import WsServer from'./WsSite/WsServer.mjs'
+import Stream from  './Stream.mjs'
 function reply(connection,i,content){
     let buf=Buffer.allocUnsafe(5)
     buf.writeUInt8(0)
@@ -9,14 +10,14 @@ async function cutCurrentUser(connection){
     let
         doc=this._connectionMap.get(connection),
         i=doc.get++
-    await doc.session.out.cutCurrentUser()
+    await new Promise(rs=>doc.session.out.cutCurrentUser(rs))
     reply(connection,i,Buffer.allocUnsafe(0))
 }
 async function getOwn(connection){
     let
         doc=this._connectionMap.get(connection),
         i=doc.get++
-    reply(connection,i,await doc.session.out.getOwn())
+    reply(connection,i,await new Promise(rs=>doc.session.out.getOwn(rs)))
 }
 function listenMessageList(connection,message){
     let
@@ -104,6 +105,7 @@ function WsSite(tls){
                     logOut(){
                         syncLoggedOut.call(this,connection)
                     },
+                    outStream:new Stream,
                 },
             }
             this._connectionMap.set(connection,doc)
