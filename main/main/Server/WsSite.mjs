@@ -1,11 +1,7 @@
-import WsServer from'./WsSite/WsServer.mjs'
-import Stream from  './Stream.mjs'
-function reply(connection,i,content){
-    let buf=Buffer.allocUnsafe(5)
-    buf.writeUInt8(0)
-    buf.writeUInt32BE(i,1)
-    connection.send(Buffer.concat([buf,content])) 
-}
+import WsServer from        './WsSite/WsServer.mjs'
+import Stream from          './Stream.mjs'
+import reply from           './WsSite/reply.mjs'
+import chatOnMessage from   './WsSite/chatOnMessage.mjs'
 async function cutCurrentUser(connection){
     let
         doc=this._connectionMap.get(connection),
@@ -19,26 +15,6 @@ async function getOwn(connection){
         i=doc.get++
     reply(connection,i,await new Promise(rs=>doc.session.outStream.in(['getOwn',rs])))
 }
-function listenMessageList(connection,message){
-    let
-        doc=this._connectionMap.get(connection),
-        i=doc.get++
-    doc.session.outStream.in([
-        'listenMessageList',
-        message.readUInt32BE(1),
-        a=>{
-            reply(connection,i,Buffer.from(JSON.stringify(a)))
-        }
-    ])
-}
-function listenRoomList(connection){
-    let
-        doc=this._connectionMap.get(connection),
-        i=doc.get++
-    doc.session.outStream.in(['listenRoomList',a=>{
-        reply(connection,i,Buffer.from(JSON.stringify(a)))
-    }])
-}
 async function logIn(connection,message){
     this._connectionMap.get(connection).session.outStream.in([
         'logIn',
@@ -49,13 +25,6 @@ async function logIn(connection,message){
 async function logOut(connection){
     this._connectionMap.get(connection).session.outStream.in(['logOut'])
 }
-async function putMessage(connection,message){
-    this._connectionMap.get(connection).session.outStream.in([
-        'putMessage',
-        message.readUInt32BE(1),
-        message.slice(5)
-    ])
-}
 async function putUser(connection,message){
     let
         doc=this._connectionMap.get(connection),
@@ -65,9 +34,6 @@ async function putUser(connection,message){
         doc.session.outStream.in(['putUser',message.slice(1),rs])
     ))
     reply(connection,i,buf)
-}
-async function putRoom(connection){
-    this._connectionMap.get(connection).session.outStream.in(['putRoom'])
 }
 async function setOwn(connection,message){
     let
@@ -88,18 +54,12 @@ function onMessage(connection,message){
         putUser.call(this,connection,message)
     if(operationCode==3)
         cutCurrentUser.call(this,connection)
-    if(operationCode==4)
-        putRoom.call(this,connection)
+    if([4,7,8,9].includes(operationCode))
+        chatOnMessage.call(this,connection,message,operationCode)
     /*if(operationCode==5)
         setOwn.call(this,connection,message)
     if(operationCode==6)
         getOwn.call(this,connection)*/
-    if(operationCode==7)
-        listenRoomList.call(this,connection)
-    if(operationCode==8)
-        putMessage.call(this,connection,message)
-    if(operationCode==9)
-        listenMessageList.call(this,connection,message)
 }
 function syncLoggedOut(connection){
     let buf=Buffer.allocUnsafe(1)
