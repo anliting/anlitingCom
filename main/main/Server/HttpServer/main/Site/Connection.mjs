@@ -92,10 +92,6 @@ Connection.prototype.listenMessageList=function(room,cb){
     this._onceLogOut.push(()=>{
         delete this._onPort[port]
     })
-    /*
-        listen 到什麼時候
-        拿到資料要做什麼
-    */
 }
 Connection.prototype.listenRoomList=function(cb){
     let port=this._port++
