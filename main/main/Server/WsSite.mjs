@@ -10,43 +10,51 @@ async function cutCurrentUser(connection){
     let
         doc=this._connectionMap.get(connection),
         i=doc.get++
-    await new Promise(rs=>doc.session.out.cutCurrentUser(rs))
+    await new Promise(rs=>doc.session.outStream.in(['cutCurrentUser',rs]))
     reply(connection,i,Buffer.allocUnsafe(0))
 }
 async function getOwn(connection){
     let
         doc=this._connectionMap.get(connection),
         i=doc.get++
-    reply(connection,i,await new Promise(rs=>doc.session.out.getOwn(rs)))
+    reply(connection,i,await new Promise(rs=>doc.session.outStream.in(['getOwn',rs])))
 }
 function listenMessageList(connection,message){
     let
         doc=this._connectionMap.get(connection),
         i=doc.get++
-    doc.session.out.listenMessageList(message.readUInt32BE(1),a=>{
-        reply(connection,i,Buffer.from(JSON.stringify(a)))
-    })
+    doc.session.outStream.in([
+        'listenMessageList',
+        message.readUInt32BE(1),
+        a=>{
+            reply(connection,i,Buffer.from(JSON.stringify(a)))
+        }
+    ])
 }
 function listenRoomList(connection){
     let
         doc=this._connectionMap.get(connection),
         i=doc.get++
-    doc.session.out.listenRoomList(a=>{
+    doc.session.outStream.in(['listenRoomList',a=>{
         reply(connection,i,Buffer.from(JSON.stringify(a)))
-    })
+    }])
 }
 async function logIn(connection,message){
-    this._connectionMap.get(connection).session.out.logIn(
-        message.readUInt32BE(1),message.slice(5)
-    )
+    this._connectionMap.get(connection).session.outStream.in([
+        'logIn',
+        message.readUInt32BE(1),
+        message.slice(5)
+    ])
 }
 async function logOut(connection){
-    this._connectionMap.get(connection).session.out.logOut()
+    this._connectionMap.get(connection).session.outStream.in(['logOut'])
 }
 async function putMessage(connection,message){
-    this._connectionMap.get(connection).session.out.putMessage(
-        message.readUInt32BE(1),message.slice(5)
-    )
+    this._connectionMap.get(connection).session.outStream.in([
+        'putMessage',
+        message.readUInt32BE(1),
+        message.slice(5)
+    ])
 }
 async function putUser(connection,message){
     let
@@ -54,19 +62,19 @@ async function putUser(connection,message){
         i=doc.get++,
         buf=Buffer.allocUnsafe(4)
     buf.writeUInt32BE(await new Promise(rs=>
-        doc.session.out.putUser(message.slice(1),rs)
+        doc.session.outStream.in(['putUser',message.slice(1),rs])
     ))
     reply(connection,i,buf)
 }
 async function putRoom(connection){
-    this._connectionMap.get(connection).session.out.putRoom()
+    this._connectionMap.get(connection).session.outStream.in(['putRoom'])
 }
 async function setOwn(connection,message){
     let
         doc=this._connectionMap.get(connection),
         i=doc.get++
     await new Promise(rs=>
-        doc.session.out.setOwn(message.slice(1),rs)
+        doc.session.outStream.in(['setOwn',message.slice(1),rs])
     )
     reply(connection,i,Buffer.allocUnsafe(0))
 }
