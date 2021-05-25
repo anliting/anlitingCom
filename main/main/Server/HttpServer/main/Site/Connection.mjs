@@ -1,4 +1,34 @@
 let textEncoder=new TextEncoder,textDecoder=new TextDecoder
+let chat={}
+chat.listenMessageList=function(ws,room){
+    let
+        buf=new ArrayBuffer(5),
+        dataView=new DataView(buf)
+    dataView.setUint8(0,9)
+    dataView.setUint32(1,room)
+    ws.send(buf)
+}
+chat.listenRoomList=function(ws){
+    let buf=new ArrayBuffer(1),dataView=new DataView(buf)
+    dataView.setUint8(0,7)
+    ws.send(buf)
+}
+chat.putRoom=function(ws){
+    let buf=new ArrayBuffer(1),dataView=new DataView(buf)
+    dataView.setUint8(0,4)
+    ws.send(buf)
+}
+chat.putMessage=function(ws,room,message){
+    message=textEncoder.encode(message)
+    let
+        buf=new ArrayBuffer(5+message.length),
+        dataView=new DataView(buf),
+        array=new Uint8Array(buf)
+    dataView.setUint8(0,8)
+    dataView.setUint32(1,room)
+    array.set(message,5)
+    ws.send(buf)
+}
 function getWs(){
     let url=new URL(location),x=globalThis.anlitingCom
     url.protocol='wss:'
@@ -54,24 +84,22 @@ Connection.prototype.end=function(){
     this._ws.close()
 }
 Connection.prototype.listenMessageList=function(room,cb){
-    let
-        port=this._port++,
-        buf=new ArrayBuffer(5),
-        dataView=new DataView(buf)
-    dataView.setUint8(0,9)
-    dataView.setUint32(1,room)
-    this._ws.send(buf)
+    let port=this._port++
+    chat.listenMessageList(this._ws,room)
     this._onPort[port]=a=>{
         cb(JSON.parse(textDecoder.decode(a)))
     }
     this._onceLogOut.push(()=>{
         delete this._onPort[port]
     })
+    /*
+        listen 到什麼時候
+        拿到資料要做什麼
+    */
 }
 Connection.prototype.listenRoomList=function(cb){
-    let port=this._port++,buf=new ArrayBuffer(1),dataView=new DataView(buf)
-    dataView.setUint8(0,7)
-    this._ws.send(buf)
+    let port=this._port++
+    chat.listenRoomList(this._ws)
     this._onPort[port]=a=>{
         cb(JSON.parse(textDecoder.decode(a)))
     }
@@ -97,20 +125,10 @@ Connection.prototype.logOut=function(){
     this._ws.send(buf)
 }
 Connection.prototype.putMessage=function(room,message){
-    message=textEncoder.encode(message)
-    let
-        buf=new ArrayBuffer(5+message.length),
-        dataView=new DataView(buf),
-        array=new Uint8Array(buf)
-    dataView.setUint8(0,8)
-    dataView.setUint32(1,room)
-    array.set(message,5)
-    this._ws.send(buf)
+    chat.putMessage(this._ws,room,message)
 }
 Connection.prototype.putRoom=function(){
-    let buf=new ArrayBuffer(1),dataView=new DataView(buf)
-    dataView.setUint8(0,4)
-    this._ws.send(buf)
+    chat.putRoom(this._ws)
 }
 Connection.prototype.putUser=function(password){
     password=textEncoder.encode(password)
