@@ -1,35 +1,4 @@
 let textEncoder=new TextEncoder,textDecoder=new TextDecoder
-// pass connection, handle mission, prevent collision
-let chat={}
-chat.listenMessageList=function(ws,room){
-    let
-        buf=new ArrayBuffer(5),
-        dataView=new DataView(buf)
-    dataView.setUint8(0,9)
-    dataView.setUint32(1,room)
-    ws.send(buf)
-}
-chat.listenRoomList=function(ws){
-    let buf=new ArrayBuffer(1),dataView=new DataView(buf)
-    dataView.setUint8(0,7)
-    ws.send(buf)
-}
-chat.putRoom=function(ws){
-    let buf=new ArrayBuffer(1),dataView=new DataView(buf)
-    dataView.setUint8(0,4)
-    ws.send(buf)
-}
-chat.putMessage=function(ws,room,message){
-    message=textEncoder.encode(message)
-    let
-        buf=new ArrayBuffer(5+message.length),
-        dataView=new DataView(buf),
-        array=new Uint8Array(buf)
-    dataView.setUint8(0,8)
-    dataView.setUint32(1,room)
-    array.set(message,5)
-    ws.send(buf)
-}
 function getWs(){
     let url=new URL(location),x=globalThis.anlitingCom
     url.protocol='wss:'
@@ -58,6 +27,7 @@ function Connection(){
             // syncLoggedOut
             if(operation==1){
                 this._onceLogOut.map(f=>f())
+                this._onceLogOut=[]
                 if(--this._outCredential==0)
                     this.out.logOut()
             }
@@ -84,26 +54,6 @@ Connection.prototype.cutCurrentUser=function(){
 Connection.prototype.end=function(){
     this._ws.close()
 }
-Connection.prototype.listenMessageList=function(room,cb){
-    let port=this._port++
-    chat.listenMessageList(this._ws,room)
-    this._onPort[port]=a=>{
-        cb(JSON.parse(textDecoder.decode(a)))
-    }
-    this._onceLogOut.push(()=>{
-        delete this._onPort[port]
-    })
-}
-Connection.prototype.listenRoomList=function(cb){
-    let port=this._port++
-    chat.listenRoomList(this._ws)
-    this._onPort[port]=a=>{
-        cb(JSON.parse(textDecoder.decode(a)))
-    }
-    this._onceLogOut.push(()=>{
-        delete this._onPort[port]
-    })
-}
 Connection.prototype.logIn=function(user,password){
     password=textEncoder.encode(password)
     let
@@ -120,12 +70,6 @@ Connection.prototype.logOut=function(){
     let buf=new ArrayBuffer(1),dataView=new DataView(buf)
     dataView.setUint8(0,1)
     this._ws.send(buf)
-}
-Connection.prototype.putMessage=function(room,message){
-    chat.putMessage(this._ws,room,message)
-}
-Connection.prototype.putRoom=function(){
-    chat.putRoom(this._ws)
 }
 Connection.prototype.putUser=function(password){
     password=textEncoder.encode(password)
@@ -171,5 +115,19 @@ Connection.prototype.setOwn=async function(own){
             rs(a)
         }
     )
+}
+Connection.prototype.send=function(buf,port){
+    this._ws.send(buf)
+    if(port)
+        return this._port++
+}
+Connection.prototype.onceLogOut=function(f){
+    this._onceLogOut.push(f)
+}
+Connection.prototype.onPort=function(port,f){
+    this._onPort[port]=f
+}
+Connection.prototype.offPort=function(port){
+    delete this._onPort[port]
 }
 export default Connection

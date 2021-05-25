@@ -1,5 +1,6 @@
 import Connection from  './Site/Connection.mjs'
 import Stream from      './Stream.mjs'
+import chatSite from    './Site/chatSite.mjs'
 function Site(out){
     this.in=new Stream
     this.out=out
@@ -30,17 +31,17 @@ Site.prototype._send=async function(a){
             if(a[0]=='cutCurrentUser')
                 a[1](this._connection.cutCurrentUser())
             if(a[0]=='listenRoomList')
-                this._connection.listenRoomList(a[1])
+                chatSite.listenRoomList(this._connection,a[1])
             if(a[0]=='listenMessageList')
-                this._connection.listenMessageList(a[1],a[2])
+                chatSite.listenMessageList(this._connection,a[1],a[2])
             if(a[0]=='logIn')
                 this._connection.logIn(a[1],a[2])
             if(a[0]=='logOut')
                 this._connection.logOut()
             if(a[0]=='putMessage')
-                this._connection.putMessage(a[1],a[2])
+                chatSite.putMessage(this._connection,a[1],a[2])
             if(a[0]=='putRoom')
-                this._connection.putRoom()
+                chatSite.putRoom(this._connection)
             if(a[0]=='putUser')
                 a[2](this._connection.putUser(a[1]))
         })
