@@ -1,4 +1,5 @@
 let textEncoder=new TextEncoder,textDecoder=new TextDecoder
+// pass connection, handle mission, prevent collision
 let chat={}
 chat.listenMessageList=function(ws,room){
     let
