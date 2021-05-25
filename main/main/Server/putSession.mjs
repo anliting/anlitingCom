@@ -106,18 +106,19 @@ function putSession(session){
                 }
             })()
         ,
-        putUser:password=>
+        putUser:(password,cb)=>
             doc.ready=(async()=>{
                 await doc.ready
-                return this._database.putUser(password)
+                cb(this._database.putUser(password))
             })()
         ,
-        setOwn:buffer=>
+        setOwn:(buffer,cb)=>
             doc.ready=(async()=>{
                 await doc.ready
                 if(doc.user==undefined)
                     return
                 await this._database.setOwn(doc.user,buffer)
+                cb()
             })()
         ,
         unlistenRoomList:()=>

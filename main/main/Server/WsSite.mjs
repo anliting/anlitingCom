@@ -53,7 +53,9 @@ async function putUser(connection,message){
         doc=this._connectionMap.get(connection),
         i=doc.get++,
         buf=Buffer.allocUnsafe(4)
-    buf.writeUInt32BE(await doc.session.out.putUser(message.slice(1)))
+    buf.writeUInt32BE(await new Promise(rs=>
+        doc.session.out.putUser(message.slice(1),rs)
+    ))
     reply(connection,i,buf)
 }
 async function putRoom(connection){
@@ -63,7 +65,9 @@ async function setOwn(connection,message){
     let
         doc=this._connectionMap.get(connection),
         i=doc.get++
-    await doc.session.out.setOwn(message.slice(1))
+    await new Promise(rs=>
+        doc.session.out.setOwn(message.slice(1),rs)
+    )
     reply(connection,i,Buffer.allocUnsafe(0))
 }
 function onMessage(connection,message){
