@@ -3,10 +3,10 @@ import Stream from              '../../../Stream.mjs'
 import Variable from            '../../../Variable.mjs'
 function RoomPage(){
     this._node={}
-    this._scrollRatio=0
+    this._scrollRatio=1
+    this._skipOnScroll=0
     this.messageList=new Variable([])
     this.out=new Stream
-    this._skipOnScroll=0
     this.node=doe.div(
         {className:'chatRoomPage'},
         doe.div(
@@ -76,10 +76,10 @@ function RoomPage(){
         ),
     )
     this.size=new Variable([1,1]).for(a=>{
+        this._skipOnScroll=1
         this.node.style.setProperty(
             '--zoom',''+Math.min(a[0],a[1]/(16/22))
         )
-        this._skipOnScroll=1
         this._node.messageList.scrollTop=
             this._scrollRatio*
             this._node.messageList.scrollHeight
