@@ -1,6 +1,9 @@
 import doe from                 'doe'
 import Stream from              '../../../Stream.mjs'
 import Variable from            '../../../Variable.mjs'
+function scrollTopMax(n){
+    return n.scrollHeight-n.clientHeight
+}
 function RoomPage(){
     this._node={}
     this._scrollRatio=1
@@ -46,12 +49,12 @@ function RoomPage(){
                     return this._skipOnScroll=0
                 this._scrollRatio=
                     this._node.messageList.scrollTop/
-                    this._node.messageList.scrollHeight
+                    scrollTopMax(this._node.messageList)
             }},n=>{
                 this.messageList.for(a=>{
                     let bottom=
-                        n.scrollHeight<
-                        n.scrollTop+n.getBoundingClientRect().height+1
+                        !scrollTopMax(n)||
+                        1<=this._scrollRatio
                     n.textContent=''
                     a.map(a=>
                         doe(n,
@@ -82,8 +85,16 @@ function RoomPage(){
         )
         this._node.messageList.scrollTop=
             this._scrollRatio*
-            this._node.messageList.scrollHeight
+            scrollTopMax(this._node.messageList)
     })
+}
+RoomPage.prototype.focus=function(){
+}
+RoomPage.prototype.scrollToBottom=function(){
+    this._scrollRatio=1
+    this._node.messageList.scrollTop=
+        this._scrollRatio*
+        scrollTopMax(this._node.messageList)
 }
 RoomPage.style=`
     body>.chatRoomPage{
@@ -114,6 +125,8 @@ RoomPage.style=`
         height:10.5em;
         overflow-y:scroll;
         overflow-anchor:none;
+        word-break:break-all;
+        word-wrap:break-word;
     }
     body>.chatRoomPage>.messageList>*>*{
         line-height:1.5;

@@ -11,6 +11,7 @@ function ChatPage(){
     homepage.out.out(a=>{
         if(a[0]=='room'){
             this.page.value=roomPage
+            roomPage.scrollToBottom()
             this._messageListListener=messageList=>
                 roomPage.messageList.value=messageList
             currentRoom=a[1]
