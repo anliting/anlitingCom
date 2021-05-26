@@ -40,11 +40,7 @@ function RoomPage(){
             ),
         ),
         doe.div({className:'messageList'},
-            this._node.messageList=doe.div({onscroll:()=>{
-                this._scrollRatio=
-                    this._node.messageList.scrollTop/
-                    this._node.messageList.scrollHeight
-            }},n=>{
+            this._node.messageList=doe.div(n=>{
                 this.messageList.for(a=>{
                     let bottom=
                         n.scrollHeight<
