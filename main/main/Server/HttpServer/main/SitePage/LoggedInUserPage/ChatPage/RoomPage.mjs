@@ -6,6 +6,7 @@ function RoomPage(){
     this._scrollRatio=0
     this.messageList=new Variable([])
     this.out=new Stream
+    this._skipOnScroll=0
     this.node=doe.div(
         {className:'chatRoomPage'},
         doe.div(
@@ -40,7 +41,13 @@ function RoomPage(){
             ),
         ),
         doe.div({className:'messageList'},
-            this._node.messageList=doe.div(n=>{
+            this._node.messageList=doe.div({onscroll:()=>{
+                if(this._skipOnScroll)
+                    return this._skipOnScroll=0
+                this._scrollRatio=
+                    this._node.messageList.scrollTop/
+                    this._node.messageList.scrollHeight
+            }},n=>{
                 this.messageList.for(a=>{
                     let bottom=
                         n.scrollHeight<
@@ -69,17 +76,13 @@ function RoomPage(){
         ),
     )
     this.size=new Variable([1,1]).for(a=>{
-        if(this._node.messageList.scrollHeight)
-            this._scrollRatio=
-                this._node.messageList.scrollTop/
-                this._node.messageList.scrollHeight
         this.node.style.setProperty(
             '--zoom',''+Math.min(a[0],a[1]/(16/22))
         )
-        if(this._node.messageList.scrollHeight)
-            this._node.messageList.scrollTop=
-                this._scrollRatio*
-                this._node.messageList.scrollHeight
+        this._skipOnScroll=1
+        this._node.messageList.scrollTop=
+            this._scrollRatio*
+            this._node.messageList.scrollHeight
     })
 }
 RoomPage.style=`
@@ -110,6 +113,7 @@ RoomPage.style=`
     body>.chatRoomPage>.messageList>*{
         height:10.5em;
         overflow-y:scroll;
+        overflow-anchor:none;
     }
     body>.chatRoomPage>.messageList>*>*{
         line-height:1.5;
