@@ -70,7 +70,7 @@ function RoomPage(){
         ),
         doe.div(
             {className:'sendPanel'},
-            doe.input({onkeydown:e=>{
+            this._node.input=doe.input({onkeydown:e=>{
                 if(e.key=='Enter'){
                     this.out.in(['putMessage',e.target.value])
                     e.target.value=''
@@ -89,6 +89,7 @@ function RoomPage(){
     })
 }
 RoomPage.prototype.focus=function(){
+    this._node.input.focus()
 }
 RoomPage.prototype.scrollToBottom=function(){
     this._scrollRatio=1

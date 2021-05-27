@@ -14,7 +14,6 @@ function UserPage(){
         switch(a[0]){
             case'back':
                 this.page.value=this._logInPage
-                this._logInPage.focus()
             break
             case'putUser':
                 this.out.in(a)
@@ -33,14 +32,10 @@ function UserPage(){
             break
             case'register':
                 this.page.value=registerPage
-                registerPage.focus()
             break
         }
     })
     this.page=new Variable(this._logInPage)
-}
-UserPage.prototype.focus=function(){
-    this._logInPage.focus()
 }
 UserPage.style=`
     .logInPanel>.a{

@@ -58,5 +58,7 @@ sitePage.page.for((to,from)=>{
     }
     to.size.bind(windowSize)
     doe.body(to.node)
+    if(to.focus)
+        to.focus()
 })
 navigator.serviceWorker.register('%23sw')

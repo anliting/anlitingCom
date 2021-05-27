@@ -31,7 +31,6 @@ function SitePage(){
         switch(a){
             case'logIn':
                 this.page.bind(userPage.page)
-                userPage.focus()
             break
             case'loggedInUserPage':
                 this.page.bind(loggedInUserPage.page)
