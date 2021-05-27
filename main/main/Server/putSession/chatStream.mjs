@@ -24,43 +24,43 @@ function chatStream(session,a){
         case'putMessage':
             doc.ready=(async()=>{
                 await doc.ready
-                if(
+                if(!(
                     doc.user!=undefined&&
                     this._chat.room.array.some(b=>
                         b.id==a[1]&&b.user.includes(doc.user)
                     )
-                ){
-                    await this._database.chat.putRoomMessage(
-                        a[1],doc.user,''+a[2]
-                    )
-                    this._chat.roomMessage[a[1]]=
-                        await this._database.chat.getRoomMessage(a[1])
-                    for(let doc of this._session.values())
-                        if(doc.listenMessageList)
-                            doc.listenMessageList[1](
-                                this._chat.roomMessage[
-                                    doc.listenMessageList[0]
-                                ]
-                            )
-                }
+                ))
+                    return
+                await this._database.chat.putRoomMessage(
+                    a[1],doc.user,''+a[2]
+                )
+                this._chat.roomMessage[a[1]]=
+                    await this._database.chat.getRoomMessage(a[1])
+                for(let doc of this._session.values())
+                    if(doc.listenMessageList)
+                        doc.listenMessageList[1](
+                            this._chat.roomMessage[
+                                doc.listenMessageList[0]
+                            ]
+                        )
             })()
         break
         case'putRoom':
             doc.ready=(async()=>{
                 await doc.ready
-                if(doc.user!=undefined){
-                    let room=await this._database.chat.putRoom(doc.user)
-                    this._chat.room=await this._database.chat.getRoom()
-                    this._chat.roomMessage[room]=
-                        await this._database.chat.getRoomMessage(room)
-                    for(let doc of this._session.values())
-                        if(doc.listenRoomList)
-                            doc.listenRoomList(
-                                this._chat.room.array.filter(a=>
-                                    a.user.includes(doc.user)
-                                )
+                if(doc.user==undefined)
+                    return
+                let room=await this._database.chat.putRoom(doc.user)
+                this._chat.room=await this._database.chat.getRoom()
+                this._chat.roomMessage[room]=
+                    await this._database.chat.getRoomMessage(room)
+                for(let doc of this._session.values())
+                    if(doc.listenRoomList)
+                        doc.listenRoomList(
+                            this._chat.room.array.filter(a=>
+                                a.user.includes(doc.user)
                             )
-                }
+                        )
             })()
         break
         case'unlistenRoomList':
