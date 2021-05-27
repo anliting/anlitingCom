@@ -5,6 +5,7 @@ import HttpServer from      './Server/HttpServer.mjs'
 import IpcServer from       './Server/IpcServer.mjs'
 import WsSite from          './Server/WsSite.mjs'
 import putSession from      './Server/putSession.mjs'
+import process from 'process'
 async function load(){
     this._session=new Map
     this._database=new Database
