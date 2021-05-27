@@ -10,6 +10,11 @@ function reactScrollRatioToScrollTop(){
         this._scrollRatio*
         scrollTopMax(this._node.messageList)
 }
+function setScrollRatio(){
+    this._scrollRatio=
+        this._node.messageList.scrollTop/
+        scrollTopMax(this._node.messageList)
+}
 function RoomPage(){
     this._node={}
     this._scrollRatio=1
@@ -20,13 +25,12 @@ function RoomPage(){
         {className:'chatRoomPage'},
         createControlPanel.call(this),
         doe.div({className:'messageList'},
-            this._node.messageList=doe.div({onscroll:()=>{
+            doe.div({onscroll:()=>{
                 if(this._skipOnScroll)
                     return this._skipOnScroll=0
-                this._scrollRatio=
-                    this._node.messageList.scrollTop/
-                    scrollTopMax(this._node.messageList)
+                setScrollRatio.call(this)
             }},n=>{
+                this._node.messageList=n
                 this.messageList.for(a=>{
                     let bottom=
                         !scrollTopMax(n)||
@@ -41,6 +45,7 @@ function RoomPage(){
                     )
                     if(bottom)
                         n.scrollTop=n.scrollHeight
+                    setScrollRatio.call(this)
                 })
             })
         ),
