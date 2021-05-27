@@ -14,7 +14,12 @@ function createControlPanel(){
             ),
             doe.div(
                 {className:'b'},
-                doe.div('Invite',{
+                doe.div('Member',{
+                    className:'button',
+                    onclick:()=>{
+                    },
+                }),
+                /*doe.div('Invite',{
                     className:'button disabled',
                     onclick:()=>{
                     },
@@ -27,7 +32,7 @@ function createControlPanel(){
                     },
                 },n=>{doe(n.style,{
                     color:'#ff7f7f',
-                })}),
+                })}),*/
             ),
         ),
     )
