@@ -1,8 +1,14 @@
 import doe from                 'doe'
 import Stream from              '../../../Stream.mjs'
 import Variable from            '../../../Variable.mjs'
+import createControlPanel from  './RoomPage/createControlPanel.mjs'
 function scrollTopMax(n){
     return n.scrollHeight-n.clientHeight
+}
+function reactScrollRatioToScrollTop(){
+    this._node.messageList.scrollTop=
+        this._scrollRatio*
+        scrollTopMax(this._node.messageList)
 }
 function RoomPage(){
     this._node={}
@@ -12,37 +18,7 @@ function RoomPage(){
     this.out=new Stream
     this.node=doe.div(
         {className:'chatRoomPage'},
-        doe.div(
-            {className:'controlPanel'},
-            doe.div(
-                doe.div(
-                    {className:'a'},
-                    doe.div('Back',{
-                        className:'button',
-                        onclick:()=>{
-                            this.out.in(['back'])
-                        },
-                    }),
-                ),
-                doe.div(
-                    {className:'b'},
-                    doe.div('Invite',{
-                        className:'button disabled',
-                        onclick:()=>{
-                        },
-                    }),
-                    ' ',
-                    doe.div('Leave',{
-                        className:'button disabled',
-                        onclick:()=>{
-                            this.out.in(['leave'])
-                        },
-                    },n=>{doe(n.style,{
-                        color:'#ff7f7f',
-                    })}),
-                ),
-            ),
-        ),
+        createControlPanel.call(this),
         doe.div({className:'messageList'},
             this._node.messageList=doe.div({onscroll:()=>{
                 if(this._skipOnScroll)
@@ -83,19 +59,16 @@ function RoomPage(){
         this.node.style.setProperty(
             '--zoom',''+Math.min(a[0],a[1]/(16/22))
         )
-        this._node.messageList.scrollTop=
-            this._scrollRatio*
-            scrollTopMax(this._node.messageList)
+        reactScrollRatioToScrollTop.call(this)
     })
 }
 RoomPage.prototype.focus=function(){
     this._node.input.focus()
 }
 RoomPage.prototype.scrollToBottom=function(){
+    this._skipOnScroll=1
     this._scrollRatio=1
-    this._node.messageList.scrollTop=
-        this._scrollRatio*
-        scrollTopMax(this._node.messageList)
+    reactScrollRatioToScrollTop.call(this)
 }
 RoomPage.style=`
     body>.chatRoomPage{
