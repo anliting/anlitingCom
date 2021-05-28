@@ -51,12 +51,18 @@ function HomePage(){
         ),
         doe.div(
             {className:'sendPanel'},
-            this._node.input=doe.textarea({onkeydown:e=>{
+            this._node.input=doe.textarea({oninput:e=>{
+                this.node.style.setProperty(
+                    '--lineCount',
+                    ''+Math.min(4.5,e.target.value.split('\n').length)
+                )
+            },onkeydown:e=>{
                 if(!e.shiftKey&&e.key=='Enter'){
                     e.preventDefault()
                     e.stopPropagation()
                     this.out.in(['putMessage',e.target.value])
                     e.target.value=''
+                    this.node.style.setProperty('--lineCount',1)
                 }
             }}),
         ),
@@ -79,6 +85,7 @@ HomePage.prototype.scrollToBottom=function(){
 }
 HomePage.style=`
     body>.chatRoomPage{
+        --lineCount:1;
         display:inline-block;
         margin:0 auto;
         padding:1em;
@@ -103,7 +110,7 @@ HomePage.style=`
         padding:.25em 0;
     }
     body>.chatRoomPage>.messageList>*{
-        height:10.5em;
+        height:calc(11.2em - 1.2em * var(--lineCount));
         overflow-y:scroll;
         overflow-anchor:none;
         word-break:break-all;
@@ -114,13 +121,17 @@ HomePage.style=`
         margin:.25em 0;
         white-space:pre-wrap;
     }
+    body>.chatRoomPage>.sendPanel{
+        padding:.275em 0;
+        background-color:#bfbfbf;
+    }
     body>.chatRoomPage>.sendPanel>*{
         resize:none;
         width:19em;
-        height:1.2em;
+        height:calc(1.2em * var(--lineCount));
         background-color:#bfbfbf;
         margin:0;
-        padding:.275em .5em;
+        padding:0 .5em;
         border:none;
         outline:none;
         font-size:1em;
