@@ -110,7 +110,7 @@ HomePage.style=`
         padding:.25em 0;
     }
     body>.chatRoomPage>.messageList>*{
-        height:calc(11.2em - 1.2em * var(--lineCount));
+        height:calc(11.2em - 1.5em * var(--lineCount));
         overflow-y:scroll;
         overflow-anchor:none;
         word-break:break-all;
@@ -128,7 +128,7 @@ HomePage.style=`
     body>.chatRoomPage>.sendPanel>*{
         resize:none;
         width:19em;
-        height:calc(1.2em * var(--lineCount));
+        height:calc(1.5em * var(--lineCount));
         background-color:#bfbfbf;
         margin:0;
         padding:0 .5em;
@@ -137,7 +137,7 @@ HomePage.style=`
         font-size:1em;
         vertical-align:top;
         font-family:serif;
-        line-height:1.2;
+        line-height:1.5;
     }
 `
 export default HomePage
