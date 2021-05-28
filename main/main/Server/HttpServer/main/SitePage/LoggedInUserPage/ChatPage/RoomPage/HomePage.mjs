@@ -51,8 +51,10 @@ function HomePage(){
         ),
         doe.div(
             {className:'sendPanel'},
-            this._node.input=doe.input({onkeydown:e=>{
-                if(e.key=='Enter'){
+            this._node.input=doe.textarea({onkeydown:e=>{
+                if(!e.shiftKey&&e.key=='Enter'){
+                    e.preventDefault()
+                    e.stopPropagation()
                     this.out.in(['putMessage',e.target.value])
                     e.target.value=''
                 }
@@ -75,4 +77,55 @@ HomePage.prototype.scrollToBottom=function(){
     this._scrollRatio=1
     reactScrollRatioToScrollTop.call(this)
 }
+HomePage.style=`
+    body>.chatRoomPage{
+        display:inline-block;
+        margin:0 auto;
+        padding:1em;
+        width:20em;
+        height:14em;
+        font-size:calc(var(--zoom) * 1 / 22 * 1px);
+        vertical-align:middle;
+    }
+    body>.chatRoomPage>.controlPanel>*{
+        display:table;
+        width:100%;
+    }
+    body>.chatRoomPage>.controlPanel>*>.a{
+        display:table-cell;
+        text-align:left;
+    }
+    body>.chatRoomPage>.controlPanel>*>.b{
+        display:table-cell;
+        text-align:right;
+    }
+    body>.chatRoomPage>.messageList{
+        padding:.25em 0;
+    }
+    body>.chatRoomPage>.messageList>*{
+        height:10.5em;
+        overflow-y:scroll;
+        overflow-anchor:none;
+        word-break:break-all;
+        word-wrap:break-word;
+    }
+    body>.chatRoomPage>.messageList>*>*{
+        line-height:1.5;
+        margin:.25em 0;
+        white-space:pre-wrap;
+    }
+    body>.chatRoomPage>.sendPanel>*{
+        resize:none;
+        width:19em;
+        height:1.2em;
+        background-color:#bfbfbf;
+        margin:0;
+        padding:.275em .5em;
+        border:none;
+        outline:none;
+        font-size:1em;
+        vertical-align:top;
+        font-family:monospace;
+    }
+`
 export default HomePage

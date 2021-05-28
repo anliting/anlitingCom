@@ -3,6 +3,7 @@ import Stream from      '../../../Stream.mjs'
 function LogInPanel(){
     this.out=new Stream
     function submit(){
+        this._idInput.required=true
         if(this._idInput.checkValidity()){
             let a=[
                 'logIn',
@@ -44,7 +45,6 @@ function LogInPanel(){
         doe.div(
             {className:'c',},
             doe.div('Log In',{className:'button',onclick:()=>{
-                this._idInput.required=true
                 submit.call(this)
             }}),
         ),
