@@ -5,13 +5,13 @@ import HomePage from            './ChatPage/HomePage.mjs'
 import RoomPage from            './ChatPage/RoomPage.mjs'
 function ChatPage(){
     let currentRoom
-    let homepage=new HomePage,roomPage=new RoomPage
-    this.page=new Variable(homepage)
+    let homePage=new HomePage,roomPage=new RoomPage
+    this.page=new Variable(homePage)
     this.out=new Stream
-    homepage.out.out(a=>{
+    homePage.out.out(a=>{
         if(a[0]=='room'){
-            this.page.value=roomPage
-            roomPage.scrollToBottom()
+            this.page.bind(roomPage.page)
+            roomPage.page.value.scrollToBottom()
             this._messageListListener=messageList=>
                 roomPage.messageList.value=messageList
             currentRoom=a[1]
@@ -23,7 +23,7 @@ function ChatPage(){
     })
     roomPage.out.out(a=>{
         if(a[0]=='back'){
-            this.page.value=homepage
+            this.page.value=homePage
             this.out.in([
                 'unlistenMessageList',this._messageListListener
             ])
@@ -33,7 +33,7 @@ function ChatPage(){
             ;
     })
     this.out.in(['listenRoomList',roomList=>{
-        homepage.roomList.value=roomList
+        homePage.roomList.value=roomList
     }])
 }
 ChatPage.style=HomePage.style+RoomPage.style

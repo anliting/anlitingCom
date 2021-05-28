@@ -17,22 +17,9 @@ function createControlPanel(){
                 doe.div('Member',{
                     className:'button',
                     onclick:()=>{
+                        this.out.in(['member'])
                     },
                 }),
-                /*doe.div('Invite',{
-                    className:'button disabled',
-                    onclick:()=>{
-                    },
-                }),
-                ' ',
-                doe.div('Leave',{
-                    className:'button disabled',
-                    onclick:()=>{
-                        this.out.in(['leave'])
-                    },
-                },n=>{doe(n.style,{
-                    color:'#ff7f7f',
-                })}),*/
             ),
         ),
     )

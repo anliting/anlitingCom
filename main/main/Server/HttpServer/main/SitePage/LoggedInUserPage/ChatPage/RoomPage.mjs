@@ -1,79 +1,31 @@
 import doe from                 'doe'
 import Stream from              '../../../Stream.mjs'
 import Variable from            '../../../Variable.mjs'
-import createControlPanel from  './RoomPage/createControlPanel.mjs'
-function scrollTopMax(n){
-    return n.scrollHeight-n.clientHeight
-}
-function reactScrollRatioToScrollTop(){
-    this._node.messageList.scrollTop=
-        this._scrollRatio*
-        scrollTopMax(this._node.messageList)
-}
-function setScrollRatio(){
-    this._scrollRatio=
-        this._node.messageList.scrollTop/
-        scrollTopMax(this._node.messageList)
-}
+import HomePage from            './RoomPage/HomePage.mjs'
+import MemberPage from          './RoomPage/MemberPage.mjs'
 function RoomPage(){
-    this._node={}
-    this._scrollRatio=1
-    this._skipOnScroll=0
     this.messageList=new Variable([])
     this.out=new Stream
-    this.node=doe.div(
-        {className:'chatRoomPage'},
-        createControlPanel.call(this),
-        doe.div({className:'messageList'},
-            doe.div({onscroll:()=>{
-                if(this._skipOnScroll)
-                    return this._skipOnScroll=0
-                setScrollRatio.call(this)
-            }},n=>{
-                this._node.messageList=n
-                this.messageList.for(a=>{
-                    let bottom=
-                        !scrollTopMax(n)||
-                        1<=this._scrollRatio
-                    n.textContent=''
-                    a.map(a=>
-                        doe(n,
-                            doe.div(
-                                `${a.user}: ${a.content}`,
-                            )
-                        )
-                    )
-                    if(bottom)
-                        n.scrollTop=n.scrollHeight
-                    setScrollRatio.call(this)
-                })
-            })
-        ),
-        doe.div(
-            {className:'sendPanel'},
-            this._node.input=doe.input({onkeydown:e=>{
-                if(e.key=='Enter'){
-                    this.out.in(['putMessage',e.target.value])
-                    e.target.value=''
-                }
-            }}),
-        ),
-    )
-    this.size=new Variable([1,1]).for(a=>{
-        this._skipOnScroll=1
-        this.node.style.setProperty(
-            '--zoom',''+Math.min(a[0],a[1]/(16/22))
-        )
-        reactScrollRatioToScrollTop.call(this)
+    let homePage=new HomePage,memberPage=new MemberPage
+    homePage.messageList.bind(this.messageList)
+    homePage.out.out(a=>{
+        switch(a[0]){
+            case'member':
+                this.page.value=memberPage
+            break
+            default:
+                this.out.in(a)
+            break
+        }
     })
-}
-RoomPage.prototype.focus=function(){
-    this._node.input.focus()
-}
-RoomPage.prototype.scrollToBottom=function(){
-    this._skipOnScroll=1
-    this._scrollRatio=1
-    reactScrollRatioToScrollTop.call(this)
+    memberPage.out.out(a=>{
+        switch(a[0]){
+            case'back':
+                this.page.value=homePage
+            break
+        }
+    })
+    this.page=new Variable(homePage)
 }
 RoomPage.style=`
     body>.chatRoomPage{
@@ -114,5 +66,6 @@ RoomPage.style=`
     body>.chatRoomPage>.sendPanel>*{
         width:19em;
     }
+    ${MemberPage.style}
 `
 export default RoomPage
