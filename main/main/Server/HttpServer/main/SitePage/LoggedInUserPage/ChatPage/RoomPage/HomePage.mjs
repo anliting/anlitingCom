@@ -137,7 +137,7 @@ HomePage.style=`
         font-size:1em;
         vertical-align:top;
         font-family:serif;
-        line-height:1;
+        line-height:1.2;
     }
 `
 export default HomePage
