@@ -30,9 +30,9 @@ function ChatPage(){
         }else if(a[0]=='putMessage'){
             this.out.in(['putMessage',currentRoom,a[1]])
         }else if(a[0]=='leave')
-            ;
+            this.out.in(['leave',currentRoom])
         else if(a[0]=='invite')
-            console.log(['invite',currentRoom,a[1]])
+            this.out.in(['invite',currentRoom,a[1]])
     })
     this.out.in(['listenRoomList',roomList=>{
         homePage.roomList.value=roomList
