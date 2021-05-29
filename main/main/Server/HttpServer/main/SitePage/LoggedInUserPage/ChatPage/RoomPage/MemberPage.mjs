@@ -1,7 +1,12 @@
 import doe from                 'doe'
 import Stream from              '../../../../Stream.mjs'
 import Variable from            '../../../../Variable.mjs'
+function submit(){
+    this.out.in(['invite',+this._node.input.value])
+    this._node.input.value=''
+}
 function MemberPage(){
+    this._node={}
     this.out=new Stream
     this.node=doe.div(
         {className:'chatRoomMemberPage'},
@@ -19,12 +24,6 @@ function MemberPage(){
                 ),
                 doe.div(
                     {className:'b'},
-                    doe.div('Invite',{
-                        className:'button disabled',
-                        onclick:()=>{
-                        },
-                    }),
-                    ' ',
                     doe.div('Leave',{
                         className:'button disabled',
                         onclick:()=>{
@@ -35,7 +34,24 @@ function MemberPage(){
                     })}),
                 ),
             ),
-        )
+        ),
+        doe.div(
+            {className:'invitePanel'},
+            this._node.input=doe.input({
+                placeholder:'User ID',
+                onkeydown:e=>{
+                    if(!(e.key=='Enter'))
+                        return
+                    submit.call(this)
+                }
+            }),
+            doe.div('Invite',{
+                className:'button',
+                onclick:()=>{
+                    submit.call(this)
+                },
+            }),
+        ),
         /*doe.div({className:'messageList'},
             doe.div({onscroll:()=>{
                 if(this._skipOnScroll)
@@ -89,6 +105,9 @@ MemberPage.style=`
     body>.chatRoomMemberPage>.controlPanel>*>.b{
         display:table-cell;
         text-align:right;
+    }
+    body>.chatRoomMemberPage>.invitePanel{
+        margin-top:1em;
     }
 `
 export default MemberPage

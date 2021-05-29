@@ -23,6 +23,9 @@ function RoomPage(){
             case'back':
                 this.page.value=homePage
             break
+            default:
+                this.out.in(a)
+            break
         }
     })
     this.page=new Variable(homePage)
