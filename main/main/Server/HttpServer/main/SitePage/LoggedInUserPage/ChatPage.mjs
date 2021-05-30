@@ -10,6 +10,7 @@ function ChatPage(){
     this.out=new Stream
     homePage.out.out(a=>{
         if(a[0]=='room'){
+            roomPage.clear()
             this.page.bind(roomPage.page)
             roomPage.page.value.scrollToBottom()
             this._messageListListener=messageList=>

@@ -18,6 +18,9 @@ function setScrollRatio(){
 }
 function submit(){
     this.out.in(['putMessage',this._node.input.value])
+    clearInput.call(this)
+}
+function clearInput(){
     this._node.input.value=''
     this.node.style.setProperty('--lineCount',1)
 }
@@ -90,6 +93,9 @@ function HomePage(){
         )
         reactScrollRatioToScrollTop.call(this)
     })
+}
+HomePage.prototype.clear=function(){
+    clearInput.call(this)
 }
 HomePage.prototype.focus=function(){
     this._node.input.focus()
