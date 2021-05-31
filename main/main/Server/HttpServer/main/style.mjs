@@ -155,19 +155,19 @@ export default`
     }
     @keyframes connectedBeat{
         0%{
-            background-color:rgba(0,255,0,.5);
+            background-color:rgba(0,192,0,.5);
         }
         20%{
-            background-color:rgba(0,255,0,1);
+            background-color:rgba(0,192,0,1);
         }
         40%{
-            background-color:rgba(0,255,0,.5);
+            background-color:rgba(0,192,0,.5);
         }
         60%{
-            background-color:rgba(0,255,0,1);
+            background-color:rgba(0,192,0,1);
         }
         80%{
-            background-color:rgba(0,255,0,.5);
+            background-color:rgba(0,192,0,.5);
         }
         100%{
             background:none;
