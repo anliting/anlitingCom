@@ -5,15 +5,21 @@ import Variable from            './main/Variable.mjs'
 import SitePage from            './main/SitePage.mjs'
 let
     site=new Site,
-    sitePage=new SitePage
+    sitePage=new SitePage,
+    connectionStatus=new Variable(0)
 site.out={
     credential(){
         sitePage.credential.value=site.credential
         sitePage.userId.value=site.userId
     },
-    connection(){
-    },
 }
+site.outStream.out(a=>{
+    switch(a[0]){
+        case'connectionStatus':
+        connectionStatus.value=a[1]
+        break
+    }
+})
 sitePage.out.out(a=>{
     switch(a[0]){
         case'putUser':
@@ -66,8 +72,16 @@ sitePage.page.for((to,from)=>{
 let connectionStatusPanel=doe.div(
     {className:'connectionStatusPanel'},
 )
+connectionStatus.for((to,from)=>{
+    if(from)
+        connectionStatusPanel.classList.remove('connected')
+    if(to)
+        connectionStatusPanel.classList.add('connected')
+})
 doe.body(connectionStatusPanel)
 windowSize.for(a=>
-    connectionStatusPanel.style.setProperty('--zoom',''+Math.min(a[0],a[1]/(16/22)))
+    connectionStatusPanel.style.setProperty(
+        '--zoom',''+Math.min(a[0],a[1]/(16/22))
+    )
 )
 navigator.serviceWorker.register('%23sw')

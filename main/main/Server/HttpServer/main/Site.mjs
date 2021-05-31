@@ -22,6 +22,11 @@ function Site(out){
             break
         }
     })
+    this.outStream=new Stream
+    ;(async()=>{
+        await this._connection.load
+        this.outStream.in(['connectionStatus',1])
+    })()
 }
 Site.prototype._send=async function(a){
     this._toSend.push(a)
