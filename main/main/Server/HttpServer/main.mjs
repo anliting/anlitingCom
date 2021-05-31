@@ -10,7 +10,9 @@ site.out={
     credential(){
         sitePage.credential.value=site.credential
         sitePage.userId.value=site.userId
-    }
+    },
+    connection(){
+    },
 }
 sitePage.out.out(a=>{
     switch(a[0]){
@@ -61,5 +63,4 @@ sitePage.page.for((to,from)=>{
     if(to.focus)
         to.focus()
 })
-console.log(navigator.onLine)
 navigator.serviceWorker.register('%23sw')
