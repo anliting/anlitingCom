@@ -38,22 +38,29 @@ function HomePage(){
         ),
         doe.div(
             {className:'b'},
-            'This is An-Li Ting\'s personal website.'
+            doe.div(
+                {className:'b'},
+                'This is An-Li Ting\'s personal website.'
+            ),
+            doe.div(
+                {className:'b'},
+                'You might also want to visit ',
+                doe.a({href:'https://althea.anliting.com/'},'my blog'),
+                '.'
+            ),
+            doe.div(
+                {className:'b'},
+                'Here are some services this website provides:',
+                doe.ul(
+                    doe.li(doe.a({
+                        href:'https://stopwatch.anliting.com/'
+                    },'Stopwatch'))
+                )
+            ),
         ),
         doe.div(
-            {className:'b'},
-            'You might also want to visit ',
-            doe.a({href:'https://althea.anliting.com/'},'my blog'),
-            '.'
-        ),
-        doe.div(
-            {className:'b'},
-            'Here are some services this website provides:',
-            doe.ul(
-                doe.li(doe.a({
-                    href:'https://stopwatch.anliting.com/'
-                },'Stopwatch'))
-            )
+            {className:'c'},
+            'Online',
         ),
     )
     this.size=new Variable([1,1]).for(a=>

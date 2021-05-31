@@ -61,4 +61,5 @@ sitePage.page.for((to,from)=>{
     if(to.focus)
         to.focus()
 })
+console.log(navigator.onLine)
 navigator.serviceWorker.register('%23sw')

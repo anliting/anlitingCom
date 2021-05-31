@@ -86,20 +86,30 @@ export default`
     }
     body>.homePage{
         display:inline-block;
-        padding:1em;
+        padding:1em 1em 0;
         width:20em;
-        height:14em;
+        height:15em;
         font-size:calc(var(--zoom) * 1 / 22 * 1px);
         vertical-align:middle;
     }
     body>.homePage>.a{
         text-align:right;
+        height:1.75em;
     }
     body>.homePage>.a>.loggedInUserPageButton{
         min-width:2em;
     }
     body>.homePage>.b{
         margin-top:1em;
+        height:11.25em;
+    }
+    body>.homePage>.b>*+*{
+        margin-top:1em;
+    }
+    body>.homePage>.c{
+        font-size:.5em;
+        height:2em;
+        line-height:2em;
     }
     body>.registerPage{
         display:inline-block;
