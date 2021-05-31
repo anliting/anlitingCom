@@ -86,13 +86,14 @@ export default`
     }
     body>.homePage{
         display:inline-block;
-        padding:1em 1em 0;
-        width:20em;
+        padding:1em 1em 0 0;
+        width:21em;
         height:15em;
         font-size:calc(var(--zoom) * 1 / 22 * 1px);
         vertical-align:middle;
     }
     body>.homePage>.a{
+        padding-left:1em;
         text-align:right;
         height:1.75em;
     }
@@ -101,6 +102,7 @@ export default`
     }
     body>.homePage>.b{
         margin-top:1em;
+        padding-left:1em;
         height:11.25em;
     }
     body>.homePage>.b>*+*{
@@ -110,6 +112,66 @@ export default`
         font-size:.5em;
         height:2em;
         line-height:2em;
+        width:min-content;
+    }
+    body>.homePage>.c:not(.connected){
+        animation-duration:1.5s;
+        animation-name:notConnectedBeat;
+        animation-direction:alternate;
+        animation-timing-function:linear;
+    }
+    body>.homePage>.c:not(.connected)::after{
+        content:'Disconnected';
+    }
+    body>.homePage>.c.connected{
+        animation-duration:1.5s;
+        animation-name:connectedBeat;
+        animation-direction:alternate;
+        animation-timing-function:linear;
+    }
+    body>.homePage>.c.connected::after{
+        margin:0 .5em;
+        content:'Connected';
+    }
+    @keyframes notConnectedBeat{
+        0%{
+            background-color:rgba(255,0,0,.5);
+        }
+        20%{
+            background-color:rgba(255,0,0,1);
+        }
+        40%{
+            background-color:rgba(255,0,0,.5);
+        }
+        60%{
+            background-color:rgba(255,0,0,1);
+        }
+        80%{
+            background-color:rgba(255,0,0,.5);
+        }
+        100%{
+            background:none;
+        }
+    }
+    @keyframes connectedBeat{
+        0%{
+            background-color:rgba(0,255,0,.5);
+        }
+        20%{
+            background-color:rgba(0,255,0,1);
+        }
+        40%{
+            background-color:rgba(0,255,0,.5);
+        }
+        60%{
+            background-color:rgba(0,255,0,1);
+        }
+        80%{
+            background-color:rgba(0,255,0,.5);
+        }
+        100%{
+            background:none;
+        }
     }
     body>.registerPage{
         display:inline-block;
