@@ -121,6 +121,7 @@ export default`
         animation-timing-function:linear;
     }
     body>.homePage>.c:not(.connected)::after{
+        margin:0 .5em;
         content:'Disconnected';
     }
     body>.homePage>.c.connected{
@@ -135,19 +136,19 @@ export default`
     }
     @keyframes notConnectedBeat{
         0%{
-            background-color:rgba(255,0,0,.5);
+            background-color:rgba(191,0,0,.5);
         }
         20%{
-            background-color:rgba(255,0,0,1);
+            background-color:rgba(191,0,0,1);
         }
         40%{
-            background-color:rgba(255,0,0,.5);
+            background-color:rgba(191,0,0,.5);
         }
         60%{
-            background-color:rgba(255,0,0,1);
+            background-color:rgba(191,0,0,1);
         }
         80%{
-            background-color:rgba(255,0,0,.5);
+            background-color:rgba(191,0,0,.5);
         }
         100%{
             background:none;
@@ -155,19 +156,19 @@ export default`
     }
     @keyframes connectedBeat{
         0%{
-            background-color:rgba(0,192,0,.5);
+            background-color:rgba(0,191,0,.5);
         }
         20%{
-            background-color:rgba(0,192,0,1);
+            background-color:rgba(0,191,0,1);
         }
         40%{
-            background-color:rgba(0,192,0,.5);
+            background-color:rgba(0,191,0,.5);
         }
         60%{
-            background-color:rgba(0,192,0,1);
+            background-color:rgba(0,191,0,1);
         }
         80%{
-            background-color:rgba(0,192,0,.5);
+            background-color:rgba(0,191,0,.5);
         }
         100%{
             background:none;

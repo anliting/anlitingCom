@@ -59,7 +59,7 @@ function HomePage(){
             ),
         ),
         doe.div(
-            {className:'c connected'},
+            {className:'c'},
         ),
     )
     this.size=new Variable([1,1]).for(a=>
