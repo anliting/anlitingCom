@@ -58,9 +58,6 @@ function HomePage(){
                 )
             ),
         ),
-        doe.div(
-            {className:'c'},
-        ),
     )
     this.size=new Variable([1,1]).for(a=>
         this.node.style.setProperty('--zoom',''+Math.min(a[0],a[1]/(16/22)))

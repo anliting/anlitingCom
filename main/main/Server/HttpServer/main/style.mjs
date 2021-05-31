@@ -86,9 +86,9 @@ export default`
     }
     body>.homePage{
         display:inline-block;
-        padding:1em 1em 0 0;
-        width:21em;
-        height:15em;
+        padding:1em;
+        width:20em;
+        height:14em;
         font-size:calc(var(--zoom) * 1 / 22 * 1px);
         vertical-align:middle;
     }
@@ -102,35 +102,62 @@ export default`
     }
     body>.homePage>.b{
         margin-top:1em;
-        padding-left:1em;
-        height:11.25em;
     }
     body>.homePage>.b>*+*{
         margin-top:1em;
     }
-    body>.homePage>.c{
-        font-size:.5em;
+    body>.registerPage{
+        display:inline-block;
+        margin:0 auto;
+        padding:1em;
+        width:20em;
+        height:14em;
+        font-size:calc(var(--zoom) * 1 / 22 * 1px);
+        vertical-align:middle;
+    }
+    body>.registerPage>.registerPanel{
+        margin-top:1em;
+        box-shadow:0 -.05em rgba(0,0,0,.2);
+        padding-top:1em;
+    }
+    body>.loggedInUserPage{
+        display:inline-block;
+        margin:0 auto;
+        padding:1em;
+        width:20em;
+        height:14em;
+        font-size:calc(var(--zoom) * 1 / 22 * 1px);
+        vertical-align:middle;
+    }
+    body>.loggedInUserPage>*+*{
+        margin-top:1em;
+    }
+    body>.connectionStatusPanel{
+        position:fixed;
+        left:0;
+        bottom:0;
+        font-size:calc(var(--zoom) * .5 / 22 * 1px);
         height:2em;
         line-height:2em;
         width:min-content;
     }
-    body>.homePage>.c:not(.connected){
+    body>.connectionStatusPanel:not(.connected){
         animation-duration:1.5s;
         animation-name:notConnectedBeat;
         animation-direction:alternate;
         animation-timing-function:linear;
     }
-    body>.homePage>.c:not(.connected)::after{
+    body>.connectionStatusPanel:not(.connected)::after{
         margin:0 .5em;
         content:'Disconnected';
     }
-    body>.homePage>.c.connected{
+    body>.connectionStatusPanel.connected{
         animation-duration:1.5s;
         animation-name:connectedBeat;
         animation-direction:alternate;
         animation-timing-function:linear;
     }
-    body>.homePage>.c.connected::after{
+    body>.connectionStatusPanel.connected::after{
         margin:0 .5em;
         content:'Connected';
     }
@@ -173,31 +200,5 @@ export default`
         100%{
             background:none;
         }
-    }
-    body>.registerPage{
-        display:inline-block;
-        margin:0 auto;
-        padding:1em;
-        width:20em;
-        height:14em;
-        font-size:calc(var(--zoom) * 1 / 22 * 1px);
-        vertical-align:middle;
-    }
-    body>.registerPage>.registerPanel{
-        margin-top:1em;
-        box-shadow:0 -.05em rgba(0,0,0,.2);
-        padding-top:1em;
-    }
-    body>.loggedInUserPage{
-        display:inline-block;
-        margin:0 auto;
-        padding:1em;
-        width:20em;
-        height:14em;
-        font-size:calc(var(--zoom) * 1 / 22 * 1px);
-        vertical-align:middle;
-    }
-    body>.loggedInUserPage>*+*{
-        margin-top:1em;
     }
 `

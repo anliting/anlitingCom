@@ -59,13 +59,12 @@ sitePage.page.for((to,from)=>{
         doe.body(1,from.node)
     }
     to.size.bind(windowSize)
-    this.size=new Variable([1,1])
     doe.body(to.node)
     if(to.focus)
         to.focus()
 })
 let connectionStatusPanel=doe.div(
-    'a'
+    {className:'connectionStatusPanel'},
 )
 doe.body(connectionStatusPanel)
 windowSize.for(a=>
