@@ -73,7 +73,8 @@ Site.prototype._send=async function(a){
     }
 }
 Site.prototype.end=function(){
-    this._connection.end()
+    if(this._connection)
+        this._connection.end()
 }
 Site.prototype.cutCurrentUser=function(){
     return new Promise(rs=>{
