@@ -7,6 +7,10 @@ let
     site=new Site,
     sitePage=new SitePage,
     connectionStatus=new Variable(0)
+site.onLine.value=navigator.onLine
+ononline=onoffline=()=>{
+    site.onLine.value=navigator.onLine
+}
 site.out={
     credential(){
         sitePage.credential.value=site.credential
@@ -84,8 +88,4 @@ windowSize.for(a=>
         '--zoom',''+Math.min(a[0],a[1]/(16/22))
     )
 )
-console.log(navigator.onLine)
-ononline=onoffline=()=>{
-    console.log(navigator.onLine)
-}
 navigator.serviceWorker.register('%23sw')

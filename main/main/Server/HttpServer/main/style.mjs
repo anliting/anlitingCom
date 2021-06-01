@@ -101,7 +101,7 @@ export default`
     }
     body>.connectionStatusPanel:not(.connected)::after{
         margin:0 .5em;
-        content:'Disconnected';
+        content:'Offline';
     }
     body>.connectionStatusPanel.connected{
         animation-duration:1.5s;
@@ -111,7 +111,7 @@ export default`
     }
     body>.connectionStatusPanel.connected::after{
         margin:0 .5em;
-        content:'Connected';
+        content:'Online';
     }
     @keyframes notConnectedBeat{
         0%{

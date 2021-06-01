@@ -1,5 +1,6 @@
 import Connection from  './Site/Connection.mjs'
 import Stream from      './Stream.mjs'
+import Variable from    './Variable.mjs'
 import chatSite from    './Site/chatSite.mjs'
 function Site(out){
     this.in=new Stream
@@ -24,6 +25,9 @@ function Site(out){
                 this._send(a)
             break
         }
+    })
+    this.onLine=(new Variable).for((to,from)=>{
+        console.log(to)
     })
     this.outStream=new Stream
     ;(async()=>{
