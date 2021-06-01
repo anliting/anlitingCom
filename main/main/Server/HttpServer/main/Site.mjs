@@ -17,10 +17,13 @@ function Site(out){
     this.onLine=(new Variable).for((to,from)=>{
         if(!from&&to){
             this._connection=new Connection
+            let con=this._connection
             this._connection.out={
                 close:()=>{
-                    this.outStream.in(['connectionStatus',0])
-                    console.log('close')
+                    if(this._connection==con){
+                        this._connection=undefined
+                        this.outStream.in(['connectionStatus',0])
+                    }
                 },
                 logOut:()=>{
                     if(this.credential){
@@ -36,9 +39,10 @@ function Site(out){
                     this.outStream.in(['connectionStatus',1])
             })()
         }else if(from&&!to){
-            this._connection=undefined
-            this.outStream.in(['connectionStatus',0])
-            console.log('navigator')
+            if(this._connection){
+                this._connection=undefined
+                this.outStream.in(['connectionStatus',0])
+            }
         }
     })
     this.outStream=new Stream
