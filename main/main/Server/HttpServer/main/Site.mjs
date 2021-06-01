@@ -7,6 +7,9 @@ function Site(out){
     this._toSend=[]
     this._connection=new Connection
     this._connection.out={
+        close:()=>{
+            this.outStream.in(['connectionStatus',0])
+        },
         logOut:()=>{
             if(this.credential){
                 this.credential=0

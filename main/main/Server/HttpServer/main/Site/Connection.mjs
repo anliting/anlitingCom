@@ -32,11 +32,8 @@ function Connection(){
                     this.out.logOut()
             }
         }
-        this._ws.onerror=e=>{
-            console.error(e)
-        }
         this._ws.onclose=e=>{
-            console.log(e)
+            this.out.close()
         }
         await new Promise(rs=>
             this._ws.onopen=rs
