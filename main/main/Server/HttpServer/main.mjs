@@ -84,4 +84,8 @@ windowSize.for(a=>
         '--zoom',''+Math.min(a[0],a[1]/(16/22))
     )
 )
+console.log(navigator.onLine)
+ononline=onoffline=()=>{
+    console.log(navigator.onLine)
+}
 navigator.serviceWorker.register('%23sw')
