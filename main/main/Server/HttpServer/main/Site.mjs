@@ -6,18 +6,6 @@ function Site(out){
     this.in=new Stream
     this.out=out
     this._toSend=[]
-    this._connection=new Connection
-    this._connection.out={
-        close:()=>{
-            this.outStream.in(['connectionStatus',0])
-        },
-        logOut:()=>{
-            if(this.credential){
-                this.credential=0
-                this.out.credential()
-            }
-        },
-    }
     this.in.out(a=>{
         switch(a[0]){
             case'putMessage':
@@ -27,13 +15,33 @@ function Site(out){
         }
     })
     this.onLine=(new Variable).for((to,from)=>{
-        console.log(to)
+        if(!from&&to){
+            this._connection=new Connection
+            this._connection.out={
+                close:()=>{
+                    this.outStream.in(['connectionStatus',0])
+                    console.log('close')
+                },
+                logOut:()=>{
+                    if(this.credential){
+                        this.credential=0
+                        this.out.credential()
+                    }
+                },
+            }
+            ;(async()=>{
+                let con=this._connection
+                await con.load
+                if(this._connection==con)
+                    this.outStream.in(['connectionStatus',1])
+            })()
+        }else if(from&&!to){
+            this._connection=undefined
+            this.outStream.in(['connectionStatus',0])
+            console.log('navigator')
+        }
     })
     this.outStream=new Stream
-    ;(async()=>{
-        await this._connection.load
-        this.outStream.in(['connectionStatus',1])
-    })()
 }
 Site.prototype._send=async function(a){
     this._toSend.push(a)

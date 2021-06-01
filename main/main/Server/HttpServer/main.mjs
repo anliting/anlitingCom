@@ -8,9 +8,8 @@ let
     sitePage=new SitePage,
     connectionStatus=new Variable(0)
 site.onLine.value=navigator.onLine
-ononline=onoffline=()=>{
+ononline=onoffline=()=>
     site.onLine.value=navigator.onLine
-}
 site.out={
     credential(){
         sitePage.credential.value=site.credential
