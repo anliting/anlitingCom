@@ -17,7 +17,6 @@ site.out.out(a=>{
         break
         case'credential':
             sitePage.credential.value=site.credential
-            sitePage.userId.value=site.userId
         break
     }
 })

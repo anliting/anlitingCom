@@ -3,7 +3,6 @@ import Variable from            '../Variable.mjs'
 import Stream from              '../Stream.mjs'
 function HomePage(){
     this.credential=new Variable
-    this.userId=new Variable
     this.out=new Stream
     this.node=doe.div(
         {className:'homePage'},
@@ -28,9 +27,9 @@ function HomePage(){
                             this.out.in('loggedInUserPage')
                         },
                     },n=>{
-                        let userIdListener=a=>n.textContent=a
                         this.credential.for(to=>{
-                            this.userId[to?'for':'unfor'](userIdListener)
+                            if(to)
+                                n.textContent=to[0]
                         })
                     })
                 )

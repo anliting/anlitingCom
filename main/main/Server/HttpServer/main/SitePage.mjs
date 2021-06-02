@@ -23,10 +23,8 @@ function SitePage(){
             this.out.in(['listenRoomList',l])
         })
     })
-    this.userId=new Variable
     this.out=new Stream
     homePage.credential.bind(this.credential)
-    homePage.userId.bind(this.userId)
     homePage.out.out(a=>{
         switch(a){
             case'logIn':
