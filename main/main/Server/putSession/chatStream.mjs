@@ -49,6 +49,7 @@ function chatStream(session,a){
                                 ]
                             )
                 })())
+                a[3]()
             })()
         break
         case'putRoom':
@@ -72,6 +73,7 @@ function chatStream(session,a){
                                 )
                             )
                 })())
+                a[1]()
             })()
         break
         case'unlistenRoomList':

@@ -17,7 +17,7 @@ function setScrollRatio(){
         scrollTopMax(this._node.messageList)
 }
 function submit(){
-    this.out.in(['putMessage',this._node.input.value])
+    this.out.in(['putMessage',this._node.input.value,()=>{}])
     clearInput.call(this)
 }
 function clearInput(){

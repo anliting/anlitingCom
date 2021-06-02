@@ -23,7 +23,7 @@ function HomePage(){
                     doe.div('Create Room',{
                         className:'button',
                         onclick:()=>{
-                            this.out.in(['putRoom'])
+                            this.out.in(['putRoom',()=>{}])
                         },
                     }),
                 ),

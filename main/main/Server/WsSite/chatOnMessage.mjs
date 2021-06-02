@@ -20,14 +20,28 @@ function listenRoomList(connection){
     }])
 }
 async function putMessage(connection,message){
+    let
+        doc=this._connectionMap.get(connection),
+        i=doc.get++
     this._connectionMap.get(connection).session.outStream.in([
         'putMessage',
         message.readUInt32BE(1),
-        message.slice(5)
+        message.slice(5),
+        ()=>{
+            reply(connection,i,Buffer.allocUnsafe(0))
+        },
     ])
 }
 async function putRoom(connection){
-    this._connectionMap.get(connection).session.outStream.in(['putRoom'])
+    let
+        doc=this._connectionMap.get(connection),
+        i=doc.get++
+    this._connectionMap.get(connection).session.outStream.in([
+        'putRoom',
+        ()=>{
+            reply(connection,i,Buffer.allocUnsafe(0))
+        },
+    ])
 }
 function chatOnMessage(connection,message,operationCode){
     if(operationCode==4)

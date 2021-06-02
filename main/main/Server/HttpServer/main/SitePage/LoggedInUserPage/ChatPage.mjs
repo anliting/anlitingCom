@@ -29,7 +29,7 @@ function ChatPage(){
                 'unlistenMessageList',this._messageListListener
             ])
         }else if(a[0]=='putMessage'){
-            this.out.in(['putMessage',currentRoom,a[1]])
+            this.out.in(['putMessage',currentRoom,a[1],a[2]])
         }else if(a[0]=='leave')
             this.out.in(['leave',currentRoom])
         else if(a[0]=='invite')
