@@ -1,7 +1,17 @@
 /*
+    reply:
+        putMessage
+        putRoom
     interruptedByConnectionClose:
         cutCurrentUser
+        putMessage
+        putRoom
         putUser
+    synchronous:
+        listenMessageList
+        listenRoomList
+        logIn
+        logOut
 */
 import Connection from  './Site/Connection.mjs'
 import Stream from      './Stream.mjs'
