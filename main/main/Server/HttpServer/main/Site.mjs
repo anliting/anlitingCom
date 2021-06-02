@@ -7,12 +7,11 @@ function Site(){
     this.in=(new Stream).out(a=>{
         switch(a[0]){
             case'cutCurrentUser':
-                this._send(['cutCurrentUser',async b=>a[1](await b)])
-            break
             case'listenMessageList':
             case'listenRoomList':
             case'putMessage':
             case'putRoom':
+            case'putUser':
                 this._send(a)
             break
             case'logIn':
@@ -25,13 +24,6 @@ function Site(){
                 this._send(['logOut'])
                 this.credential=0
                 this.out.in(['credential'])
-            break
-            case'putUser':
-                this._send([
-                    'putUser',
-                    a[1],
-                    async b=>a[2](new DataView(await b).getUint32(0))
-                ])
             break
         }
     })
@@ -72,9 +64,11 @@ Site.prototype._send=async function(a){
     this._toSend.push(a)
     if(this._toSend.length==1){
         await this._connection.load
-        this._toSend.map(a=>{
-            if(a[0]=='cutCurrentUser')
-                a[1](this._connection.cutCurrentUser())
+        this._toSend.map(async a=>{
+            if(a[0]=='cutCurrentUser'){
+                await this._connection.cutCurrentUser()
+                a[1]()
+            }
             if(a[0]=='listenRoomList')
                 chatSite.listenRoomList(this._connection,a[1])
             if(a[0]=='listenMessageList')
@@ -88,7 +82,7 @@ Site.prototype._send=async function(a){
             if(a[0]=='putRoom')
                 chatSite.putRoom(this._connection)
             if(a[0]=='putUser')
-                a[2](this._connection.putUser(a[1]))
+                a[2](await this._connection.putUser(a[1]))
         })
         this._toSend=[]
     }

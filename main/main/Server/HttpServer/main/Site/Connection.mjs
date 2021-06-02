@@ -48,9 +48,9 @@ Connection.prototype.cutCurrentUser=function(){
     dataView.setUint8(0,3)
     this._ws.send(buf)
     return new Promise(rs=>
-        this._onPort[port]=a=>{
+        this._onPort[port]=()=>{
             delete this._onPort[port]
-            rs(a)
+            rs()
         }
     )
 }
@@ -87,7 +87,7 @@ Connection.prototype.putUser=function(password){
     return new Promise(rs=>
         this._onPort[port]=a=>{
             delete this._onPort[port]
-            rs(a)
+            rs(new DataView(a).getUint32(0))
         }
     )
 }
