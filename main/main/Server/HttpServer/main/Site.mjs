@@ -1,3 +1,8 @@
+/*
+    interruptedByConnectionClose:
+        cutCurrentUser
+        putUser
+*/
 import Connection from  './Site/Connection.mjs'
 import Stream from      './Stream.mjs'
 import Variable from    './Variable.mjs'
