@@ -46,7 +46,7 @@ function HomePage(){
                         Math.abs(
                             this._node.messageList.scrollTop-
                             scrollTopMax(this._node.messageList)
-                        )<=2
+                        )<=3
                     n.textContent=''
                     a.map(a=>
                         doe(n,
