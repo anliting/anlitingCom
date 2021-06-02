@@ -10,16 +10,14 @@ let
 site.onLine.value=navigator.onLine
 ononline=onoffline=()=>
     site.onLine.value=navigator.onLine
-site.out={
-    credential(){
-        sitePage.credential.value=site.credential
-        sitePage.userId.value=site.userId
-    },
-}
-site.outStream.out(a=>{
+site.out.out(a=>{
     switch(a[0]){
         case'connectionStatus':
-        connectionStatus.value=a[1]
+            connectionStatus.value=a[1]
+        break
+        case'credential':
+            sitePage.credential.value=site.credential
+            sitePage.userId.value=site.userId
         break
     }
 })

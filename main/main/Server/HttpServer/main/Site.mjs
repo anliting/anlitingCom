@@ -2,11 +2,9 @@ import Connection from  './Site/Connection.mjs'
 import Stream from      './Stream.mjs'
 import Variable from    './Variable.mjs'
 import chatSite from    './Site/chatSite.mjs'
-function Site(out){
-    this.in=new Stream
-    this.out=out
+function Site(){
     this._toSend=[]
-    this.in.out(a=>{
+    this.in=(new Stream).out(a=>{
         switch(a[0]){
             case'cutCurrentUser':
                 this._send(['cutCurrentUser',async b=>a[1](await b)])
@@ -21,12 +19,12 @@ function Site(out){
                 this._send(a)
                 this.credential=1
                 this.userId=a[1]
-                this.out.credential()
+                this.out.in(['credential'])
             break
             case'logOut':
                 this._send(['logOut'])
                 this.credential=0
-                this.out.credential()
+                this.out.in(['credential'])
             break
             case'putUser':
                 this._send([
@@ -37,6 +35,7 @@ function Site(out){
             break
         }
     })
+    this.out=new Stream
     this.onLine=(new Variable).for((to,from)=>{
         if(!from&&to){
             this._connection=new Connection
@@ -45,13 +44,13 @@ function Site(out){
                 close:()=>{
                     if(this._connection==con){
                         this._connection=undefined
-                        this.outStream.in(['connectionStatus',0])
+                        this.out.in(['connectionStatus',0])
                     }
                 },
                 logOut:()=>{
                     if(this.credential){
                         this.credential=0
-                        this.out.credential()
+                        this.out.in(['credential'])
                     }
                 },
             }
@@ -59,16 +58,15 @@ function Site(out){
                 let con=this._connection
                 await con.load
                 if(this._connection==con)
-                    this.outStream.in(['connectionStatus',1])
+                    this.out.in(['connectionStatus',1])
             })()
         }else if(from&&!to){
             if(this._connection){
                 this._connection=undefined
-                this.outStream.in(['connectionStatus',0])
+                this.out.in(['connectionStatus',0])
             }
         }
     })
-    this.outStream=new Stream
 }
 Site.prototype._send=async function(a){
     this._toSend.push(a)
