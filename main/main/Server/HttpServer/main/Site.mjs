@@ -1,7 +1,4 @@
 /*
-    reply:
-        putMessage
-        putRoom
     interruptedByConnectionClose:
         cutCurrentUser
         putMessage

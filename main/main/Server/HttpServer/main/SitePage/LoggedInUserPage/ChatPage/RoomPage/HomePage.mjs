@@ -43,7 +43,10 @@ function HomePage(){
                 this.messageList.for(a=>{
                     let bottom=
                         !scrollTopMax(n)||
-                        1<=this._scrollRatio
+                        Math.abs(
+                            this._node.messageList.scrollTop-
+                            scrollTopMax(this._node.messageList)
+                        )<=2
                     n.textContent=''
                     a.map(a=>
                         doe(n,
