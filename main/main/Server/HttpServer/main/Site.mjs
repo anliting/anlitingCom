@@ -8,9 +8,32 @@ function Site(out){
     this._toSend=[]
     this.in.out(a=>{
         switch(a[0]){
+            case'cutCurrentUser':
+                this._send(['cutCurrentUser',async b=>a[1](await b)])
+            break
+            case'listenMessageList':
+            case'listenRoomList':
             case'putMessage':
             case'putRoom':
                 this._send(a)
+            break
+            case'logIn':
+                this._send(a)
+                this.credential=1
+                this.userId=a[1]
+                this.out.credential()
+            break
+            case'logOut':
+                this._send(['logOut'])
+                this.credential=0
+                this.out.credential()
+            break
+            case'putUser':
+                this._send([
+                    'putUser',
+                    a[1],
+                    async b=>a[2](new DataView(await b).getUint32(0))
+                ])
             break
         }
     })
@@ -75,32 +98,5 @@ Site.prototype._send=async function(a){
 Site.prototype.end=function(){
     if(this._connection)
         this._connection.end()
-}
-Site.prototype.cutCurrentUser=function(){
-    return new Promise(rs=>{
-        this._send(['cutCurrentUser',rs])
-    })
-}
-Site.prototype.listenMessageList=function(room,cb){
-    this._send(['listenMessageList',room,cb])
-}
-Site.prototype.listenRoomList=function(cb){
-    this._send(['listenRoomList',cb])
-}
-Site.prototype.logIn=function(user,password){
-    this._send(['logIn',user,password])
-    this.credential=1
-    this.userId=user
-    this.out.credential()
-}
-Site.prototype.logOut=function(){
-    this._send(['logOut'])
-    this.credential=0
-    this.out.credential()
-}
-Site.prototype.putUser=async function(password){
-    return new DataView(await new Promise(rs=>{
-        this._send(['putUser',password,rs])
-    })).getUint32(0)
 }
 export default Site

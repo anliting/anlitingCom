@@ -23,32 +23,7 @@ site.outStream.out(a=>{
         break
     }
 })
-sitePage.out.out(a=>{
-    switch(a[0]){
-        case'putUser':
-            site.putUser(a[1]).then(a[2])
-        break
-        case'logIn':
-            site.logIn(a[1],a[2])
-        break
-        case'cutCurrentUser':
-            site.cutCurrentUser().then(a[1])
-        break
-        case'listenMessageList':
-            site.listenMessageList(a[1],a[2])
-        break
-        case'listenRoomList':
-            site.listenRoomList(a[1])
-        break
-        case'logOut':
-            site.logOut()
-        break
-        case'putMessage':
-        case'putRoom':
-            site.in.in(a)
-        break
-    }
-})
+sitePage.out.to(site.in)
 doe.head(
     doe.style(
         style+
