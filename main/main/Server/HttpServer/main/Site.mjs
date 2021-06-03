@@ -15,51 +15,38 @@ import Stream from      './Stream.mjs'
 import Variable from    './Variable.mjs'
 import chatSite from    './Site/chatSite.mjs'
 async function send(a){
-    this._toSend.push(a)
-    if(this._toSend.length==1){
-        await this._connection.load
-        this._toSend.map(async a=>{
-            if(a[0]=='cutCurrentUser'){
-                await this._connection.cutCurrentUser()
-                a[1]()
-            }
-            if(a[0]=='listenRoomList')
-                chatSite.listenRoomList(this._connection,a[1])
-            if(a[0]=='listenMessageList')
-                chatSite.listenMessageList(this._connection,a[1],a[2])
-            if(a[0]=='logIn')
-                this._connection.logIn(a[1],a[2])
-            if(a[0]=='logOut')
-                this._connection.logOut()
-            if(a[0]=='putMessage')
-                chatSite.putMessage(this._connection,a[1],a[2],a[3])
-            if(a[0]=='putRoom')
-                chatSite.putRoom(this._connection,a[1])
-            if(a[0]=='putUser')
-                a[2](await this._connection.putUser(a[1]))
-        })
-        this._toSend=[]
+    if(a[0]=='cutCurrentUser'){
+        await this._connection.cutCurrentUser()
+        a[1]()
     }
+    if(a[0]=='listenRoomList')
+        chatSite.listenRoomList(this._connection,a[1])
+    if(a[0]=='listenMessageList')
+        chatSite.listenMessageList(this._connection,a[1],a[2])
+    if(a[0]=='logIn')
+        this._connection.logIn(a[1],a[2])
+    if(a[0]=='logOut')
+        this._connection.logOut()
+    if(a[0]=='putMessage')
+        chatSite.putMessage(this._connection,a[1],a[2],a[3])
+    if(a[0]=='putRoom')
+        chatSite.putRoom(this._connection,a[1])
+    if(a[0]=='putUser')
+        a[2](await this._connection.putUser(a[1]))
 }
 function Site(){
     this._toSend=[]
     this.in=(new Stream).out(a=>{
+        if(this._connectionStatus)
+            send.call(this,a)
+        else
+            this._toSend.push(a)
         switch(a[0]){
-            case'cutCurrentUser':
-            case'listenMessageList':
-            case'listenRoomList':
-            case'putMessage':
-            case'putRoom':
-            case'putUser':
-                send.call(this,a)
-            break
             case'logIn':
-                send.call(this,a)
                 this.credential=a.slice(1)
                 this.out.in(['credential'])
             break
             case'logOut':
-                send.call(this,a)
                 this.credential=0
                 this.out.in(['credential'])
             break
@@ -73,7 +60,8 @@ function Site(){
             this._connection.out={
                 close:()=>{
                     if(this._connection==con){
-                        this._connection=undefined
+                        this._connection=0
+                        this._connectionStatus=0
                         this.out.in(['connectionStatus',0])
                     }
                 },
@@ -87,12 +75,17 @@ function Site(){
             ;(async()=>{
                 let con=this._connection
                 await con.load
-                if(this._connection==con)
-                    this.out.in(['connectionStatus',1])
+                if(this._connection!=con)
+                    return
+                this._connectionStatus=1
+                this.out.in(['connectionStatus',1])
+                this._toSend.map(send.bind(this))
+                this._toSend=[]
             })()
         }else if(from&&!to){
             if(this._connection){
-                this._connection=undefined
+                this._connection=0
+                this._connectionStatus=0
                 this.out.in(['connectionStatus',0])
             }
         }
