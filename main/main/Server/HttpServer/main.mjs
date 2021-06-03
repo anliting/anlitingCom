@@ -1,4 +1,3 @@
-//有網路且沒連線時，定期重試
 import doe from                 'doe'
 import Site from                './main/Site.mjs'
 import style from               './main/style.mjs'
@@ -8,9 +7,8 @@ let
     site=new Site,
     sitePage=new SitePage,
     connectionStatus=new Variable(0)
-site.onLine.value=navigator.onLine
-ononline=onoffline=()=>
-    site.onLine.value=navigator.onLine
+site.onLine=navigator.onLine
+ononline=onoffline=()=>site.onLine=navigator.onLine
 site.out.out(a=>{
     switch(a[0]){
         case'connectionStatus':
