@@ -1,15 +1,3 @@
-/*
-    interruptedByConnectionClose:
-        cutCurrentUser
-        putMessage
-        putRoom
-        putUser
-    synchronous:
-        listenMessageList
-        listenRoomList
-        logIn
-        logOut
-*/
 import Stream from      './Stream.mjs'
 import Variable from    './Variable.mjs'
 import Connection from  './Site/Connection.mjs'
@@ -17,7 +5,7 @@ import chatSite from    './Site/chatSite.mjs'
 async function send(m){
     let a=m.mission
     if(a[0]=='cutCurrentUser'){
-        m.status=1
+        m.status='sent'
         await this._connection.cutCurrentUser()
         a[1]()
     }
@@ -30,15 +18,15 @@ async function send(m){
     if(a[0]=='logOut')
         this._connection.logOut()
     if(a[0]=='putMessage'){
-        m.status=1
+        m.status='sent'
         chatSite.putMessage(this._connection,a[1],a[2],a[3])
     }
     if(a[0]=='putRoom'){
-        m.status=1
+        m.status='sent'
         chatSite.putRoom(this._connection,a[1])
     }
     if(a[0]=='putUser'){
-        m.status=1
+        m.status='sent'
         a[2](await this._connection.putUser(a[1]))
     }
 }
