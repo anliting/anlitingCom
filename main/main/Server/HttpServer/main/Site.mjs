@@ -77,7 +77,9 @@ setVariable(Site.prototype,'_connectionStatus',function(v){
 setVariable(Site.prototype,'_toConnect',function(to,from){
     if(!from&&to)
         this._connectInterval=setInterval(()=>{
-            console.log('try new connection')
+            if(this._connection)
+                return
+            let start=performance.now()
             this._connection=new Connection
             let con=this._connection
             this._connection.out={

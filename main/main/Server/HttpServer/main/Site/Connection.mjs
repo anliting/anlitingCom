@@ -32,9 +32,8 @@ function Connection(){
                     this.out.logOut()
             }
         }
-        this._ws.onclose=e=>{
+        this._ws.onclose=e=>
             this.out.close()
-        }
         await new Promise(rs=>
             this._ws.onopen=rs
         )
