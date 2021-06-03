@@ -14,6 +14,15 @@ import Connection from  './Site/Connection.mjs'
 import Stream from      './Stream.mjs'
 import Variable from    './Variable.mjs'
 import chatSite from    './Site/chatSite.mjs'
+function inConnection(){
+    this._connectionStatus=1
+    this._mission.map(send.bind(this))
+    this._mission=[]
+}
+function outConnection(){
+    this._connection=0
+    this._connectionStatus=0
+}
 async function send(a){
     if(a[0]=='cutCurrentUser'){
         await this._connection.cutCurrentUser()
@@ -35,12 +44,13 @@ async function send(a){
         a[2](await this._connection.putUser(a[1]))
 }
 function Site(){
-    this._toSend=[]
+    this._mission=[]
     this.in=(new Stream).out(a=>{
-        if(this._connectionStatus)
-            send.call(this,a)
-        else
-            this._toSend.push(a)
+        this._mission.push(a)
+        if(this._connectionStatus){
+            send.call(this,this._mission[0])
+            this._mission=[]
+        }
         switch(a[0]){
             case'logIn':
                 this.credential=a.slice(1)
@@ -60,8 +70,7 @@ function Site(){
             this._connection.out={
                 close:()=>{
                     if(this._connection==con){
-                        this._connection=0
-                        this._connectionStatus=0
+                        outConnection.call(this)
                         this.out.in(['connectionStatus',0])
                     }
                 },
@@ -77,15 +86,12 @@ function Site(){
                 await con.load
                 if(this._connection!=con)
                     return
-                this._connectionStatus=1
+                inConnection.call(this)
                 this.out.in(['connectionStatus',1])
-                this._toSend.map(send.bind(this))
-                this._toSend=[]
             })()
         }else if(from&&!to){
             if(this._connection){
-                this._connection=0
-                this._connectionStatus=0
+                outConnection.call(this)
                 this.out.in(['connectionStatus',0])
             }
         }
