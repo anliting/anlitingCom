@@ -9,6 +9,32 @@ function setVariable(o,k,f){
         this[s]=v
     }})
 }
+async function connect(){
+    if(this._connection)
+        return
+    this._connection=new Connection
+    let con=this._connection
+    this._connection.out={
+        close:()=>{
+            if(this._connection!=con)
+                return
+            outConnection.call(this)
+            this.out.in(['connectionStatus',0])
+        },
+        logOut:()=>{
+            if(this.credential){
+                this.credential=0
+                this.out.in(['credential'])
+            }
+        },
+    }
+    let con=this._connection
+    await con.load
+    if(this._connection!=con)
+        return
+    inConnection.call(this)
+    this.out.in(['connectionStatus',1])
+}
 async function send(m){
     let a=m.mission
     if(a[0]=='cutCurrentUser'){
@@ -75,37 +101,10 @@ setVariable(Site.prototype,'_connectionStatus',function(v){
     this._toConnect=this.onLine.value&&!v
 })
 setVariable(Site.prototype,'_toConnect',function(to,from){
-    if(!from&&to)
-        this._connectInterval=setInterval(()=>{
-            if(this._connection)
-                return
-            let start=performance.now()
-            this._connection=new Connection
-            let con=this._connection
-            this._connection.out={
-                close:()=>{
-                    if(this._connection!=con)
-                        return
-                    outConnection.call(this)
-                    this.out.in(['connectionStatus',0])
-                },
-                logOut:()=>{
-                    if(this.credential){
-                        this.credential=0
-                        this.out.in(['credential'])
-                    }
-                },
-            }
-            ;(async()=>{
-                let con=this._connection
-                await con.load
-                if(this._connection!=con)
-                    return
-                inConnection.call(this)
-                this.out.in(['connectionStatus',1])
-            })()
-        },1e3)
-    else if(from&&!to)
+    if(!from&&to){
+        connect.call(this)
+        this._connectInterval=setInterval(connect.bind(this),1e3)
+    }else if(from&&!to)
         clearInterval(this._connectInterval)
 })
 Site.prototype.end=function(){
