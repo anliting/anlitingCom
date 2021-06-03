@@ -5,7 +5,12 @@ function chatStream(session,a){
         case'listenMessageList':
             doc.ready=(async()=>{
                 await doc.ready
-                if(doc.user==undefined)
+                if(
+                    doc.user==undefined&&
+                    this._chat.room.array.some(b=>
+                        b.id==a[1]&&b.user.includes(doc.user)
+                    )
+                )
                     return
                 doc.listenMessageList=[a[1],a[2]]
                 a[2](this._chat.roomMessage[a[1]])
