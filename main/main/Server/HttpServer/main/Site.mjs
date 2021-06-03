@@ -5,7 +5,7 @@ import chatSite from    './Site/chatSite.mjs'
 function setVariable(o,k,f){
     let s=Symbol()
     Object.defineProperty(o,k,{set(v){
-        f.call(this,v,this[s]from)
+        f.call(this,v,this[s])
         this[s]=v
     }})
 }
@@ -77,6 +77,7 @@ setVariable(Site.prototype,'_connectionStatus',function(v){
 setVariable(Site.prototype,'_toConnect',function(to,from){
     if(!from&&to)
         this._connectInterval=setInterval(()=>{
+            console.log('try new connection')
             this._connection=new Connection
             let con=this._connection
             this._connection.out={
