@@ -1,3 +1,4 @@
+//有網路且沒連線時，定期重試
 import doe from                 'doe'
 import Site from                './main/Site.mjs'
 import style from               './main/style.mjs'
