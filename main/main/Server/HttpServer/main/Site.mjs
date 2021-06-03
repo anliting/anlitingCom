@@ -10,21 +10,14 @@
         logIn
         logOut
 */
-import Connection from  './Site/Connection.mjs'
 import Stream from      './Stream.mjs'
 import Variable from    './Variable.mjs'
+import Connection from  './Site/Connection.mjs'
 import chatSite from    './Site/chatSite.mjs'
-function inConnection(){
-    this._connectionStatus=1
-    this._mission.map(send.bind(this))
-    this._mission=[]
-}
-function outConnection(){
-    this._connection=0
-    this._connectionStatus=0
-}
-async function send(a){
+async function send(m){
+    let a=m.mission
     if(a[0]=='cutCurrentUser'){
+        m.status=1
         await this._connection.cutCurrentUser()
         a[1]()
     }
@@ -36,21 +29,37 @@ async function send(a){
         this._connection.logIn(a[1],a[2])
     if(a[0]=='logOut')
         this._connection.logOut()
-    if(a[0]=='putMessage')
+    if(a[0]=='putMessage'){
+        m.status=1
         chatSite.putMessage(this._connection,a[1],a[2],a[3])
-    if(a[0]=='putRoom')
+    }
+    if(a[0]=='putRoom'){
+        m.status=1
         chatSite.putRoom(this._connection,a[1])
-    if(a[0]=='putUser')
+    }
+    if(a[0]=='putUser'){
+        m.status=1
         a[2](await this._connection.putUser(a[1]))
+    }
+}
+function inConnection(){
+    this._connectionStatus=1
+    this._mission.map(a=>{
+        if(a.status==0)
+            send.call(this,a)
+    })
+}
+function outConnection(){
+    this._connection=0
+    this._connectionStatus=0
 }
 function Site(){
     this._mission=[]
     this.in=(new Stream).out(a=>{
-        this._mission.push(a)
-        if(this._connectionStatus){
-            send.call(this,this._mission[0])
-            this._mission=[]
-        }
+        let mission={mission:a,status:0}
+        this._mission.push(mission)
+        if(this._connectionStatus)
+            send.call(this,mission)
         switch(a[0]){
             case'logIn':
                 this.credential=a.slice(1)
@@ -69,10 +78,10 @@ function Site(){
             let con=this._connection
             this._connection.out={
                 close:()=>{
-                    if(this._connection==con){
-                        outConnection.call(this)
-                        this.out.in(['connectionStatus',0])
-                    }
+                    if(this._connection!=con)
+                        return
+                    outConnection.call(this)
+                    this.out.in(['connectionStatus',0])
                 },
                 logOut:()=>{
                     if(this.credential){
@@ -90,10 +99,11 @@ function Site(){
                 this.out.in(['connectionStatus',1])
             })()
         }else if(from&&!to){
-            if(this._connection){
-                outConnection.call(this)
-                this.out.in(['connectionStatus',0])
-            }
+            if(!this._connection)
+                return
+            this._connection.end()
+            outConnection.call(this)
+            this.out.in(['connectionStatus',0])
         }
     })
 }
