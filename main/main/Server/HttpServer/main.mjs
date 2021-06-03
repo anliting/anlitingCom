@@ -38,8 +38,8 @@ sitePage.page.for((to,from)=>{
         from.size.value=[1,1]
         doe.body(1,from.node)
     }
-    to.size.bind(windowSize)
     doe.body(to.node)
+    to.size.bind(windowSize)
     if(to.focus)
         to.focus()
 })

@@ -105,8 +105,8 @@ HomePage.prototype.focus=function(){
 }
 HomePage.prototype.scrollToBottom=function(){
     this._skipOnScroll=1
-    this._scrollRatio=1
-    reactScrollRatioToScrollTop.call(this)
+    this._node.messageList.scrollTop=this._node.messageList.scrollHeight
+    setScrollRatio.call(this)
 }
 HomePage.style=style
 export default HomePage
