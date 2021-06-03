@@ -28,7 +28,6 @@ async function connect(){
             }
         },
     }
-    let con=this._connection
     await con.load
     if(this._connection!=con)
         return
