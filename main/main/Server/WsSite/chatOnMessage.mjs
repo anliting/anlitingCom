@@ -1,4 +1,29 @@
 import reply from './reply.mjs'
+async function invite(connection,message){
+    let
+        doc=this._connectionMap.get(connection),
+        i=doc.get++
+    this._connectionMap.get(connection).session.outStream.in([
+        'invite',
+        message.readUInt32BE(1),
+        message.readUInt32BE(5),
+        ()=>{
+            reply(connection,i,Buffer.allocUnsafe(0))
+        },
+    ])
+}
+async function leave(connection,message){
+    let
+        doc=this._connectionMap.get(connection),
+        i=doc.get++
+    this._connectionMap.get(connection).session.outStream.in([
+        'leave',
+        message.readUInt32BE(1),
+        ()=>{
+            reply(connection,i,Buffer.allocUnsafe(0))
+        },
+    ])
+}
 function listenMessageList(connection,message){
     let
         doc=this._connectionMap.get(connection),
@@ -52,5 +77,9 @@ function chatOnMessage(connection,message,operationCode){
         putMessage.call(this,connection,message)
     if(operationCode==9)
         listenMessageList.call(this,connection,message)
+    if(operationCode==10)
+        invite.call(this,connection,message)
+    if(operationCode==11)
+        leave.call(this,connection,message)
 }
 export default chatOnMessage

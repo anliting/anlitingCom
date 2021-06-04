@@ -54,7 +54,7 @@ function onMessage(connection,message){
         putUser.call(this,connection,message)
     if(operationCode==3)
         cutCurrentUser.call(this,connection)
-    if([4,7,8,9].includes(operationCode))
+    if([4,7,8,9,10,11].includes(operationCode))
         chatOnMessage.call(this,connection,message,operationCode)
     /*if(operationCode==5)
         setOwn.call(this,connection,message)

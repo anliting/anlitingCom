@@ -48,10 +48,12 @@ async function send(m){
         a[1]()
     }
     if(a[0]=='invite'){
-        console.log(a)
+        m.status='sent'
+        chatSite.invite(this._connection,a[1],a[2],a[3])
     }
     if(a[0]=='leave'){
-        console.log(a)
+        m.status='sent'
+        chatSite.leave(this._connection,a[1],a[2])
     }
     if(a[0]=='listenRoomList')
         chatSite.listenRoomList(this._connection,a[1])

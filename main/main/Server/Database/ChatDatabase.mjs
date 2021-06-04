@@ -72,4 +72,12 @@ ChatDatabase.prototype.putRoom=function(user){
         return id
     })()
 }
+ChatDatabase.prototype.setRoomList=function(doc){
+    return this._ready=(async()=>{
+        await this._ready
+        await this._atomicDirectoryUpdater.update([
+            [0,`data/chat/room/main`,JSON.stringify(doc)],
+        ])
+    })()
+}
 export default ChatDatabase

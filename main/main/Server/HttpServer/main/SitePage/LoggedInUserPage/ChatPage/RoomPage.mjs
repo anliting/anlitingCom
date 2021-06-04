@@ -32,6 +32,7 @@ function RoomPage(){
     this.page=new Variable(this._homePage)
 }
 RoomPage.prototype.clear=function(){
+    this.page.value=this._homePage
     this._homePage.clear()
 }
 RoomPage.style=HomePage.style+MemberPage.style

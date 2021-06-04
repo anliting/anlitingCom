@@ -1,5 +1,30 @@
 let textEncoder=new TextEncoder,textDecoder=new TextDecoder
 let chat={}
+chat.invite=function(con,room,user,cb){
+    let
+        buf=new ArrayBuffer(9),
+        dataView=new DataView(buf)
+    dataView.setUint8(0,10)
+    dataView.setUint32(1,room)
+    dataView.setUint32(5,user)
+    let port=con.send(buf,1)
+    con.onPort(port,a=>{
+        con.offPort(port)
+        cb()
+    })
+}
+chat.leave=function(con,room,cb){
+    let
+        buf=new ArrayBuffer(9),
+        dataView=new DataView(buf)
+    dataView.setUint8(0,11)
+    dataView.setUint32(1,room)
+    let port=con.send(buf,1)
+    con.onPort(port,a=>{
+        con.offPort(port)
+        cb()
+    })
+}
 chat.listenMessageList=function(con,room,cb){
     let
         buf=new ArrayBuffer(5),

@@ -31,12 +31,17 @@ function ChatPage(){
         }else if(a[0]=='putMessage'){
             this.out.in(['putMessage',currentRoom,a[1],a[2]])
         }else if(a[0]=='leave')
-            this.out.in(['leave',currentRoom])
+            this.out.in(['leave',currentRoom,()=>{}])
         else if(a[0]=='invite')
-            this.out.in(['invite',currentRoom,a[1]])
+            this.out.in(['invite',currentRoom,a[1],()=>{}])
     })
     this.out.in(['listenRoomList',roomList=>{
         homePage.roomList.value=roomList
+        if(!(
+            this.page.value!=roomPage.page.value||
+            roomList.some(a=>a.id==currentRoom)
+        ))
+            this.page.value=homePage
     }])
 }
 ChatPage.style=HomePage.style+RoomPage.style

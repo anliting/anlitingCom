@@ -21,6 +21,8 @@ function stream(session,a){
                 a[1](this._database.getOwn(doc.user))
             })()
         break
+        case'invite':
+        case'leave':
         case'listenMessageList':
         case'listenRoomList':
         case'putMessage':
