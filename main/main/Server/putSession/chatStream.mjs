@@ -7,24 +7,27 @@ function chatStream(session,a){
                 await doc.ready
                 if(doc.user==undefined)
                     return
-                let b=this._chat.room.array.filter(b=>
-                    b.id==a[1]&&b.user.includes(doc.user)
-                )
-                if(!b.length)
-                    return
-                b=b[0]
-                let s=new Set(b.user)
-                s.add(a[2])
-                b.user=[...s.keys()]
-                await this._database.chat.setRoomList(this._chat.room)
-                a[3]()
-                for(let doc of this._session.values())
-                    if(doc.listenRoomList)
-                        doc.listenRoomList(
-                            this._chat.room.array.filter(a=>
-                                a.user.includes(doc.user)
+                await(this._chat.ready=(async()=>{
+                    await this._chat.ready
+                    let b=this._chat.room.array.filter(b=>
+                        b.id==a[1]&&b.user.includes(doc.user)
+                    )
+                    if(!b.length)
+                        return
+                    b=b[0]
+                    let s=new Set(b.user)
+                    s.add(a[2])
+                    b.user=[...s.keys()]
+                    await this._database.chat.setRoomList(this._chat.room)
+                    a[3]()
+                    for(let doc of this._session.values())
+                        if(doc.listenRoomList)
+                            doc.listenRoomList(
+                                this._chat.room.array.filter(a=>
+                                    a.user.includes(doc.user)
+                                )
                             )
-                        )
+                })())
             })()
         break
         case'leave':
@@ -32,24 +35,27 @@ function chatStream(session,a){
                 await doc.ready
                 if(doc.user==undefined)
                     return
-                let b=this._chat.room.array.filter(b=>
-                    b.id==a[1]&&b.user.includes(doc.user)
-                )
-                if(!b.length)
-                    return
-                b=b[0]
-                let s=new Set(b.user)
-                s.delete(doc.user)
-                b.user=[...s.keys()]
-                await this._database.chat.setRoomList(this._chat.room)
-                a[2]()
-                for(let doc of this._session.values())
-                    if(doc.listenRoomList)
-                        doc.listenRoomList(
-                            this._chat.room.array.filter(a=>
-                                a.user.includes(doc.user)
+                await(this._chat.ready=(async()=>{
+                    await this._chat.ready
+                    let b=this._chat.room.array.filter(b=>
+                        b.id==a[1]&&b.user.includes(doc.user)
+                    )
+                    if(!b.length)
+                        return
+                    b=b[0]
+                    let s=new Set(b.user)
+                    s.delete(doc.user)
+                    b.user=[...s.keys()]
+                    await this._database.chat.setRoomList(this._chat.room)
+                    a[2]()
+                    for(let doc of this._session.values())
+                        if(doc.listenRoomList)
+                            doc.listenRoomList(
+                                this._chat.room.array.filter(a=>
+                                    a.user.includes(doc.user)
+                                )
                             )
-                        )
+                })())
             })()
         break
         case'listenMessageList':
