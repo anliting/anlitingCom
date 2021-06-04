@@ -59,10 +59,12 @@ function SitePage(){
                     this.page.value=homePage
                 })()
             break
-            case'putMessage':
-            case'putRoom':
+            case'invite':
+            case'leave':
             case'listenMessageList':
             case'logOut':
+            case'putMessage':
+            case'putRoom':
                 this.out.in(a)
             break
             case'listenRoomList':

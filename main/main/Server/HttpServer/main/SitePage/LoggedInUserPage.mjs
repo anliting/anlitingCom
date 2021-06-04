@@ -50,6 +50,8 @@ function LoggedInUserPage(){
             case'back':
                 this.page.value=homePage
             break
+            case'invite':
+            case'leave':
             case'listenMessageList':
             case'listenRoomList':
             case'putMessage':
@@ -57,10 +59,6 @@ function LoggedInUserPage(){
             case'unlistenMessageList':
             case'unlistenRoomList':
                 this.out.in(a)
-            break
-            case'leave':
-            case'invite':
-                console.log(a)
             break
         }
     })

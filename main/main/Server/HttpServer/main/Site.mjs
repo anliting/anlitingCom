@@ -47,6 +47,12 @@ async function send(m){
         await this._connection.cutCurrentUser()
         a[1]()
     }
+    if(a[0]=='invite'){
+        console.log(a)
+    }
+    if(a[0]=='leave'){
+        console.log(a)
+    }
     if(a[0]=='listenRoomList')
         chatSite.listenRoomList(this._connection,a[1])
     if(a[0]=='listenMessageList')
