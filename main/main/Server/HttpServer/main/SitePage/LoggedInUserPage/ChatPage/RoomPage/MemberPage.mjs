@@ -25,7 +25,7 @@ function MemberPage(){
                 doe.div(
                     {className:'b'},
                     doe.div('Leave',{
-                        className:'button disabled',
+                        className:'button',
                         onclick:()=>{
                             this.out.in(['leave'])
                         },

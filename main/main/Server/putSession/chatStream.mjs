@@ -1,4 +1,22 @@
 import process from 'process'
+function pushRoomList(){
+    for(let doc of this._session.values())
+        if(doc.listenRoomList)
+            doc.listenRoomList(
+                this._chat.room.array.filter(a=>
+                    a.user.includes(doc.user)
+                )
+            )
+}
+function pushMessageList(){
+    for(let doc of this._session.values())
+        if(doc.listenMessageList)
+            doc.listenMessageList[1](
+                this._chat.roomMessage[
+                    doc.listenMessageList[0]
+                ]
+            )
+}
 function chatStream(session,a){
     let doc=this._session.get(session)
     switch(a[0]){
@@ -9,24 +27,9 @@ function chatStream(session,a){
                     return
                 await(this._chat.ready=(async()=>{
                     await this._chat.ready
-                    let b=this._chat.room.array.filter(b=>
-                        b.id==a[1]&&b.user.includes(doc.user)
-                    )
-                    if(!b.length)
-                        return
-                    b=b[0]
-                    let s=new Set(b.user)
-                    s.add(a[2])
-                    b.user=[...s.keys()]
-                    await this._database.chat.setRoomList(this._chat.room)
+                    await this._chat.invite(a[1],doc.user,a[2])
                     a[3]()
-                    for(let doc of this._session.values())
-                        if(doc.listenRoomList)
-                            doc.listenRoomList(
-                                this._chat.room.array.filter(a=>
-                                    a.user.includes(doc.user)
-                                )
-                            )
+                    pushRoomList.call(this)
                 })())
             })()
         break
@@ -37,24 +40,9 @@ function chatStream(session,a){
                     return
                 await(this._chat.ready=(async()=>{
                     await this._chat.ready
-                    let b=this._chat.room.array.filter(b=>
-                        b.id==a[1]&&b.user.includes(doc.user)
-                    )
-                    if(!b.length)
-                        return
-                    b=b[0]
-                    let s=new Set(b.user)
-                    s.delete(doc.user)
-                    b.user=[...s.keys()]
-                    await this._database.chat.setRoomList(this._chat.room)
+                    await this._chat.leave(a[1],doc.user)
                     a[2]()
-                    for(let doc of this._session.values())
-                        if(doc.listenRoomList)
-                            doc.listenRoomList(
-                                this._chat.room.array.filter(a=>
-                                    a.user.includes(doc.user)
-                                )
-                            )
+                    pushRoomList.call(this)
                 })())
             })()
         break
@@ -87,28 +75,13 @@ function chatStream(session,a){
             doc.ready=(async()=>{
                 await doc.ready
                 if(!(
-                    doc.user!=undefined&&
-                    this._chat.room.array.some(b=>
-                        b.id==a[1]&&b.user.includes(doc.user)
-                    )
+                    doc.user!=undefined
                 ))
                     return
                 await(this._chat.ready=(async()=>{
                     await this._chat.ready
-                    await this._database.chat.putRoomMessage(
-                        a[1],doc.user,''+a[2]
-                    )
-                    this._chat.roomMessage[a[1]].push({
-                        user:doc.user,
-                        content:''+a[2]
-                    })
-                    for(let doc of this._session.values())
-                        if(doc.listenMessageList)
-                            doc.listenMessageList[1](
-                                this._chat.roomMessage[
-                                    doc.listenMessageList[0]
-                                ]
-                            )
+                    await this._chat.putMessage(a[1],doc.user,a[2])
+                    pushMessageList.call(this)
                 })())
                 a[3]()
             })()
@@ -120,19 +93,8 @@ function chatStream(session,a){
                     return
                 await(this._chat.ready=(async()=>{
                     await this._chat.ready
-                    let room=await this._database.chat.putRoom(doc.user)
-                    this._chat.room.array.push({
-                        id:this._chat.room.index++,
-                        user:[doc.user],
-                    })
-                    this._chat.roomMessage[room]=[]
-                    for(let doc of this._session.values())
-                        if(doc.listenRoomList)
-                            doc.listenRoomList(
-                                this._chat.room.array.filter(a=>
-                                    a.user.includes(doc.user)
-                                )
-                            )
+                    await this._chat.putRoom(doc.user)
+                    pushRoomList.call(this)
                 })())
                 a[1]()
             })()

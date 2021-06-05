@@ -5,17 +5,18 @@ import HttpServer from      './Server/HttpServer.mjs'
 import IpcServer from       './Server/IpcServer.mjs'
 import WsSite from          './Server/WsSite.mjs'
 import putSession from      './Server/putSession.mjs'
-import process from 'process'
+import ChatServer from      './Server/ChatServer.mjs'
 async function load(){
     this._session=new Map
     this._database=new Database
-    this._chat={
-        room:await this._database.chat.getRoom(),
-        roomMessage:{},
-    }
-    for(let room of this._chat.room.array)
-        this._chat.roomMessage[room.id]=
-            await this._database.chat.getRoomMessage(room.id)
+    this._chat=new ChatServer
+    this._chat.out.out(async a=>{
+        if(a[0]=='database')
+            a[a.length-1](
+                await this._database.chat[a[1]](...a.slice(2,-1))
+            )
+    })
+    await this._chat.load
     this._ipcServer=new IpcServer
     this._ipcServer.out=async b=>{
         await this._load
