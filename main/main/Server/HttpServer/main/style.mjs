@@ -94,7 +94,7 @@ export default`
         width:min-content;
     }
     body>.connectionStatusPanel:not(.connected){
-        animation-duration:1.5s;
+        animation-duration:.5s;
         animation-name:notConnectedBeat;
         animation-direction:alternate;
         animation-timing-function:linear;
@@ -104,7 +104,7 @@ export default`
         content:'Offline';
     }
     body>.connectionStatusPanel.connected{
-        animation-duration:1.5s;
+        animation-duration:.5s;
         animation-name:connectedBeat;
         animation-direction:alternate;
         animation-timing-function:linear;
@@ -115,19 +115,7 @@ export default`
     }
     @keyframes notConnectedBeat{
         0%{
-            background-color:rgba(191,0,0,.5);
-        }
-        20%{
             background-color:rgba(191,0,0,1);
-        }
-        40%{
-            background-color:rgba(191,0,0,.5);
-        }
-        60%{
-            background-color:rgba(191,0,0,1);
-        }
-        80%{
-            background-color:rgba(191,0,0,.5);
         }
         100%{
             background:none;
@@ -135,19 +123,7 @@ export default`
     }
     @keyframes connectedBeat{
         0%{
-            background-color:rgba(0,191,0,.5);
-        }
-        20%{
             background-color:rgba(0,191,0,1);
-        }
-        40%{
-            background-color:rgba(0,191,0,.5);
-        }
-        60%{
-            background-color:rgba(0,191,0,1);
-        }
-        80%{
-            background-color:rgba(0,191,0,.5);
         }
         100%{
             background:none;
