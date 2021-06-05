@@ -19,11 +19,13 @@ function pushMessageList(){
 }
 function chatStream(session,a){
     let doc=this._session.get(session)
-    switch(a[0]){
-        case'invite':
-            doc.ready=(async()=>{
-                await doc.ready
-                if(doc.user==undefined)
+    doc.ready=(async()=>{
+        await doc.ready
+        switch(a[0]){
+            case'invite':
+                if(!(
+                    doc.user!=undefined
+                ))
                     return
                 await(this._chat.ready=(async()=>{
                     await this._chat.ready
@@ -31,12 +33,11 @@ function chatStream(session,a){
                     a[3]()
                     pushRoomList.call(this)
                 })())
-            })()
-        break
-        case'leave':
-            doc.ready=(async()=>{
-                await doc.ready
-                if(doc.user==undefined)
+            break
+            case'leave':
+                if(!(
+                    doc.user!=undefined
+                ))
                     return
                 await(this._chat.ready=(async()=>{
                     await this._chat.ready
@@ -44,11 +45,8 @@ function chatStream(session,a){
                     a[2]()
                     pushRoomList.call(this)
                 })())
-            })()
-        break
-        case'listenMessageList':
-            doc.ready=(async()=>{
-                await doc.ready
+            break
+            case'listenMessageList':
                 if(
                     doc.user==undefined&&
                     this._chat.room.array.some(b=>
@@ -58,22 +56,18 @@ function chatStream(session,a){
                     return
                 doc.listenMessageList=[a[1],a[2]]
                 a[2](this._chat.roomMessage[a[1]])
-            })()
-        break
-        case'listenRoomList':
-            doc.ready=(async()=>{
-                await doc.ready
-                if(doc.user==undefined)
+            break
+            case'listenRoomList':
+                if(!(
+                    doc.user!=undefined
+                ))
                     return
                 doc.listenRoomList=a[1]
                 a[1](this._chat.room.array.filter(a=>
                     a.user.includes(doc.user)
                 ))
-            })()
-        break
-        case'putMessage':
-            doc.ready=(async()=>{
-                await doc.ready
+            break
+            case'putMessage':
                 if(!(
                     doc.user!=undefined
                 ))
@@ -84,12 +78,11 @@ function chatStream(session,a){
                     pushMessageList.call(this)
                 })())
                 a[3]()
-            })()
-        break
-        case'putRoom':
-            doc.ready=(async()=>{
-                await doc.ready
-                if(doc.user==undefined)
+            break
+            case'putRoom':
+                if(!(
+                    doc.user!=undefined
+                ))
                     return
                 await(this._chat.ready=(async()=>{
                     await this._chat.ready
@@ -97,14 +90,11 @@ function chatStream(session,a){
                     pushRoomList.call(this)
                 })())
                 a[1]()
-            })()
-        break
-        case'unlistenRoomList':
-            doc.ready=(async()=>{
-                await doc.ready
+            break
+            case'unlistenRoomList':
                 doc.listenRoomList=0
-            })()
-        break
-    }
+            break
+        }
+    })()
 }
 export default chatStream

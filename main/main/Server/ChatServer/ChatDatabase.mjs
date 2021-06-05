@@ -1,5 +1,5 @@
 import fs from'fs'
-import AtomicDirectoryUpdater from'./AtomicDirectoryUpdater.mjs'
+import AtomicDirectoryUpdater from'../AtomicDirectoryUpdater.mjs'
 function ChatDatabase(ready){
     this._ready=ready
     this._atomicDirectoryUpdater=new AtomicDirectoryUpdater

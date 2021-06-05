@@ -5,8 +5,7 @@
 import core from'@anliting/core'
 import fs from'fs'
 import rmrf from'rmrf'
-import AtomicDirectoryUpdater from  './Database/AtomicDirectoryUpdater.mjs'
-import ChatDatabase from            './Database/ChatDatabase.mjs'
+import AtomicDirectoryUpdater from  './AtomicDirectoryUpdater.mjs'
 async function load(){
     if(!await core.existFile('data')){
         await rmrf('data-next')
@@ -33,8 +32,7 @@ async function load(){
     await this._atomicDirectoryUpdater.next()
 }
 function Database(){
-    this._ready=load.call(this)
-    this.chat=new ChatDatabase(this._ready)
+    this._ready=this.load=load.call(this)
 }
 Database.prototype._getUserIndex=async function(){
     return JSON.parse(

@@ -1,14 +1,18 @@
-import Stream from          './Stream.mjs'
+import ChatDatabase from    './ChatServer/ChatDatabase.mjs'
 function ChatServer(){
-    this.out=new Stream
-    this._out=new Stream.StreamCaller(this.out)
+    this._database=new ChatDatabase(new Promise(rs=>{
+        this._loadDatabase=rs
+    }))
     this.load=(async()=>{
-        this.room=await this._out.database('getRoom')
+        this.room=await this._database.getRoom()
         this.roomMessage={}
         for(let room of this.room.array)
             this.roomMessage[room.id]=
-                await this._out.database('getRoomMessage',room.id)
+                await this._database.getRoomMessage(room.id)
     })()
+}
+ChatServer.prototype.loadDatabase=function(){
+    this._loadDatabase()
 }
 ChatServer.prototype.invite=async function(room,user0,user1){
     let b=this.room.array.filter(b=>
@@ -20,7 +24,7 @@ ChatServer.prototype.invite=async function(room,user0,user1){
     let s=new Set(b.user)
     s.add(user1)
     b.user=[...s.keys()]
-    await this._out.database('setRoomList',this.room)
+    await this._database.setRoomList(this.room)
 }
 ChatServer.prototype.leave=async function(room,user){
     let b=this.room.array.filter(b=>
@@ -32,7 +36,7 @@ ChatServer.prototype.leave=async function(room,user){
     let s=new Set(b.user)
     s.delete(user)
     b.user=[...s.keys()]
-    await this._out.database('setRoomList',this.room)
+    await this._database.setRoomList(this.room)
 }
 ChatServer.prototype.putMessage=async function(room,user,message){
     if(!(
@@ -41,8 +45,7 @@ ChatServer.prototype.putMessage=async function(room,user,message){
         )
     ))
         return
-    await this._out.database(
-        'putRoomMessage',
+    await this._database.putRoomMessage(
         room,user,''+message
     )
     this.roomMessage[room].push({
@@ -51,7 +54,7 @@ ChatServer.prototype.putMessage=async function(room,user,message){
     })
 }
 ChatServer.prototype.putRoom=async function(user){
-    let room=await this._out.database('putRoom',user)
+    let room=await this._database.putRoom(user)
     this.room.array.push({
         id:this.room.index++,
         user:[user],

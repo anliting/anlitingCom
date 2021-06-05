@@ -10,12 +10,10 @@ async function load(){
     this._session=new Map
     this._database=new Database
     this._chat=new ChatServer
-    this._chat.out.out(async a=>{
-        if(a[0]=='database')
-            a[a.length-1](
-                await this._database.chat[a[1]](...a.slice(2,-1))
-            )
-    })
+    ;(async()=>{
+        await this._database.load
+        this._chat.loadDatabase()
+    })()
     await this._chat.load
     this._ipcServer=new IpcServer
     this._ipcServer.out=async b=>{
