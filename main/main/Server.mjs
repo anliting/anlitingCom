@@ -14,7 +14,6 @@ async function load(){
         await this._database.load
         this._chat.loadDatabase()
     })()
-    await this._chat.load
     this._ipcServer=new IpcServer
     this._ipcServer.out=async b=>{
         await this._load
@@ -75,6 +74,7 @@ async function load(){
         await this._loadHttpTls()
     if(this._wsTls)
         await this._loadWsTls()
+    await this._chat.load
     await Promise.all([
         this._ipcServer.listen(),
         (async()=>{
