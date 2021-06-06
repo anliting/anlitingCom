@@ -114,17 +114,5 @@ SitePage.style=UserPage.style+LoggedInUserPage.style+`
         box-shadow:0 -.05em rgba(0,0,0,.2);
         padding-top:1em;
     }
-    body>.loggedInUserPage{
-        display:inline-block;
-        margin:0 auto;
-        padding:1em;
-        width:20em;
-        height:14em;
-        font-size:calc(var(--zoom) * 1 / 22 * 1px);
-        vertical-align:middle;
-    }
-    body>.loggedInUserPage>*+*{
-        margin-top:1em;
-    }
 `
 export default SitePage

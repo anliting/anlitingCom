@@ -15,21 +15,38 @@ function HomePage(){
             }),
         ),
         doe.div(
-            doe.div('Log Out',{
-                className:'button',onclick:()=>{
-                    this.out.in(['logOut'])
-                }
-            }),
-            ' ',
-            doe.div('Delete Current User',{
-                className:'button',
-                onclick:()=>{
-                    if(
-                        confirm('Are you sure to delete this user?')
-                    )
-                        this.out.in(['cutCurrentUser'])
-                },
-            }),
+            {className:'a'},
+            doe.div(
+                doe.div('Profile',{
+                    className:'button disabled',
+                    onclick:()=>{
+                    },
+                }),
+                ' ',
+                doe.div('Change Password',{
+                    className:'button disabled',
+                    onclick:()=>{
+                    },
+                }),
+            ),
+            doe.div(
+                doe.div('Delete Current User',{
+                    className:'button',
+                    onclick:()=>{
+                        if(
+                            confirm('Are you sure to delete this user?')
+                        )
+                            this.out.in(['cutCurrentUser'])
+                    },
+                }),
+                ' ',
+                doe.div('Log Out',{
+                    className:'button',
+                    onclick:()=>{
+                        this.out.in(['logOut'])
+                    }
+                }),
+            ),
         ),
         doe.div(
             doe.div('Chat',{
@@ -84,5 +101,21 @@ function LoggedInUserPage(){
     })
     this.page=new Variable(homePage)
 }
-LoggedInUserPage.style=ChatPage.style
+LoggedInUserPage.style=ChatPage.style+`
+    body>.loggedInUserPage{
+        display:inline-block;
+        margin:0 auto;
+        padding:1em;
+        width:20em;
+        height:14em;
+        font-size:calc(var(--zoom) * 1 / 22 * 1px);
+        vertical-align:middle;
+    }
+    body>.loggedInUserPage>*+*{
+        margin-top:1em;
+    }
+    body>.loggedInUserPage>.a>*+*{
+        margin-top:.25em;
+    }
+`
 export default LoggedInUserPage

@@ -51,7 +51,11 @@ function HomePage(){
                     a.map(a=>
                         doe(n,
                             doe.div(
-                                `${a.user}: ${a.content}`,
+                                doe.span(
+                                    n=>{n.style.color='#7f9fff'},
+                                    ''+a.user,
+                                ),
+                                `: ${a.content}`,
                             )
                         )
                     )
