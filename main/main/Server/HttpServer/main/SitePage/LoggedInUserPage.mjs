@@ -24,7 +24,10 @@ function HomePage(){
             doe.div('Delete Current User',{
                 className:'button',
                 onclick:()=>{
-                    this.out.in(['cutCurrentUser'])
+                    if(
+                        confirm('Are you sure to delete this user?')
+                    )
+                        this.out.in(['cutCurrentUser'])
                 },
             }),
         ),

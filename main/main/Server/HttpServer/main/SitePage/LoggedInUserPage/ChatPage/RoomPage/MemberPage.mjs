@@ -27,11 +27,12 @@ function MemberPage(){
                     doe.div('Leave',{
                         className:'button',
                         onclick:()=>{
-                            this.out.in(['leave'])
+                            if(
+                                confirm('Are you sure to leave this room?')
+                            )
+                                this.out.in(['leave'])
                         },
-                    },n=>{doe(n.style,{
-                        color:'#ff7f7f',
-                    })}),
+                    }),
                 ),
             ),
         ),
