@@ -1,4 +1,4 @@
-async function docStream(doc,a){
+async function call(session,doc,a){
     switch(a[0]){
         case'cutCurrentUser':
             if(!(
@@ -24,10 +24,11 @@ async function docStream(doc,a){
         case'putMessage':
         case'putRoom':
         case'unlistenRoomList':
-            await this._chat.stream.call(this,doc,a)
+            await this._chat.call(session,doc,a)
         break
         case'logIn':
             if(doc.user!=undefined){
+                await this._chat.stream.call(this,session,doc,a)
                 doc.user=undefined
                 session.logOut()
             }
@@ -41,7 +42,7 @@ async function docStream(doc,a){
                 doc.user!=undefined
             ))
                 return
-            doc.listenRoomList=0
+            await this._chat.call(session,doc,a)
             doc.user=undefined
             session.logOut()
         break
@@ -57,18 +58,18 @@ async function docStream(doc,a){
         break
     }
 }
-function stream(session,a){
+function lockCall(session,a){
     let doc=this._session.get(session)
     doc.ready=(async()=>{
         await doc.ready
-        await docStream.call(this,doc,a)
+        await call.call(this,session,doc,a)
     })()
 }
 function putSession(session){
-    let doc={}
-    this._session.set(session,doc)
+    this._session.set(session,{})
+    this._chat.putSession(session)
     session.outStream.out(a=>{
-        stream.call(this,session,a)
+        lockCall.call(this,session,a)
     })
 }
 export default putSession

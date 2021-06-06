@@ -68,6 +68,7 @@ async function load(){
         putSession:putSession.bind(this),
         cutSession:session=>{
             this._session.delete(session)
+            this._chat.cutSession(session)
         },  
     }   
     if(this._httpTls)

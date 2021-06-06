@@ -1,9 +1,10 @@
 import Database from        './ChatServer/Database.mjs'
-import stream from          './ChatServer/stream.mjs'
+import call from            './ChatServer/call.mjs'
 function ChatServer(){
     this._database=new Database(new Promise(rs=>{
         this._loadDatabase=rs
     }))
+    this._session=new Map
     this.load=(async()=>{
         this.room=await this._database.getRoom()
         this.roomMessage={}
@@ -62,5 +63,11 @@ ChatServer.prototype.putRoom=async function(user){
     })
     this.roomMessage[room]=[]
 }
-ChatServer.prototype.stream=stream
+ChatServer.prototype.cutSession=function(session){
+    this._session.delete(session)
+}
+ChatServer.prototype.putSession=function(session){
+    this._session.set(session,{})
+}
+ChatServer.prototype.call=call
 export default ChatServer
