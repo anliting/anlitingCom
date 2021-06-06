@@ -1,21 +1,3 @@
-function pushRoomList(){
-    for(let doc of this._session.values())
-        if(doc.listenRoomList)
-            doc.listenRoomList[1](
-                this.room.array.filter(a=>
-                    a.user.includes(doc.listenRoomList[0])
-                )
-            )
-}
-function pushMessageList(){
-    for(let doc of this._session.values())
-        if(doc.listenMessageList)
-            doc.listenMessageList[1](
-                this.roomMessage[
-                    doc.listenMessageList[0]
-                ]
-            )
-}
 async function call(session,doc,a){
     let chatDoc=this._session.get(session)
     switch(a[0]){
@@ -24,36 +6,28 @@ async function call(session,doc,a){
                 doc.user!=undefined
             ))
                 return
-            await(this.ready=(async()=>{
-                await this.ready
-                await this.invite(a[1],doc.user,a[2])
-                a[3]()
-                pushRoomList.call(this)
-            })())
+            await this.invite(a[1],doc.user,a[2])
+            a[3]()
         break
         case'leave':
             if(!(
                 doc.user!=undefined
             ))
                 return
-            await(this.ready=(async()=>{
-                await this.ready
-                await this.leave(a[1],doc.user)
-                a[2]()
-                pushRoomList.call(this)
-            })())
+            await this.leave(a[1],doc.user)
+            a[2]()
         break
         case'logOut':
             chatDoc.listenMessageList=0
             chatDoc.listenRoomList=0
         break
         case'listenMessageList':
-            if(
-                doc.user==undefined&&
+            if(!(
+                doc.user!=undefined&&
                 this.room.array.some(b=>
                     b.id==a[1]&&b.user.includes(doc.user)
                 )
-            )
+            ))
                 return
             chatDoc.listenMessageList=[a[1],a[2]]
             a[2](this.roomMessage[a[1]])
@@ -73,11 +47,7 @@ async function call(session,doc,a){
                 doc.user!=undefined
             ))
                 return
-            await(this.ready=(async()=>{
-                await this.ready
-                await this.putMessage(a[1],doc.user,a[2])
-                pushMessageList.call(this)
-            })())
+            await this.putMessage(a[1],doc.user,a[2])
             a[3]()
         break
         case'putRoom':
@@ -85,11 +55,7 @@ async function call(session,doc,a){
                 doc.user!=undefined
             ))
                 return
-            await(this.ready=(async()=>{
-                await this.ready
-                await this.putRoom(doc.user)
-                pushRoomList.call(this)
-            })())
+            await this.putRoom(doc.user)
             a[1]()
         break
         case'unlistenRoomList':
