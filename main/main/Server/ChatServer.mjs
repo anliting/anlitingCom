@@ -1,6 +1,7 @@
-import ChatDatabase from    './ChatServer/ChatDatabase.mjs'
+import Database from        './ChatServer/Database.mjs'
+import stream from          './ChatServer/stream.mjs'
 function ChatServer(){
-    this._database=new ChatDatabase(new Promise(rs=>{
+    this._database=new Database(new Promise(rs=>{
         this._loadDatabase=rs
     }))
     this.load=(async()=>{
@@ -61,4 +62,5 @@ ChatServer.prototype.putRoom=async function(user){
     })
     this.roomMessage[room]=[]
 }
+ChatServer.prototype.stream=stream
 export default ChatServer
