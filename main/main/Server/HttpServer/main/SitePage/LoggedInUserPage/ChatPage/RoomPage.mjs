@@ -7,19 +7,19 @@ function RoomPage(){
     this.messageList=new Variable([])
     this.out=new Stream
     this._homePage=new HomePage
-    let memberPage=new MemberPage
+    this._memberPage=new MemberPage
     this._homePage.messageList.bind(this.messageList)
     this._homePage.out.out(a=>{
         switch(a[0]){
             case'member':
-                this.page.value=memberPage
+                this.page.value=this._memberPage
             break
             default:
                 this.out.in(a)
             break
         }
     })
-    memberPage.out.out(a=>{
+    this._memberPage.out.out(a=>{
         switch(a[0]){
             case'back':
                 this.page.value=this._homePage
@@ -32,8 +32,10 @@ function RoomPage(){
     this.page=new Variable(this._homePage)
 }
 RoomPage.prototype.clear=function(){
+    this.messageList.value=[]
     this.page.value=this._homePage
     this._homePage.clear()
+    this._memberPage.clear()
 }
 RoomPage.style=HomePage.style+MemberPage.style
 export default RoomPage

@@ -2,8 +2,11 @@ import doe from                 'doe'
 import Stream from              '../../../../Stream.mjs'
 import Variable from            '../../../../Variable.mjs'
 function submit(){
-    this.out.in(['invite',+this._node.input.value])
-    this._node.input.value=''
+    this._node.input.required=true
+    if(this._node.input.checkVaildity()){
+        this.out.in(['invite',+this._node.input.value])
+        this.clear()
+    }
 }
 function MemberPage(){
     this._node={}
@@ -40,6 +43,7 @@ function MemberPage(){
             {className:'invitePanel'},
             this._node.input=doe.input({
                 placeholder:'User ID',
+                pattern:'[0-9]+',
                 onkeydown:e=>{
                     if(!(e.key=='Enter'))
                         return
@@ -84,6 +88,10 @@ function MemberPage(){
             '--zoom',''+Math.min(a[0],a[1]/(16/22))
         )
     })
+}
+MemberPage.prototype.clear=function(){
+    this._node.input.required=false
+    this._node.input.value=''
 }
 MemberPage.style=`
     body>.chatRoomMemberPage{

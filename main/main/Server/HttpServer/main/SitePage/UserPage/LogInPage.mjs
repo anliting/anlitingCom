@@ -35,4 +35,44 @@ LogInPage.prototype.clear=function(){
 LogInPage.prototype.focus=function(){
     this._logInPanel.focus()
 }
+LogInPage.style=`
+    .logInPanel>.a{
+        text-align:center;
+    }
+    .logInPanel>.b{
+        margin-top:.5em;
+        text-align:center;
+    }
+    .logInPanel>.c{
+        margin-top:.5em;
+        text-align:right;
+    }
+    body>.logInPage{
+        display:inline-block;
+        margin:0 auto;
+        padding:1em;
+        width:20em;
+        height:14em;
+        font-size:calc(var(--zoom) * 1 / 22 * 1px);
+        vertical-align:middle;
+    }
+    body>.logInPage>.a{
+        display:table;
+        width:100%;
+    }
+    body>.logInPage>.a>*{
+        display:table-cell;
+    }
+    body>.logInPage>.a>.a{
+        text-align:left;
+    }
+    body>.logInPage>.a>.b{
+        text-align:right;
+    }
+    body>.logInPage>.logInPanel{
+        margin-top:1em;
+        box-shadow:0 -.05em rgba(0,0,0,.2);
+        padding-top:1em;
+    }
+`
 export default LogInPage

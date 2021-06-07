@@ -46,7 +46,8 @@ sitePage.page.for((to,from)=>{
 let connectionStatusPanel=doe.div(
     {className:'connectionStatusPanel'},
 )
-connectionStatus.for((to,from)=>{
+connectionStatus.putTransform((to,from)=>{
+    connectionStatusPanel.classList.add('changed')
     if(from)
         connectionStatusPanel.classList.remove('connected')
     if(to)

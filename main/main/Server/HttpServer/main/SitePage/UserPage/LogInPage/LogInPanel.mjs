@@ -1,19 +1,20 @@
 import doe from         'doe'
 import Stream from      '../../../Stream.mjs'
-function LogInPanel(){
-    this.out=new Stream
-    function submit(){
-        this._idInput.required=true
-        if(this._idInput.checkValidity()){
-            let a=[
-                'logIn',
-                +this._idInput.value,
-                this._passwordInput.value
-            ]
-            this.clear()
-            this.out.in(a)
-        }
+function submit(){
+    this._idInput.required=true
+    if(this._idInput.checkValidity()){
+        let a=[
+            'logIn',
+            +this._idInput.value,
+            this._passwordInput.value
+        ]
+        this.clear()
+        this.out.in(a)
     }
+}
+function LogInPanel(){
+    this._node={}
+    this.out=new Stream
     this.node=doe.div(
         {
             className:'logInPanel',
@@ -37,16 +38,16 @@ function LogInPanel(){
                 autocomplete:'current-password',
                 placeholder:'Password',
                 type:'password',
-                onfocus:()=>{
-                    this._idInput.required=true
-                },
             }),
         ),
         doe.div(
             {className:'c',},
-            doe.div('Log In',{className:'button',onclick:()=>{
-                submit.call(this)
-            }}),
+            this._node.logInButton=doe.div('Log In',{
+                className:'button',
+                onclick:()=>{
+                    submit.call(this)
+                },
+            }),
         ),
     )
 }

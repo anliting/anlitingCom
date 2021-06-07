@@ -1,4 +1,47 @@
 export default`
+    html{
+        height:100%;
+    }
+    body{
+        margin:0;
+        height:100%;
+        background-color:#7f7f7f;
+        line-height:1.2;
+        color:#fff;
+        text-shadow:
+            0 0 .0625em rgba(0,0,0,.4),
+            .0625em .0625em .0625em rgba(0,0,0,.2);
+        overflow:hidden;
+        text-align:center;
+    }
+    body>*{
+        text-align:left;
+    }
+    body::after{
+        content:'';
+        display:inline-block;
+        height:100%;
+        vertical-align:middle;
+    }
+    a{
+        color:#fff;
+    }
+    ul{
+        padding-left:1em;
+    }
+    input{
+        width:12em;
+        height:1.5em;
+        background-color:#bfbfbf;
+        padding:.125em .5em;
+        border:none;
+        outline:none;
+        font-size:1em;
+        vertical-align:top;
+    }
+    input:invalid{
+        box-shadow:inset 0 0 .125em .0625em rgba(255,0,0,.8);
+    }
     .button{
         display:inline-block;
         padding:.125em .5em;
@@ -44,46 +87,6 @@ export default`
         margin-top:.5em;
         text-align:right;
     }
-    html{
-        height:100%;
-    }
-    body{
-        margin:0;
-        height:100%;
-        background-color:#7f7f7f;
-        line-height:1.2;
-        color:#fff;
-        text-shadow:
-            0 0 .0625em rgba(0,0,0,.4),
-            .0625em .0625em .0625em rgba(0,0,0,.2);
-        overflow:hidden;
-        text-align:center;
-    }
-    body>*{
-        text-align:left;
-    }
-    body::after{
-        content:'';
-        display:inline-block;
-        height:100%;
-        vertical-align:middle;
-    }
-    a{
-        color:#fff;
-    }
-    ul{
-        padding-left:1em;
-    }
-    input{
-        width:12em;
-        height:1.5em;
-        background-color:#bfbfbf;
-        padding:.125em .5em;
-        border:none;
-        outline:none;
-        font-size:1em;
-        vertical-align:top;
-    }
     body>.connectionStatusPanel{
         position:fixed;
         left:0;
@@ -93,7 +96,7 @@ export default`
         line-height:2em;
         width:min-content;
     }
-    body>.connectionStatusPanel:not(.connected){
+    body>.connectionStatusPanel.changed:not(.connected){
         animation-duration:.5s;
         animation-name:notConnectedBeat;
         animation-direction:alternate;
@@ -103,7 +106,7 @@ export default`
         margin:0 .5em;
         content:'Offline';
     }
-    body>.connectionStatusPanel.connected{
+    body>.connectionStatusPanel.changed.connected{
         animation-duration:.5s;
         animation-name:connectedBeat;
         animation-direction:alternate;
