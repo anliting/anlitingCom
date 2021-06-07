@@ -85,6 +85,20 @@ Database.prototype.getOwn=function(user){
         }
     })()
 }
+Database.prototype.getUser=function(user){
+    return this._ready=(async()=>{
+        await this._ready
+        try{
+            return JSON.parse(''+await fs.promises.readFile(
+                `data/user/user/${user}/main`
+            ))
+        }catch(e){
+            if(e.code=='ENOENT')
+                return
+            throw e
+        }
+    })()
+}
 Database.prototype.putSuperUser=function(password){
     return this._putUser(password,'{"admin":true}')
 }

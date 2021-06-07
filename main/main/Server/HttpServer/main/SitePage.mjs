@@ -13,6 +13,8 @@ function SitePage(){
     this.page=new Variable
     this.credential=new Variable
     this.credential.for(to=>{
+        if(to)
+            this.out.in(['listenUserProfile',to[0],console.log])
         if(!to&&[userPage.page.value,loggedInUserPage.page.value].includes(
             this.page.value
         ))

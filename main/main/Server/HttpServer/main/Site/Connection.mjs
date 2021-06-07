@@ -56,6 +56,16 @@ Connection.prototype.cutCurrentUser=function(){
 Connection.prototype.end=function(){
     this._ws.close()
 }
+Connection.prototype.listenUserProfile=function(user,cb){
+    let
+        buf=new ArrayBuffer(5),
+        dataView=new DataView(buf)
+    dataView.setUint8(0,12)
+    dataView.setUint32(1,user)
+    this.onPort(this.send(buf,1),a=>{
+        cb(JSON.parse(textDecoder.decode(a)))
+    })
+}
 Connection.prototype.logIn=function(user,password){
     password=textEncoder.encode(password)
     let

@@ -26,6 +26,17 @@ async function call(session,doc,a){
         case'unlistenRoomList':
             await this._chat.call(session,doc,a)
         break
+        case'listenUserProfile':
+            {
+                let user=await this._database.getUser(a[1])
+                if(user)
+                    a[2]([1,{
+                        name:user.name||'',
+                    }])
+                else
+                    a[2]([0])
+            }
+        break
         case'logIn':
             if(doc.user!=undefined){
                 await this._chat.stream.call(this,session,doc,a)

@@ -59,6 +59,8 @@ async function send(m){
         chatSite.listenRoomList(this._connection,a[1])
     if(a[0]=='listenMessageList')
         chatSite.listenMessageList(this._connection,a[1],a[2])
+    if(a[0]=='listenUserProfile')
+        this._connection.listenUserProfile(a[1],a[2])
     if(a[0]=='logIn')
         this._connection.logIn(a[1],a[2])
     if(a[0]=='logOut')

@@ -15,6 +15,18 @@ async function getOwn(connection){
         i=doc.get++
     reply(connection,i,await new Promise(rs=>doc.session.outStream.in(['getOwn',rs])))
 }
+async function listenUserProfile(connection,message){
+    let
+        doc=this._connectionMap.get(connection),
+        i=doc.get++
+    this._connectionMap.get(connection).session.outStream.in([
+        'listenUserProfile',
+        message.readUInt32BE(1),
+        a=>{
+            reply(connection,i,Buffer.from(JSON.stringify(a)))
+        }
+    ])
+}
 async function logIn(connection,message){
     this._connectionMap.get(connection).session.outStream.in([
         'logIn',
@@ -60,6 +72,8 @@ function onMessage(connection,message){
         setOwn.call(this,connection,message)
     if(operationCode==6)
         getOwn.call(this,connection)*/
+    if(operationCode==12)
+        listenUserProfile.call(this,connection,message)
 }
 function syncLoggedOut(connection){
     let buf=Buffer.allocUnsafe(1)
