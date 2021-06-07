@@ -1,3 +1,18 @@
+async function pushUser(id,cb){
+    let user=await this._database.getUser(id)
+    if(user)
+        cb([1,{
+            name:user.name||'',
+        }])
+    else
+        cb([0])
+}
+function pushUserForAllSession(id){
+    for(let doc of this._session.values())
+    for(let listenUser of doc.listenUser)
+    if(listenUser[0]==id)
+        pushUser.call(this,...listenUser)
+}
 async function call(session,doc,a){
     switch(a[0]){
         case'cutCurrentUser':
@@ -6,6 +21,7 @@ async function call(session,doc,a){
             ))
                 return
             await this._database.cutUser(doc.user)
+            pushUserForAllSession.call(this,doc.user)
             doc.user=undefined
             session.logOut()
             a[1]()
@@ -27,15 +43,8 @@ async function call(session,doc,a){
             await this._chat.call(session,doc,a)
         break
         case'listenUserProfile':
-            {
-                let user=await this._database.getUser(a[1])
-                if(user)
-                    a[2]([1,{
-                        name:user.name||'',
-                    }])
-                else
-                    a[2]([0])
-            }
+            doc.listenUser.add([a[1],a[2]])
+            pushUser.call(this,a[1],a[2])
         break
         case'logIn':
             if(doc.user!=undefined){
@@ -77,7 +86,9 @@ function lockCall(session,a){
     })()
 }
 function putSession(session){
-    this._session.set(session,{})
+    this._session.set(session,{
+        listenUser:new Set,
+    })
     this._chat.putSession(session)
     session.outStream.out(a=>{
         lockCall.call(this,session,a)
