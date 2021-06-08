@@ -8,9 +8,6 @@ export default`
         background-color:#7f7f7f;
         line-height:1.2;
         color:#fff;
-        text-shadow:
-            0 0 .0625em rgba(0,0,0,.4),
-            .0625em .0625em .0625em rgba(0,0,0,.2);
         overflow:hidden;
         text-align:center;
     }
@@ -92,6 +89,9 @@ export default`
         left:0;
         bottom:0;
         font-size:calc(var(--zoom) * .5 / 22 * 1px);
+        text-shadow:
+            0 0 .0625em rgba(0,0,0,.4),
+            .0625em .0625em .0625em rgba(0,0,0,.2);
         height:2em;
         line-height:2em;
         width:min-content;
