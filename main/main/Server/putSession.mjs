@@ -83,6 +83,10 @@ async function call(session,doc,a){
                 return
             await this._database.setOwn(doc.user,a[1])
         break
+        case'ws':
+            if(a[1]=='chat')
+                this._chat.message.call(a[2],session,a[3],a[4],a[5])
+        break
     }
 }
 function lockCall(session,a){

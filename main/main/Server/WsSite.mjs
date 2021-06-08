@@ -1,19 +1,17 @@
 import WsServer from        './WsSite/WsServer.mjs'
 import Stream from          './Stream.mjs'
-import reply from           './WsSite/reply.mjs'
-import chatOnMessage from   './WsSite/chatOnMessage.mjs'
 async function cutCurrentUser(connection){
     let
         doc=this._connectionMap.get(connection),
         i=doc.get++
     await new Promise(rs=>doc.session.outStream.in(['cutCurrentUser',rs]))
-    reply(connection,i,Buffer.allocUnsafe(0))
+    this._reply(connection,i,Buffer.allocUnsafe(0))
 }
 async function getOwn(connection){
     let
         doc=this._connectionMap.get(connection),
         i=doc.get++
-    reply(connection,i,await new Promise(rs=>doc.session.outStream.in(['getOwn',rs])))
+    this._reply(connection,i,await new Promise(rs=>doc.session.outStream.in(['getOwn',rs])))
 }
 async function listenUserProfile(connection,message){
     let
@@ -23,7 +21,7 @@ async function listenUserProfile(connection,message){
         'listenUserProfile',
         message.readUInt32BE(1),
         a=>{
-            reply(connection,i,Buffer.from(JSON.stringify(a)))
+            this._reply(connection,i,Buffer.from(JSON.stringify(a)))
         }
     ])
 }
@@ -35,7 +33,7 @@ async function unlistenUserProfile(connection,message){
         'unlistenUserProfile',
         message.readUInt32BE(1),
         ()=>{
-            reply(connection,i,Buffer.allocUnsafe(0))
+            this._reply(connection,i,Buffer.allocUnsafe(0))
         }
     ])
 }
@@ -57,7 +55,7 @@ async function putUser(connection,message){
     buf.writeUInt32BE(await new Promise(rs=>
         doc.session.outStream.in(['putUser',message.slice(1),rs])
     ))
-    reply(connection,i,buf)
+    this._reply(connection,i,buf)
 }
 async function setOwn(connection,message){
     let
@@ -66,9 +64,10 @@ async function setOwn(connection,message){
     await new Promise(rs=>
         doc.session.outStream.in(['setOwn',message.slice(1),rs])
     )
-    reply(connection,i,Buffer.allocUnsafe(0))
+    this._reply(connection,i,Buffer.allocUnsafe(0))
 }
 function onMessage(connection,message){
+    let doc=this._connectionMap.get(connection)
     let operationCode=message.readUInt8()
     if(operationCode==0)
         logIn.call(this,connection,message)
@@ -79,7 +78,7 @@ function onMessage(connection,message){
     if(operationCode==3)
         cutCurrentUser.call(this,connection)
     if([4,7,8,9,10,11].includes(operationCode))
-        chatOnMessage.call(this,connection,message,operationCode)
+        doc.session.outStream.in(['ws','chat',this,connection,message,operationCode])
     /*if(operationCode==5)
         setOwn.call(this,connection,message)
     if(operationCode==6)
@@ -106,6 +105,9 @@ function WsSite(tls){
                         syncLoggedOut.call(this,connection)
                     },
                     outStream:new Stream,
+                    reply:(i,content)=>{
+                        this._reply(connection,i,content)
+                    },
                 },
             }
             this._connectionMap.set(connection,doc)
@@ -121,6 +123,12 @@ function WsSite(tls){
             }
         }
     }
+}
+WsSite.prototype._reply=function(connection,i,content){
+    let buf=Buffer.allocUnsafe(5)
+    buf.writeUInt8(0)
+    buf.writeUInt32BE(i,1)
+    connection.send(Buffer.concat([buf,content])) 
 }
 WsSite.prototype.setSecureContext=function(secureContext){
     this._wsServer.setSecureContext(secureContext)

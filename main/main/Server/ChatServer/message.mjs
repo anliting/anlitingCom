@@ -1,5 +1,4 @@
-import reply from './reply.mjs'
-async function invite(connection,message){
+async function invite(connection,session,message){
     let
         doc=this._connectionMap.get(connection),
         i=doc.get++
@@ -8,11 +7,11 @@ async function invite(connection,message){
         message.readUInt32BE(1),
         message.readUInt32BE(5),
         ()=>{
-            reply(connection,i,Buffer.allocUnsafe(0))
+            session.reply(i,Buffer.allocUnsafe(0))
         },
     ])
 }
-async function leave(connection,message){
+async function leave(connection,session,message){
     let
         doc=this._connectionMap.get(connection),
         i=doc.get++
@@ -20,11 +19,11 @@ async function leave(connection,message){
         'leave',
         message.readUInt32BE(1),
         ()=>{
-            reply(connection,i,Buffer.allocUnsafe(0))
+            session.reply(i,Buffer.allocUnsafe(0))
         },
     ])
 }
-function listenMessageList(connection,message){
+function listenMessageList(connection,session,message){
     let
         doc=this._connectionMap.get(connection),
         i=doc.get++
@@ -32,19 +31,19 @@ function listenMessageList(connection,message){
         'listenMessageList',
         message.readUInt32BE(1),
         a=>{
-            reply(connection,i,Buffer.from(JSON.stringify(a)))
+            session.reply(i,Buffer.from(JSON.stringify(a)))
         }
     ])
 }
-function listenRoomList(connection){
+function listenRoomList(connection,session){
     let
         doc=this._connectionMap.get(connection),
         i=doc.get++
     doc.session.outStream.in(['listenRoomList',a=>{
-        reply(connection,i,Buffer.from(JSON.stringify(a)))
+        session.reply(i,Buffer.from(JSON.stringify(a)))
     }])
 }
-async function putMessage(connection,message){
+async function putMessage(connection,session,message){
     let
         doc=this._connectionMap.get(connection),
         i=doc.get++
@@ -53,33 +52,34 @@ async function putMessage(connection,message){
         message.readUInt32BE(1),
         message.slice(5),
         ()=>{
-            reply(connection,i,Buffer.allocUnsafe(0))
+            session.reply(i,Buffer.allocUnsafe(0))
         },
     ])
 }
-async function putRoom(connection){
+async function putRoom(connection,session){
     let
         doc=this._connectionMap.get(connection),
         i=doc.get++
     this._connectionMap.get(connection).session.outStream.in([
         'putRoom',
         ()=>{
-            reply(connection,i,Buffer.allocUnsafe(0))
+            session.reply(i,Buffer.allocUnsafe(0))
         },
     ])
 }
-function chatOnMessage(connection,message,operationCode){
+function chatOnMessage(session,connection,message,operationCode){
+console.log(session,connection,message,operationCode)
     if(operationCode==4)
-        putRoom.call(this,connection)
+        putRoom.call(this,connection,session)
     if(operationCode==7)
-        listenRoomList.call(this,connection)
+        listenRoomList.call(this,connection,session)
     if(operationCode==8)
-        putMessage.call(this,connection,message)
+        putMessage.call(this,connection,session,message)
     if(operationCode==9)
-        listenMessageList.call(this,connection,message)
+        listenMessageList.call(this,connection,session,message)
     if(operationCode==10)
-        invite.call(this,connection,message)
+        invite.call(this,connection,session,message)
     if(operationCode==11)
-        leave.call(this,connection,message)
+        leave.call(this,connection,session,message)
 }
 export default chatOnMessage

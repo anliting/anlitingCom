@@ -1,5 +1,6 @@
 import Database from        './ChatServer/Database.mjs'
 import call from            './ChatServer/call.mjs'
+import message from         './ChatServer/message.mjs'
 function pushMessageList(){
     for(let doc of this._session.values())
         if(doc.listenMessageList)
@@ -104,4 +105,5 @@ ChatServer.prototype.putSession=function(session){
     this._session.set(session,{})
 }
 ChatServer.prototype.call=call
+ChatServer.prototype.message=message
 export default ChatServer
