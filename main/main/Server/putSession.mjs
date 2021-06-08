@@ -23,6 +23,7 @@ async function call(session,doc,a){
             await this._database.cutUser(doc.user)
             pushUserForAllSession.call(this,doc.user)
             doc.user=undefined
+            // to-do: log out all sessions
             session.logOut()
             a[1]()
         break
@@ -43,8 +44,12 @@ async function call(session,doc,a){
             await this._chat.call(session,doc,a)
         break
         case'listenUserProfile':
-            doc.listenUser.add([a[1],a[2]])
+            doc.listenUser.set(a[1],a[2])
             pushUser.call(this,a[1],a[2])
+        break
+        case'unlistenUserProfile':
+            doc.listenUser.delete(a[1])
+            a[2]()
         break
         case'logIn':
             if(doc.user!=undefined){
@@ -87,7 +92,7 @@ function lockCall(session,a){
 }
 function putSession(session){
     this._session.set(session,{
-        listenUser:new Set,
+        listenUser:new Map,
     })
     this._chat.putSession(session)
     session.outStream.out(a=>{

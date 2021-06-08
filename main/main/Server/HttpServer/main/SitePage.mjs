@@ -12,7 +12,9 @@ function SitePage(){
         roomListListener=new Variable
     this.page=new Variable
     this.credential=new Variable
-    this.credential.for(to=>{
+    this.credential.for((to,from)=>{
+        if(from)
+            this.out.in(['unlistenUserProfile',from[0]])
         if(to)
             this.out.in(['listenUserProfile',to[0],console.log])
         if(!to&&[userPage.page.value,loggedInUserPage.page.value].includes(

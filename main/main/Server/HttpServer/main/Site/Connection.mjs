@@ -142,4 +142,13 @@ Connection.prototype.onPort=function(port,f){
 Connection.prototype.offPort=function(port){
     delete this._onPort[port]
 }
+Connection.prototype.unlistenUserProfile=function(user){
+    let
+        buf=new ArrayBuffer(5),
+        dataView=new DataView(buf)
+    dataView.setUint8(0,13)
+    dataView.setUint32(1,user)
+    this.onPort(this.send(buf,1),()=>{
+    })
+}
 export default Connection

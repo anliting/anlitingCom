@@ -27,6 +27,18 @@ async function listenUserProfile(connection,message){
         }
     ])
 }
+async function unlistenUserProfile(connection,message){
+    let
+        doc=this._connectionMap.get(connection),
+        i=doc.get++
+    this._connectionMap.get(connection).session.outStream.in([
+        'unlistenUserProfile',
+        message.readUInt32BE(1),
+        ()=>{
+            reply(connection,i,Buffer.allocUnsafe(0))
+        }
+    ])
+}
 async function logIn(connection,message){
     this._connectionMap.get(connection).session.outStream.in([
         'logIn',
@@ -74,6 +86,8 @@ function onMessage(connection,message){
         getOwn.call(this,connection)*/
     if(operationCode==12)
         listenUserProfile.call(this,connection,message)
+    if(operationCode==13)
+        unlistenUserProfile.call(this,connection,message)
 }
 function syncLoggedOut(connection){
     let buf=Buffer.allocUnsafe(1)

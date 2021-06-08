@@ -77,6 +77,8 @@ async function send(m){
         m.status='sent'
         a[2](await this._connection.putUser(a[1]))
     }
+    if(a[0]=='unlistenUserProfile')
+        this._connection.unlistenUserProfile(a[1])
 }
 function Site(){
     this._mission=[]
