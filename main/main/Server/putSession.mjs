@@ -22,9 +22,11 @@ async function call(session,doc,a){
                 return
             await this._database.cutUser(doc.user)
             pushUserForAllSession.call(this,doc.user)
-            doc.user=undefined
-            // to-do: log out all sessions
-            session.logOut()
+            for(let s of this._session)
+            if(s[1].user==doc.user){
+                s[1].user=undefined
+                s[0].logOut()
+            }
             a[1]()
         break
         case'getOwn':
