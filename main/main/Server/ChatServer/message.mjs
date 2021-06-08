@@ -1,6 +1,6 @@
-async function invite(session,message){
+async function invite(session,doc,message){
     let i=session.get()
-    session.out.in([
+    await this.call(session,doc,[
         'invite',
         message.readUInt32BE(1),
         message.readUInt32BE(5),
@@ -9,9 +9,9 @@ async function invite(session,message){
         },
     ])
 }
-async function leave(session,message){
+async function leave(session,doc,message){
     let i=session.get()
-    session.out.in([
+    await this.call(session,doc,[
         'leave',
         message.readUInt32BE(1),
         ()=>{
@@ -19,9 +19,9 @@ async function leave(session,message){
         },
     ])
 }
-function listenMessageList(session,message){
+async function listenMessageList(session,doc,message){
     let i=session.get()
-    session.out.in([
+    await this.call(session,doc,[
         'listenMessageList',
         message.readUInt32BE(1),
         a=>{
@@ -29,15 +29,15 @@ function listenMessageList(session,message){
         }
     ])
 }
-function listenRoomList(session){
+async function listenRoomList(session,doc){
     let i=session.get()
-    session.out.in(['listenRoomList',a=>{
+    await this.call(session,doc,['listenRoomList',a=>{
         session.reply(i,Buffer.from(JSON.stringify(a)))
     }])
 }
-async function putMessage(session,message){
+async function putMessage(session,doc,message){
     let i=session.get()
-    session.out.in([
+    await this.call(session,doc,[
         'putMessage',
         message.readUInt32BE(1),
         message.slice(5),
@@ -46,27 +46,27 @@ async function putMessage(session,message){
         },
     ])
 }
-async function putRoom(session){
+async function putRoom(session,doc){
     let i=session.get()
-    session.out.in([
+    await this.call(session,doc,[
         'putRoom',
         ()=>{
             session.reply(i,Buffer.allocUnsafe(0))
         },
     ])
 }
-function message(session,message,operationCode){
+async function message(session,doc,message,operationCode){
     if(operationCode==4)
-        putRoom.call(this,session)
+        await putRoom.call(this,session,doc)
     if(operationCode==7)
-        listenRoomList.call(this,session)
+        await listenRoomList.call(this,session,doc)
     if(operationCode==8)
-        putMessage.call(this,session,message)
+        await putMessage.call(this,session,doc,message)
     if(operationCode==9)
-        listenMessageList.call(this,session,message)
+        await listenMessageList.call(this,session,doc,message)
     if(operationCode==10)
-        invite.call(this,session,message)
+        await invite.call(this,session,doc,message)
     if(operationCode==11)
-        leave.call(this,session,message)
+        await leave.call(this,session,doc,message)
 }
 export default message

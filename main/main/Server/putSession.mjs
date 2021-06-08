@@ -36,15 +36,6 @@ async function call(session,doc,a){
                 return
             a[1](this._database.getOwn(doc.user))
         break
-        case'invite':
-        case'leave':
-        case'listenMessageList':
-        case'listenRoomList':
-        case'putMessage':
-        case'putRoom':
-        case'unlistenRoomList':
-            await this._chat.call(session,doc,a)
-        break
         case'listenUserProfile':
             doc.listenUser.set(a[1],a[2])
             pushUser.call(this,a[1],a[2])
@@ -55,7 +46,7 @@ async function call(session,doc,a){
         break
         case'logIn':
             if(doc.user!=undefined){
-                await this._chat.stream.call(this,session,doc,a)
+                await this._chat.call(session,doc,['logOut'])
                 doc.user=undefined
                 session.logOut()
             }
@@ -85,7 +76,7 @@ async function call(session,doc,a){
         break
         case'ws':
             if(a[1]=='chat')
-                this._chat.message(session,a[2],a[3])
+                await this._chat.message(session,doc,a[2],a[3])
         break
     }
 }
