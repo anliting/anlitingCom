@@ -4,20 +4,20 @@ async function cutCurrentUser(connection){
     let
         doc=this._connectionMap.get(connection),
         i=doc.get++
-    await new Promise(rs=>doc.session.outStream.in(['cutCurrentUser',rs]))
+    await new Promise(rs=>doc.session.out.in(['cutCurrentUser',rs]))
     this._reply(connection,i,Buffer.allocUnsafe(0))
 }
 async function getOwn(connection){
     let
         doc=this._connectionMap.get(connection),
         i=doc.get++
-    this._reply(connection,i,await new Promise(rs=>doc.session.outStream.in(['getOwn',rs])))
+    this._reply(connection,i,await new Promise(rs=>doc.session.out.in(['getOwn',rs])))
 }
 async function listenUserProfile(connection,message){
     let
         doc=this._connectionMap.get(connection),
         i=doc.get++
-    this._connectionMap.get(connection).session.outStream.in([
+    this._connectionMap.get(connection).session.out.in([
         'listenUserProfile',
         message.readUInt32BE(1),
         a=>{
@@ -29,7 +29,7 @@ async function unlistenUserProfile(connection,message){
     let
         doc=this._connectionMap.get(connection),
         i=doc.get++
-    this._connectionMap.get(connection).session.outStream.in([
+    this._connectionMap.get(connection).session.out.in([
         'unlistenUserProfile',
         message.readUInt32BE(1),
         ()=>{
@@ -38,14 +38,14 @@ async function unlistenUserProfile(connection,message){
     ])
 }
 async function logIn(connection,message){
-    this._connectionMap.get(connection).session.outStream.in([
+    this._connectionMap.get(connection).session.out.in([
         'logIn',
         message.readUInt32BE(1),
         message.slice(5)
     ])
 }
 async function logOut(connection){
-    this._connectionMap.get(connection).session.outStream.in(['logOut'])
+    this._connectionMap.get(connection).session.out.in(['logOut'])
 }
 async function putUser(connection,message){
     let
@@ -53,7 +53,7 @@ async function putUser(connection,message){
         i=doc.get++,
         buf=Buffer.allocUnsafe(4)
     buf.writeUInt32BE(await new Promise(rs=>
-        doc.session.outStream.in(['putUser',message.slice(1),rs])
+        doc.session.out.in(['putUser',message.slice(1),rs])
     ))
     this._reply(connection,i,buf)
 }
@@ -62,7 +62,7 @@ async function setOwn(connection,message){
         doc=this._connectionMap.get(connection),
         i=doc.get++
     await new Promise(rs=>
-        doc.session.outStream.in(['setOwn',message.slice(1),rs])
+        doc.session.out.in(['setOwn',message.slice(1),rs])
     )
     this._reply(connection,i,Buffer.allocUnsafe(0))
 }
@@ -78,7 +78,7 @@ function onMessage(connection,message){
     if(operationCode==3)
         cutCurrentUser.call(this,connection)
     if([4,7,8,9,10,11].includes(operationCode))
-        doc.session.outStream.in(['ws','chat',this,connection,message,operationCode])
+        doc.session.out.in(['ws','chat',message,operationCode])
     /*if(operationCode==5)
         setOwn.call(this,connection,message)
     if(operationCode==6)
@@ -104,10 +104,11 @@ function WsSite(tls){
                     logOut(){
                         syncLoggedOut.call(this,connection)
                     },
-                    outStream:new Stream,
+                    out:new Stream,
                     reply:(i,content)=>{
                         this._reply(connection,i,content)
                     },
+                    get:()=>doc.get++,
                 },
             }
             this._connectionMap.set(connection,doc)

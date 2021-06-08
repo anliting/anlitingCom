@@ -85,7 +85,7 @@ async function call(session,doc,a){
         break
         case'ws':
             if(a[1]=='chat')
-                this._chat.message.call(a[2],session,a[3],a[4],a[5])
+                this._chat.message(session,a[2],a[3])
         break
     }
 }
@@ -101,7 +101,7 @@ function putSession(session){
         listenUser:new Map,
     })
     this._chat.putSession(session)
-    session.outStream.out(a=>{
+    session.out.out(a=>{
         lockCall.call(this,session,a)
     })
 }

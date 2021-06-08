@@ -1,8 +1,6 @@
-async function invite(connection,session,message){
-    let
-        doc=this._connectionMap.get(connection),
-        i=doc.get++
-    this._connectionMap.get(connection).session.outStream.in([
+async function invite(session,message){
+    let i=session.get()
+    session.out.in([
         'invite',
         message.readUInt32BE(1),
         message.readUInt32BE(5),
@@ -11,11 +9,9 @@ async function invite(connection,session,message){
         },
     ])
 }
-async function leave(connection,session,message){
-    let
-        doc=this._connectionMap.get(connection),
-        i=doc.get++
-    this._connectionMap.get(connection).session.outStream.in([
+async function leave(session,message){
+    let i=session.get()
+    session.out.in([
         'leave',
         message.readUInt32BE(1),
         ()=>{
@@ -23,11 +19,9 @@ async function leave(connection,session,message){
         },
     ])
 }
-function listenMessageList(connection,session,message){
-    let
-        doc=this._connectionMap.get(connection),
-        i=doc.get++
-    doc.session.outStream.in([
+function listenMessageList(session,message){
+    let i=session.get()
+    session.out.in([
         'listenMessageList',
         message.readUInt32BE(1),
         a=>{
@@ -35,19 +29,15 @@ function listenMessageList(connection,session,message){
         }
     ])
 }
-function listenRoomList(connection,session){
-    let
-        doc=this._connectionMap.get(connection),
-        i=doc.get++
-    doc.session.outStream.in(['listenRoomList',a=>{
+function listenRoomList(session){
+    let i=session.get()
+    session.out.in(['listenRoomList',a=>{
         session.reply(i,Buffer.from(JSON.stringify(a)))
     }])
 }
-async function putMessage(connection,session,message){
-    let
-        doc=this._connectionMap.get(connection),
-        i=doc.get++
-    this._connectionMap.get(connection).session.outStream.in([
+async function putMessage(session,message){
+    let i=session.get()
+    session.out.in([
         'putMessage',
         message.readUInt32BE(1),
         message.slice(5),
@@ -56,30 +46,27 @@ async function putMessage(connection,session,message){
         },
     ])
 }
-async function putRoom(connection,session){
-    let
-        doc=this._connectionMap.get(connection),
-        i=doc.get++
-    this._connectionMap.get(connection).session.outStream.in([
+async function putRoom(session){
+    let i=session.get()
+    session.out.in([
         'putRoom',
         ()=>{
             session.reply(i,Buffer.allocUnsafe(0))
         },
     ])
 }
-function chatOnMessage(session,connection,message,operationCode){
-console.log(session,connection,message,operationCode)
+function message(session,message,operationCode){
     if(operationCode==4)
-        putRoom.call(this,connection,session)
+        putRoom.call(this,session)
     if(operationCode==7)
-        listenRoomList.call(this,connection,session)
+        listenRoomList.call(this,session)
     if(operationCode==8)
-        putMessage.call(this,connection,session,message)
+        putMessage.call(this,session,message)
     if(operationCode==9)
-        listenMessageList.call(this,connection,session,message)
+        listenMessageList.call(this,session,message)
     if(operationCode==10)
-        invite.call(this,connection,session,message)
+        invite.call(this,session,message)
     if(operationCode==11)
-        leave.call(this,connection,session,message)
+        leave.call(this,session,message)
 }
-export default chatOnMessage
+export default message
