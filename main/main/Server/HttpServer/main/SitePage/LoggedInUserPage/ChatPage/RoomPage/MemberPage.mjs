@@ -3,7 +3,7 @@ import Stream from              '../../../../Stream.mjs'
 import Variable from            '../../../../Variable.mjs'
 function submit(){
     this._node.input.required=true
-    if(this._node.input.checkVaildity()){
+    if(this._node.input.checkValidity()){
         this.out.in(['invite',+this._node.input.value])
         this.clear()
     }

@@ -1,23 +1,25 @@
-async function invite(session,doc,message){
-    let i=session.get()
-    if(!(
-        doc.user!=undefined
-    ))
-        return
-    await this.invite(
-        message.readUInt32BE(1),
-        doc.user,
-        message.readUInt32BE(5)
-    )
-    session.reply(i,Buffer.allocUnsafe(0))
-}
+import invite from'./message/invite.mjs'
 async function leave(session,doc,message){
     let i=session.get()
     if(!(
         doc.user!=undefined
     ))
         return
-    await this.leave(message.readUInt32BE(1),doc.user)
+    let room=message.readUInt32BE(1),user=doc.user
+    await(this._ready=(async()=>{
+        await this._ready
+        let b=this.room.array.filter(b=>
+            b.id==room&&b.user.includes(user)
+        )
+        if(!b.length)
+            return
+        b=b[0]
+        let s=new Set(b.user)
+        s.delete(user)
+        b.user=[...s.keys()]
+        await this._database.setRoomList(this.room)
+        this._pushRoomList()
+    })())
     session.reply(i,Buffer.allocUnsafe(0))
 }
 function listenMessageList(session,doc,message){
@@ -55,7 +57,33 @@ async function putMessage(session,doc,message){
         doc.user!=undefined
     ))
         return
-    await this.putMessage(message.readUInt32BE(1),doc.user,message.slice(5))
+    let
+        room=message.readUInt32BE(1),
+        user=doc.user,
+        targetMessage=''+message.slice(5)
+    await(this._ready=(async()=>{
+        await this._ready
+        if(!(
+            this.room.array.some(b=>
+                b.id==room&&b.user.includes(user)
+            )
+        ))
+            return
+        await this._database.putRoomMessage(
+            room,user,targetMessage
+        )
+        this.roomMessage[room].push({
+            user,
+            content:targetMessage,
+        })
+        for(let doc of this._session.values())
+            if(doc.listenMessageList)
+                doc.listenMessageList[1](
+                    this.roomMessage[
+                        doc.listenMessageList[0]
+                    ]
+                )
+    })())
     session.reply(i,Buffer.allocUnsafe(0))
 }
 async function putRoom(session,doc){
@@ -64,7 +92,17 @@ async function putRoom(session,doc){
         doc.user!=undefined
     ))
         return
-    await this.putRoom(doc.user)
+    let user=doc.user
+    await(this._ready=(async()=>{
+        await this._ready
+        let room=await this._database.putRoom(user)
+        this.room.array.push({
+            id:this.room.index++,
+            user:[user],
+        })
+        this.roomMessage[room]=[]
+        this._pushRoomList()
+    })())
     session.reply(i,Buffer.allocUnsafe(0))
 }
 async function unlistenRoomList(session,doc){
@@ -76,17 +114,17 @@ async function unlistenRoomList(session,doc){
     chatDoc.listenRoomList=0
 }
 async function message(session,doc,message,operationCode){
-    if(operationCode==4)
+    if(operationCode==16)
         await putRoom.call(this,session,doc)
-    if(operationCode==7)
+    if(operationCode==17)
         await listenRoomList.call(this,session,doc)
-    if(operationCode==8)
+    if(operationCode==18)
         await putMessage.call(this,session,doc,message)
-    if(operationCode==9)
+    if(operationCode==19)
         listenMessageList.call(this,session,doc,message)
-    if(operationCode==10)
+    if(operationCode==20)
         await invite.call(this,session,doc,message)
-    if(operationCode==11)
+    if(operationCode==21)
         await leave.call(this,session,doc,message)
 }
 export default message

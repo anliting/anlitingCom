@@ -15,6 +15,9 @@ function pushUserForAllSession(id){
 }
 async function call(session,doc,a){
     switch(a[0]){
+        case'chat':
+            await this._chat.message(session,doc,a[2],a[3])
+        break
         case'cutCurrentUser':
             if(!(
                 doc.user!=undefined
@@ -73,10 +76,6 @@ async function call(session,doc,a){
             ))
                 return
             await this._database.setOwn(doc.user,a[1])
-        break
-        case'ws':
-            if(a[1]=='chat')
-                await this._chat.message(session,doc,a[2],a[3])
         break
     }
 }
