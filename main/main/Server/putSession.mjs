@@ -16,7 +16,11 @@ function pushUserForAllSession(id){
 async function call(session,doc,a){
     switch(a[0]){
         case'chat':
+            if(a[2]==17)
+                console.log('debug','listenRoomList start')
             await this._chat.message(session,doc,a[1],a[2])
+            if(a[2]==17)
+                console.log('debug','listenRoomList end')
         break
         case'cutCurrentUser':
             if(!(

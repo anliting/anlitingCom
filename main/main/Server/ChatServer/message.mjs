@@ -39,6 +39,7 @@ function listenMessageList(session,doc,message){
 }
 async function listenRoomList(session,doc){
     let i=session.get(),reply=a=>{
+        console.log('debug','listenRoomList replied')
         session.reply(i,Buffer.from(JSON.stringify(a)))
     }
     if(!(

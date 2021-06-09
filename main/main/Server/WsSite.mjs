@@ -1,5 +1,11 @@
 import WsServer from        './WsSite/WsServer.mjs'
 import Stream from          './Stream.mjs'
+let map=new Map,i=0
+function toNumber(v){
+    if(!map.has(v))
+        map.set(v,i++)
+    return map.get(v)
+}
 async function cutCurrentUser(connection){
     let
         doc=this._connectionMap.get(connection),
@@ -103,6 +109,7 @@ function WsSite(tls){
                 get:0,
                 session:{
                     logOut(){
+                        console.log('debug','logOut')
                         syncLoggedOut.call(this,connection)
                     },
                     out:new Stream,
@@ -127,6 +134,7 @@ function WsSite(tls){
     }
 }
 WsSite.prototype._reply=function(connection,i,content){
+    console.log('debug','reply',toNumber(connection),i)
     let buf=Buffer.allocUnsafe(5)
     buf.writeUInt8(0)
     buf.writeUInt32BE(i,1)
