@@ -16,7 +16,7 @@ function pushUserForAllSession(id){
 async function call(session,doc,a){
     switch(a[0]){
         case'chat':
-            await this._chat.message(session,doc,a[2],a[3])
+            await this._chat.message(session,doc,a[1],a[2])
         break
         case'cutCurrentUser':
             if(!(
