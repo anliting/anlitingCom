@@ -12,16 +12,6 @@ async function load(){
         await fs.promises.mkdir('data-next')
         await fs.promises.mkdir('data-next/tmp')
         await fs.promises.mkdir('data-next/user')
-        await fs.promises.mkdir('data-next/chat')
-        await fs.promises.mkdir('data-next/chat/room')
-        await fs.promises.mkdir('data-next/chat/room/room')
-        await fs.promises.writeFile(
-            'data-next/chat/room/main',
-            JSON.stringify({
-                index:0,
-                array:[],
-            })
-        )
         await fs.promises.writeFile('data-next/user/main',JSON.stringify({
             index:0,
         }))

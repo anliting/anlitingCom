@@ -1,7 +1,25 @@
+import core from'@anliting/core'
 import fs from'fs'
 import AtomicDirectoryUpdater from'../AtomicDirectoryUpdater.mjs'
 function ChatDatabase(ready){
-    this._ready=ready
+    this._ready=(async()=>{
+        await ready
+        if(await core.existFile('data/chat'))
+            return
+        await this._atomicDirectoryUpdater.update([
+            [1,'data/chat'],
+            [1,'data/chat/room'],
+            [
+                0,
+                'data/chat/room/main',
+                JSON.stringify({
+                    index:0,
+                    array:[],
+                })
+            ],
+            [1,'data/chat/room/room'],
+        ])
+    })()
     this._atomicDirectoryUpdater=new AtomicDirectoryUpdater
 }
 ChatDatabase.prototype._getRoom=async function(){
