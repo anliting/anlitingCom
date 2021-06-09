@@ -2,9 +2,9 @@
     data/tmp: for upload
     data/user: for user
 */
-import core from'@anliting/core'
-import fs from'fs'
-import rmrf from'rmrf'
+import core from                    '@anliting/core'
+import fs from                      'fs'
+import rmrf from                    'rmrf'
 import AtomicDirectoryUpdater from  './AtomicDirectoryUpdater.mjs'
 async function load(){
     if(!await core.existFile('data')){
