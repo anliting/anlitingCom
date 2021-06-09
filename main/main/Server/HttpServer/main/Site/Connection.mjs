@@ -10,8 +10,7 @@ function getWs(){
 function Connection(){
     this._port=0
     this._onPort={}
-    this._outCredential=0
-    this._onceLogOut=[]
+    this._logIn=[]
     this.load=(async()=>{
         this._ws=new WebSocket(getWs())
         this._ws.onmessage=async e=>{
@@ -26,9 +25,9 @@ function Connection(){
             }
             // syncLoggedOut
             if(operation==1){
-                this._onceLogOut.map(f=>f())
-                this._onceLogOut=[]
-                if(--this._outCredential==0)
+                let logIn=this._logIn.shift()
+                logIn.onceLogOut.map(f=>f())
+                if(this._logIn.length==0)
                     this.out.logOut()
             }
         }
@@ -76,7 +75,9 @@ Connection.prototype.logIn=function(user,password){
     dataView.setUint32(1,user)
     array.set(password,5)
     this._ws.send(buf)
-    this._outCredential++
+    this._logIn.push({
+        onceLogOut:[],
+    })
 }
 Connection.prototype.logOut=function(){
     let buf=new ArrayBuffer(1),dataView=new DataView(buf)
@@ -134,7 +135,7 @@ Connection.prototype.send=function(buf,port){
         return this._port++
 }
 Connection.prototype.onceLogOut=function(f){
-    this._onceLogOut.push(f)
+    this._logIn[this._logIn.length-1].onceLogOut.push(f)
 }
 Connection.prototype.onPort=function(port,f){
     this._onPort[port]=f
