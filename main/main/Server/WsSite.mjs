@@ -1,11 +1,5 @@
 import WsServer from        './WsSite/WsServer.mjs'
 import Stream from          './Stream.mjs'
-let map=new Map,i=0
-function toNumber(v){
-    if(!map.has(v))
-        map.set(v,i++)
-    return map.get(v)
-}
 async function cutCurrentUser(connection){
     let
         doc=this._connectionMap.get(connection),
