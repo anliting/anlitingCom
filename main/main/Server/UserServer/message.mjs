@@ -1,3 +1,14 @@
+function putUser(session,doc,message){
+    let i=session.get()
+    doc.ready=(async()=>{
+        await doc.ready
+        let buf=Buffer.allocUnsafe(4)
+        buf.writeUInt32BE(
+            await this._database.putUser(message.slice(1))
+        )
+        session.reply(i,buf)
+    })()
+}
 function leave(session,doc,message){
     let i=session.get()
     doc.ready=(async()=>{
@@ -59,28 +70,6 @@ function listenRoomList(session,doc){
         ))
     })()
 }
-function putRoom(session,doc){
-    let i=session.get()
-    doc.ready=(async()=>{
-        await doc.ready
-        if(!(
-            doc.user!=undefined
-        ))
-            return
-        let user=doc.user
-        await(this._ready=(async()=>{
-            await this._ready
-            let room=await this._database.putRoom(user)
-            this.room.array.push({
-                id:this.room.index++,
-                user:[user],
-            })
-            this.roomMessage[room]=[]
-            this._pushRoomList()
-        })())
-        session.reply(i,Buffer.allocUnsafe(0))
-    })()
-}
 function unlistenRoomList(session,doc){
     doc.ready=(async()=>{
         await doc.ready
@@ -93,8 +82,8 @@ function unlistenRoomList(session,doc){
     })()
 }
 function message(session,doc,message,operationCode){
-    if(operationCode==16)
-        putRoom.call(this,session,doc)
+    if(operationCode==2)
+        putUser.call(this,session,doc,message)
     if(operationCode==17)
         listenRoomList.call(this,session,doc)
     if(operationCode==19)

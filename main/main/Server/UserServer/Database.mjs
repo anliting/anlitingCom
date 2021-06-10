@@ -1,3 +1,21 @@
+/*Database.prototype.getOwn=function(user){
+    return this._ready=(async()=>{
+        await this._ready
+        try{
+            return await fs.promises.readFile(`data/user/user/${user}/own`)
+        }catch(e){
+            if(e.code=='ENOENT')
+                return Buffer.from(JSON.stringify([]))
+            throw e
+        }
+    })()
+}
+Database.prototype.setOwn=function(user,buffer){
+    return this._ready=(async()=>{
+        await this._ready
+        await fs.promises.writeFile(`data/user/user/${user}/own`,buffer)
+    })()
+}*/
 import core from    '@anliting/core'
 import fs from      'fs'
 import Stream from  '../Stream.mjs'

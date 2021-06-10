@@ -18,6 +18,9 @@ function call(session,doc,a){
         case'chat':
             this._chat.message(session,doc,a[1],a[2])
         break
+        case'user':
+            this._user.message(session,doc,a[1],a[2])
+        break
         case'cutCurrentUser':
             doc.ready=(async()=>{
                 await doc.ready
@@ -83,12 +86,6 @@ function call(session,doc,a){
                 await this._chat.call(session,doc,a)
                 doc.user=undefined
                 session.logOut()
-            })()
-        break
-        case'putUser':
-            doc.ready=(async()=>{
-                await doc.ready
-                a[2](this._user._database.putUser(a[1]))
             })()
         break
         case'setOwn':
