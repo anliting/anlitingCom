@@ -1,9 +1,3 @@
-function pushUserForAllSession(id){
-    for(let doc of this._session.values())
-    for(let listenUser of doc.listenUser)
-    if(listenUser[0]==id)
-        this._user.pushUser(...listenUser)
-}
 function call(session,doc,a){
     switch(a[0]){
         case'chat':
@@ -11,24 +5,6 @@ function call(session,doc,a){
         break
         case'user':
             this._user.message(session,doc,a[1],a[2])
-        break
-        case'cutCurrentUser':
-            doc.ready=(async()=>{
-                await doc.ready
-                if(!(
-                    doc.user!=undefined
-                ))
-                    return
-                await this._user._database.cutUser(doc.user)
-                pushUserForAllSession.call(this,doc.user)
-                for(let s of this._session)
-                if(s[1].user==doc.user){
-                    await this._chat.call(session,doc,['logOut'])
-                    s[1].user=undefined
-                    s[0].logOut()
-                }
-                a[1]()
-            })()
         break
         case'logIn':
             doc.ready=(async()=>{
