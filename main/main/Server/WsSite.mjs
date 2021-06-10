@@ -7,12 +7,6 @@ async function cutCurrentUser(connection){
     await new Promise(rs=>doc.session.out.in(['cutCurrentUser',rs]))
     this._reply(connection,i,Buffer.allocUnsafe(0))
 }
-async function getOwn(connection){
-    let
-        doc=this._connectionMap.get(connection),
-        i=doc.get++
-    this._reply(connection,i,await new Promise(rs=>doc.session.out.in(['getOwn',rs])))
-}
 async function listenUserProfile(connection,message){
     let
         doc=this._connectionMap.get(connection),
@@ -47,15 +41,6 @@ async function logIn(connection,message){
 async function logOut(connection){
     this._connectionMap.get(connection).session.out.in(['logOut'])
 }
-async function setOwn(connection,message){
-    let
-        doc=this._connectionMap.get(connection),
-        i=doc.get++
-    await new Promise(rs=>
-        doc.session.out.in(['setOwn',message.slice(1),rs])
-    )
-    this._reply(connection,i,Buffer.allocUnsafe(0))
-}
 function onMessage(connection,message){
     let doc=this._connectionMap.get(connection)
     let operationCode=message.readUInt8()
@@ -68,10 +53,6 @@ function onMessage(connection,message){
             doc.session.out.in(['user',message,operationCode])
         if(operationCode==3)
             cutCurrentUser.call(this,connection)
-        /*if(operationCode==5)
-            setOwn.call(this,connection,message)
-        if(operationCode==6)
-            getOwn.call(this,connection)*/
         if(operationCode==12)
             listenUserProfile.call(this,connection,message)
         if(operationCode==13)

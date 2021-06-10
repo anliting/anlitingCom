@@ -38,16 +38,6 @@ function call(session,doc,a){
                 a[1]()
             })()
         break
-        case'getOwn':
-            doc.ready=(async()=>{
-                await doc.ready
-                if(!(
-                    doc.user!=undefined
-                ))
-                    return
-                a[1](this._database.getOwn(doc.user))
-            })()
-        break
         case'listenUserProfile':
             doc.ready=(async()=>{
                 await doc.ready
@@ -86,16 +76,6 @@ function call(session,doc,a){
                 await this._chat.call(session,doc,a)
                 doc.user=undefined
                 session.logOut()
-            })()
-        break
-        case'setOwn':
-            doc.ready=(async()=>{
-                await doc.ready
-                if(!(
-                    doc.user!=undefined
-                ))
-                    return
-                await this._database.setOwn(doc.user,a[1])
             })()
         break
     }

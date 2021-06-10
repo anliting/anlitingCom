@@ -101,34 +101,6 @@ Connection.prototype.putUser=function(password){
         }
     )
 }
-Connection.prototype.getOwn=function(){
-    let port=this._port++,buf=new ArrayBuffer(1),dataView=new DataView(buf)
-    dataView.setUint8(0,6)
-    this._ws.send(buf)
-    return new Promise(rs=>
-        this._onPort[port]=a=>{
-            delete this._onPort[port]
-            rs(a)
-        }
-    )
-}
-Connection.prototype.setOwn=async function(own){
-    own=new Uint8Array(await own.arrayBuffer())
-    let
-        port=this._port++,
-        buf=new ArrayBuffer(1+own.length),
-        dataView=new DataView(buf),
-        array=new Uint8Array(buf)
-    dataView.setUint8(0,5)
-    array.set(own,1)
-    this._ws.send(buf)
-    return new Promise(rs=>
-        this._onPort[port]=a=>{
-            delete this._onPort[port]
-            rs(a)
-        }
-    )
-}
 Connection.prototype.send=function(buf,port){
     this._ws.send(buf)
     if(port)
