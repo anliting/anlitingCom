@@ -1,17 +1,8 @@
-async function pushUser(id,cb){
-    let user=await this._user._database.getUser(id)
-    if(user)
-        cb([1,{
-            name:user.name||'',
-        }])
-    else
-        cb([0])
-}
 function pushUserForAllSession(id){
     for(let doc of this._session.values())
     for(let listenUser of doc.listenUser)
     if(listenUser[0]==id)
-        pushUser.call(this,...listenUser)
+        this._user.pushUser(...listenUser)
 }
 function call(session,doc,a){
     switch(a[0]){
@@ -32,24 +23,11 @@ function call(session,doc,a){
                 pushUserForAllSession.call(this,doc.user)
                 for(let s of this._session)
                 if(s[1].user==doc.user){
+                    await this._chat.call(session,doc,['logOut'])
                     s[1].user=undefined
                     s[0].logOut()
                 }
                 a[1]()
-            })()
-        break
-        case'listenUserProfile':
-            doc.ready=(async()=>{
-                await doc.ready
-                doc.listenUser.set(a[1],a[2])
-                pushUser.call(this,a[1],a[2])
-            })()
-        break
-        case'unlistenUserProfile':
-            doc.ready=(async()=>{
-                await doc.ready
-                doc.listenUser.delete(a[1])
-                a[2]()
             })()
         break
         case'logIn':

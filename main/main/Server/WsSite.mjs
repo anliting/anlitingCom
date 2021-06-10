@@ -7,30 +7,6 @@ async function cutCurrentUser(connection){
     await new Promise(rs=>doc.session.out.in(['cutCurrentUser',rs]))
     this._reply(connection,i,Buffer.allocUnsafe(0))
 }
-async function listenUserProfile(connection,message){
-    let
-        doc=this._connectionMap.get(connection),
-        i=doc.get++
-    this._connectionMap.get(connection).session.out.in([
-        'listenUserProfile',
-        message.readUInt32BE(1),
-        a=>{
-            this._reply(connection,i,Buffer.from(JSON.stringify(a)))
-        }
-    ])
-}
-async function unlistenUserProfile(connection,message){
-    let
-        doc=this._connectionMap.get(connection),
-        i=doc.get++
-    this._connectionMap.get(connection).session.out.in([
-        'unlistenUserProfile',
-        message.readUInt32BE(1),
-        ()=>{
-            this._reply(connection,i,Buffer.allocUnsafe(0))
-        }
-    ])
-}
 async function logIn(connection,message){
     this._connectionMap.get(connection).session.out.in([
         'logIn',
@@ -54,9 +30,9 @@ function onMessage(connection,message){
         if(operationCode==3)
             cutCurrentUser.call(this,connection)
         if(operationCode==12)
-            listenUserProfile.call(this,connection,message)
+            doc.session.out.in(['user',message,operationCode])
         if(operationCode==13)
-            unlistenUserProfile.call(this,connection,message)
+            doc.session.out.in(['user',message,operationCode])
     }else if(16<=operationCode&&operationCode<32)
         doc.session.out.in(['chat',message,operationCode])
 }
