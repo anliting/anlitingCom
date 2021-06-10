@@ -4,67 +4,7 @@ import Variable from            '../Variable.mjs'
 import ChatPage from            './LoggedInUserPage/ChatPage.mjs'
 import EditProfilePage from     './LoggedInUserPage/EditProfilePage.mjs'
 import ChangePasswordPage from  './LoggedInUserPage/ChangePasswordPage.mjs'
-function HomePage(){
-    this.out=new Stream
-    this.node=doe.div(
-        {className:'loggedInUserPage'},
-        doe.div(
-            doe.div('Back',{
-                className:'button',
-                onclick:()=>{
-                    this.out.in(['back'])
-                }
-            }),
-        ),
-        doe.div(
-            {className:'a'},
-            doe.div(
-                doe.div('Edit Profile',{
-                    className:'button',
-                    onclick:()=>{
-                        this.out.in(['editProfile'])
-                    },
-                }),
-                ' ',
-                doe.div('Change Password',{
-                    className:'button',
-                    onclick:()=>{
-                        this.out.in(['changePassword'])
-                    },
-                }),
-            ),
-            doe.div(
-                doe.div('Delete Current User',{
-                    className:'button',
-                    onclick:()=>{
-                        if(
-                            confirm('Are you sure to delete this user?')
-                        )
-                            this.out.in(['cutCurrentUser'])
-                    },
-                }),
-                ' ',
-                doe.div('Log Out',{
-                    className:'button',
-                    onclick:()=>{
-                        this.out.in(['logOut'])
-                    }
-                }),
-            ),
-        ),
-        doe.div(
-            doe.div('Chat',{
-                className:'button',
-                onclick:()=>{
-                    this.out.in(['chat'])
-                },
-            }),
-        ),
-    )
-    this.size=new Variable([1,1]).for(a=>
-        this.node.style.setProperty('--zoom',''+Math.min(a[0],a[1]/(16/22)))
-    )
-}
+import HomePage from            './LoggedInUserPage/HomePage.mjs'
 function LoggedInUserPage(){
     this.out=new Stream
     let chatPage,homePage,editProfilePage,changePasswordPage
