@@ -129,6 +129,10 @@ Server.prototype.end=async function(){
     await this._reloadTls
     await this._httpServer.end()
     await this._wsSite.end()
+    await Promise.all([
+        this._chat.end(),
+        this._user.end(),
+    ])
     await this._database.end()
 }
 export default Server

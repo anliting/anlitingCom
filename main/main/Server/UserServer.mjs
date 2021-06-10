@@ -25,6 +25,9 @@ function UserServer(){
     this.out=this._database.out
     this._session=new Map
 }
+UserServer.prototype.end=function(){
+    return this._database.end()
+}
 UserServer.prototype.cutSession=function(session){
     this._session.delete(session)
 }

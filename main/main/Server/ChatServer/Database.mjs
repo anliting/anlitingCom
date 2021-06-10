@@ -32,6 +32,9 @@ Database.prototype._getRoomMain=async function(room){
         `data/chat/room/room/${room}/main`
     ))
 }
+Database.prototype.end=function(){
+    return this._ready
+}
 Database.prototype.getRoom=function(){
     return this._ready=(async()=>{
         await this._ready

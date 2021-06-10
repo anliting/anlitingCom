@@ -56,6 +56,9 @@ Database.prototype.cutUser=function(id){
         ])
     })()
 }
+Database.prototype.end=function(){
+    return this._ready
+}
 Database.prototype.getUser=function(user){
     return this._ready=(async()=>{
         await this._ready

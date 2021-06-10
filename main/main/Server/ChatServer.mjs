@@ -42,4 +42,7 @@ ChatServer.prototype.call=async function(session,doc,a){
     }
 }
 ChatServer.prototype.message=message
+ChatServer.prototype.end=function(){
+    return this._database.end()
+}
 export default ChatServer
