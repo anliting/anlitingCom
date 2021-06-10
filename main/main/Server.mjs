@@ -6,13 +6,22 @@ import IpcServer from       './Server/IpcServer.mjs'
 import WsSite from          './Server/WsSite.mjs'
 import putSession from      './Server/putSession.mjs'
 import ChatServer from      './Server/ChatServer.mjs'
+import UserServer from      './Server/UserServer.mjs'
 async function load(){
     this._session=new Map
     this._database=new Database
     this._chat=new ChatServer
+    this._chat.out.out(a=>{
+        this._database.update(a[1]).then(a[2])
+    })
+    this._user=new UserServer
+    this._user.out.out(a=>{
+        this._database.update(a[1]).then(a[2])
+    })
     ;(async()=>{
         await this._database.load
         this._chat.loadDatabase()
+        this._user.loadDatabase()
     })()
     this._ipcServer=new IpcServer
     this._ipcServer.out=async b=>{
@@ -30,7 +39,7 @@ async function load(){
                     let
                         passwordLength=b.readUInt32BE(1),
                         password=''+b.slice(1+4,1+4+passwordLength)
-                    let id=await this._database.putSuperUser(
+                    let id=await this._user_database.putSuperUser(
                         password
                     )
                     let buffer=Buffer.allocUnsafe(4)

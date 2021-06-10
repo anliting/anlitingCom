@@ -1,5 +1,5 @@
 async function pushUser(id,cb){
-    let user=await this._database.getUser(id)
+    let user=await this._user._database.getUser(id)
     if(user)
         cb([1,{
             name:user.name||'',
@@ -25,7 +25,7 @@ function call(session,doc,a){
                     doc.user!=undefined
                 ))
                     return
-                await this._database.cutUser(doc.user)
+                await this._user._database.cutUser(doc.user)
                 pushUserForAllSession.call(this,doc.user)
                 for(let s of this._session)
                 if(s[1].user==doc.user){
@@ -67,7 +67,7 @@ function call(session,doc,a){
                     doc.user=undefined
                     session.logOut()
                 }
-                if(await this._database.testCredential(a[1],a[2]))
+                if(await this._user._database.testCredential(a[1],a[2]))
                     doc.user=a[1]
                 else
                     session.logOut()
@@ -88,7 +88,7 @@ function call(session,doc,a){
         case'putUser':
             doc.ready=(async()=>{
                 await doc.ready
-                a[2](this._database.putUser(a[1]))
+                a[2](this._user._database.putUser(a[1]))
             })()
         break
         case'setOwn':

@@ -1,7 +1,7 @@
 import core from    '@anliting/core'
 import fs from      'fs'
 import Stream from  '../Stream.mjs'
-function ChatDatabase(ready){
+function Database(ready){
     this._out=(this.out=new Stream).caller
     this._ready=(async()=>{
         await ready
@@ -22,23 +22,23 @@ function ChatDatabase(ready){
         ])
     })()
 }
-ChatDatabase.prototype._getRoomSetMain=async function(){
+Database.prototype._getRoomSetMain=async function(){
     return JSON.parse(
         await fs.promises.readFile(`data/chat/room/main`)
     )
 }
-ChatDatabase.prototype._getRoomMain=async function(room){
+Database.prototype._getRoomMain=async function(room){
     return JSON.parse(await fs.promises.readFile(
         `data/chat/room/room/${room}/main`
     ))
 }
-ChatDatabase.prototype.getRoom=function(){
+Database.prototype.getRoom=function(){
     return this._ready=(async()=>{
         await this._ready
         return this._getRoomSetMain()
     })()
 }
-ChatDatabase.prototype.getRoomMessage=async function(room){
+Database.prototype.getRoomMessage=async function(room){
     return this._ready=(async()=>{
         await this._ready
         let main=await this._getRoomMain(room)
@@ -50,7 +50,7 @@ ChatDatabase.prototype.getRoomMessage=async function(room){
         return result
     })()
 }
-ChatDatabase.prototype.putRoomMessage=function(room,user,content){
+Database.prototype.putRoomMessage=function(room,user,content){
     return this._ready=(async()=>{
         await this._ready
         let main=await this._getRoomMain(room)
@@ -68,7 +68,7 @@ ChatDatabase.prototype.putRoomMessage=function(room,user,content){
         ])
     })()
 }
-ChatDatabase.prototype.putRoom=function(user){
+Database.prototype.putRoom=function(user){
     return this._ready=(async()=>{
         await this._ready
         let
@@ -90,7 +90,7 @@ ChatDatabase.prototype.putRoom=function(user){
         return id
     })()
 }
-ChatDatabase.prototype.setRoomList=function(doc){
+Database.prototype.setRoomList=function(doc){
     return this._ready=(async()=>{
         await this._ready
         await this._out.update([
@@ -98,4 +98,4 @@ ChatDatabase.prototype.setRoomList=function(doc){
         ])
     })()
 }
-export default ChatDatabase
+export default Database
