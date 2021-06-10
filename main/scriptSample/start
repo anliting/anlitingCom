@@ -1,2 +1,1 @@
-cd work
-node ../anlitingCom/main/start.mjs
+(cd work;node ../anlitingCom/main/main.mjs)

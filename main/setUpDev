@@ -1,4 +1,4 @@
-cp anlitingCom/main/script/* anlitingCom/main/package.json .
+cp anlitingCom/main/devScript/* anlitingCom/main/package.json .
 npm i
 mkdir work
 printf '1100 ::1'>work/httpListen
