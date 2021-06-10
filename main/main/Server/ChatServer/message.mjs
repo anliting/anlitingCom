@@ -1,5 +1,5 @@
 import invite from'./message/invite.mjs'
-async function leave(session,doc,message){
+function leave(session,doc,message){
     let i=session.get()
     doc.ready=(async()=>{
         await doc.ready
@@ -43,7 +43,7 @@ function listenMessageList(session,doc,message){
         reply(this.roomMessage[roomId])
     })()
 }
-async function listenRoomList(session,doc){
+function listenRoomList(session,doc){
     let i=session.get(),reply=a=>{
         session.reply(i,Buffer.from(JSON.stringify(a)))
     }
@@ -60,7 +60,7 @@ async function listenRoomList(session,doc){
         ))
     })()
 }
-async function putMessage(session,doc,message){
+function putMessage(session,doc,message){
     let i=session.get()
     doc.ready=(async()=>{
         await doc.ready
@@ -98,7 +98,7 @@ async function putMessage(session,doc,message){
         session.reply(i,Buffer.allocUnsafe(0))
     })()
 }
-async function putRoom(session,doc){
+function putRoom(session,doc){
     let i=session.get()
     doc.ready=(async()=>{
         await doc.ready
@@ -120,7 +120,7 @@ async function putRoom(session,doc){
         session.reply(i,Buffer.allocUnsafe(0))
     })()
 }
-async function unlistenRoomList(session,doc){
+function unlistenRoomList(session,doc){
     doc.ready=(async()=>{
         await doc.ready
         if(!(

@@ -13,7 +13,7 @@ function pushUserForAllSession(id){
     if(listenUser[0]==id)
         pushUser.call(this,...listenUser)
 }
-async function call(session,doc,a){
+function call(session,doc,a){
     switch(a[0]){
         case'chat':
             this._chat.message(session,doc,a[1],a[2])
@@ -103,17 +103,13 @@ async function call(session,doc,a){
         break
     }
 }
-function lockCall(session,a){
-    let doc=this._session.get(session)
-    call.call(this,session,doc,a)
-}
 function putSession(session){
     this._session.set(session,{
         listenUser:new Map,
     })
     this._chat.putSession(session)
     session.out.out(a=>{
-        lockCall.call(this,session,a)
+        call.call(this,session,this._session.get(session),a)
     })
 }
 export default putSession
