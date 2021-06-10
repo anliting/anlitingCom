@@ -62,9 +62,13 @@ async function load(){
     this._wsSite=new WsSite(this._wsTls)
     this._wsSite.out={
         putSession:putSession.bind(this),
-        cutSession:session=>{
+        cutSession:async session=>{
+            await this._session.get(session).ready
+            await Promise.all([
+                this._chat.cutSession(session),
+                this._user.cutSession(session),
+            ])
             this._session.delete(session)
-            this._chat.cutSession(session)
         },  
     }   
     if(this._httpTls)

@@ -10,7 +10,8 @@ function UserServer(){
 UserServer.prototype.end=function(){
     return this._database.end()
 }
-UserServer.prototype.cutSession=function(session){
+UserServer.prototype.cutSession=async function(session){
+    await this._session.get(session).ready
     this._session.delete(session)
 }
 UserServer.prototype.putSession=function(session){

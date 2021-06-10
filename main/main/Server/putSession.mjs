@@ -13,6 +13,7 @@ function putSession(session){
         listenUser:new Map,
     })
     this._chat.putSession(session)
+    this._user.putSession(session)
     session.out.out(a=>{
         call.call(this,session,this._session.get(session),a)
     })
