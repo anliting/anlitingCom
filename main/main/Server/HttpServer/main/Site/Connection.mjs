@@ -21,12 +21,10 @@ function Connection(){
             // reply
             if(operation==0){
                 let port=dataView.getUint32(1)
-                console.log('debug','reply',port)
                 this._onPort[port](a.slice(5))
             }
             // syncLoggedOut
             if(operation==1){
-                console.log('debug','syncLoggedOut')
                 let logIn=this._logIn.shift()
                 logIn.onceLogOut.map(f=>f())
                 if(this._logIn.length==0)
@@ -140,11 +138,9 @@ Connection.prototype.onceLogOut=function(f){
     this._logIn[this._logIn.length-1].onceLogOut.push(f)
 }
 Connection.prototype.onPort=function(port,f){
-    console.log('debug','onPort',port)
     this._onPort[port]=f
 }
 Connection.prototype.offPort=function(port){
-    console.log('debug','offPort',port)
     delete this._onPort[port]
 }
 Connection.prototype.unlistenUserProfile=function(user){

@@ -16,79 +16,96 @@ function pushUserForAllSession(id){
 async function call(session,doc,a){
     switch(a[0]){
         case'chat':
-            if(a[2]==17)
-                console.log('debug','listenRoomList start')
-            await this._chat.message(session,doc,a[1],a[2])
-            if(a[2]==17)
-                console.log('debug','listenRoomList end')
+            this._chat.message(session,doc,a[1],a[2])
         break
         case'cutCurrentUser':
-            if(!(
-                doc.user!=undefined
-            ))
-                return
-            await this._database.cutUser(doc.user)
-            pushUserForAllSession.call(this,doc.user)
-            for(let s of this._session)
-            if(s[1].user==doc.user){
-                s[1].user=undefined
-                s[0].logOut()
-            }
-            a[1]()
+            doc.ready=(async()=>{
+                await doc.ready
+                if(!(
+                    doc.user!=undefined
+                ))
+                    return
+                await this._database.cutUser(doc.user)
+                pushUserForAllSession.call(this,doc.user)
+                for(let s of this._session)
+                if(s[1].user==doc.user){
+                    s[1].user=undefined
+                    s[0].logOut()
+                }
+                a[1]()
+            })()
         break
         case'getOwn':
-            if(!(
-                doc.user!=undefined
-            ))
-                return
-            a[1](this._database.getOwn(doc.user))
+            doc.ready=(async()=>{
+                await doc.ready
+                if(!(
+                    doc.user!=undefined
+                ))
+                    return
+                a[1](this._database.getOwn(doc.user))
+            })()
         break
         case'listenUserProfile':
-            doc.listenUser.set(a[1],a[2])
-            pushUser.call(this,a[1],a[2])
+            doc.ready=(async()=>{
+                await doc.ready
+                doc.listenUser.set(a[1],a[2])
+                pushUser.call(this,a[1],a[2])
+            })()
         break
         case'unlistenUserProfile':
-            doc.listenUser.delete(a[1])
-            a[2]()
+            doc.ready=(async()=>{
+                await doc.ready
+                doc.listenUser.delete(a[1])
+                a[2]()
+            })()
         break
         case'logIn':
-            if(doc.user!=undefined){
-                await this._chat.call(session,doc,['logOut'])
-                doc.user=undefined
-                session.logOut()
-            }
-            if(await this._database.testCredential(a[1],a[2]))
-                doc.user=a[1]
-            else
-                session.logOut()
+            doc.ready=(async()=>{
+                await doc.ready
+                if(doc.user!=undefined){
+                    await this._chat.call(session,doc,['logOut'])
+                    doc.user=undefined
+                    session.logOut()
+                }
+                if(await this._database.testCredential(a[1],a[2]))
+                    doc.user=a[1]
+                else
+                    session.logOut()
+            })()
         break
         case'logOut':
-            if(!(
-                doc.user!=undefined
-            ))
-                return
-            await this._chat.call(session,doc,a)
-            doc.user=undefined
-            session.logOut()
+            doc.ready=(async()=>{
+                await doc.ready
+                if(!(
+                    doc.user!=undefined
+                ))
+                    return
+                await this._chat.call(session,doc,a)
+                doc.user=undefined
+                session.logOut()
+            })()
         break
         case'putUser':
-            a[2](this._database.putUser(a[1]))
+            doc.ready=(async()=>{
+                await doc.ready
+                a[2](this._database.putUser(a[1]))
+            })()
         break
         case'setOwn':
-            if(!(
-                doc.user!=undefined
-            ))
-                return
-            await this._database.setOwn(doc.user,a[1])
+            doc.ready=(async()=>{
+                await doc.ready
+                if(!(
+                    doc.user!=undefined
+                ))
+                    return
+                await this._database.setOwn(doc.user,a[1])
+            })()
         break
     }
 }
 function lockCall(session,a){
     let doc=this._session.get(session)
-    doc.ready=(async()=>{
-        await doc.ready
-        await call.call(this,session,doc,a)
-    })()
+    call.call(this,session,doc,a)
 }
 function putSession(session){
     this._session.set(session,{

@@ -42,7 +42,6 @@ async function connect(){
 }
 async function send(m){
     let a=m.mission
-    console.log('debug','send',a[0])
     if(a[0]=='cutCurrentUser'){
         m.status='sent'
         await this._connection.cutCurrentUser()
