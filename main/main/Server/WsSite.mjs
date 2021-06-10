@@ -1,12 +1,5 @@
 import WsServer from        './WsSite/WsServer.mjs'
 import Stream from          './Stream.mjs'
-async function cutCurrentUser(connection){
-    let
-        doc=this._connectionMap.get(connection),
-        i=doc.get++
-    await new Promise(rs=>doc.session.out.in(['cutCurrentUser',rs]))
-    this._reply(connection,i,Buffer.allocUnsafe(0))
-}
 async function logIn(connection,message){
     this._connectionMap.get(connection).session.out.in([
         'logIn',
@@ -20,20 +13,14 @@ async function logOut(connection){
 function onMessage(connection,message){
     let doc=this._connectionMap.get(connection)
     let operationCode=message.readUInt8()
-    if(operationCode<16){
+    if(operationCode<2){
         if(operationCode==0)
             logIn.call(this,connection,message)
         if(operationCode==1)
             logOut.call(this,connection)
-        if(2<=operationCode&&operationCode<3)
-            doc.session.out.in(['user',message,operationCode])
-        if(operationCode==3)
-            cutCurrentUser.call(this,connection)
-        if(operationCode==12)
-            doc.session.out.in(['user',message,operationCode])
-        if(operationCode==13)
-            doc.session.out.in(['user',message,operationCode])
-    }else if(16<=operationCode&&operationCode<32)
+    }else if(2<=operationCode&&operationCode<16)
+        doc.session.out.in(['user',message,operationCode])
+    else if(16<=operationCode&&operationCode<32)
         doc.session.out.in(['chat',message,operationCode])
 }
 function syncLoggedOut(connection){

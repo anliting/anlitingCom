@@ -7,16 +7,39 @@ import WsSite from          './Server/WsSite.mjs'
 import putSession from      './Server/putSession.mjs'
 import ChatServer from      './Server/ChatServer.mjs'
 import UserServer from      './Server/UserServer.mjs'
+function pushUserForAllSession(id){
+    for(let doc of this._session.values())
+    for(let listenUser of doc.listenUser)
+    if(listenUser[0]==id)
+        this._user.pushUser(...listenUser)
+}
 async function load(){
     this._session=new Map
     this._database=new Database
     this._chat=new ChatServer
     this._chat.out.out(a=>{
-        this._database.update(a[1]).then(a[2])
+        switch(a[0]){
+            case'update':
+                this._database.update(a[1]).then(a[2])
+            break
+        }
     })
     this._user=new UserServer
-    this._user.out.out(a=>{
-        this._database.update(a[1]).then(a[2])
+    this._user.out.out(async a=>{
+        switch(a[0]){
+            case'cutUser':
+                pushUserForAllSession.call(this,a[1])
+                for(let s of this._session)
+                if(s[1].user==a[1]){
+                    await this._chat.call(...s,['logOut'])
+                    s[1].user=undefined
+                    s[0].logOut()
+                }
+            break
+            case'update':
+                this._database.update(a[1]).then(a[2])
+            break
+        }
     })
     ;(async()=>{
         await this._database.load

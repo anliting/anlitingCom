@@ -59,7 +59,7 @@ Connection.prototype.listenUserProfile=function(user,cb){
     let
         buf=new ArrayBuffer(5),
         dataView=new DataView(buf)
-    dataView.setUint8(0,12)
+    dataView.setUint8(0,4)
     dataView.setUint32(1,user)
     this.onPort(this.send(buf,1),a=>{
         cb(JSON.parse(textDecoder.decode(a)))
@@ -119,7 +119,7 @@ Connection.prototype.unlistenUserProfile=function(user){
     let
         buf=new ArrayBuffer(5),
         dataView=new DataView(buf)
-    dataView.setUint8(0,13)
+    dataView.setUint8(0,5)
     dataView.setUint32(1,user)
     this.onPort(this.send(buf,1),()=>{
     })

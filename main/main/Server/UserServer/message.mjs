@@ -1,3 +1,16 @@
+function cutCurrentUser(session,doc,connection){
+    let i=session.get()
+    doc.ready=(async()=>{
+        await doc.ready
+        if(!(
+            doc.user!=undefined
+        ))
+            return
+        await this._database.cutUser(doc.user)
+        this.out.in(['cutUser',doc.user])
+        session.reply(i,Buffer.allocUnsafe(0))
+    })()
+}
 function listenUserProfile(session,doc,message){
     let i=session.get(),reply=a=>{
         session.reply(i,Buffer.from(JSON.stringify(a)))
@@ -30,9 +43,11 @@ function unlistenUserProfile(session,doc,message){
 function message(session,doc,message,operationCode){
     if(operationCode==2)
         putUser.call(this,session,doc,message)
-    if(operationCode==12)
+    if(operationCode==3)
+        cutCurrentUser.call(this,session,doc,message)
+    if(operationCode==4)
         listenUserProfile.call(this,session,doc,message)
-    if(operationCode==13)
+    if(operationCode==5)
         unlistenUserProfile.call(this,session,doc,message)
 }
 export default message
