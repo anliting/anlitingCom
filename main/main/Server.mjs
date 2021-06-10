@@ -5,51 +5,11 @@ import HttpServer from      './Server/HttpServer.mjs'
 import IpcServer from       './Server/IpcServer.mjs'
 import WsSite from          './Server/WsSite.mjs'
 import putSession from      './Server/putSession.mjs'
-import ChatServer from      './Server/ChatServer.mjs'
-import UserServer from      './Server/UserServer.mjs'
-function pushUserForAllSession(id){
-    for(let doc of this._session.values())
-    for(let listenUser of doc.listenUser)
-    if(listenUser[0]==id)
-        this._user.pushUser(...listenUser)
-}
+import loadSubmodule from   './Server/loadSubmodule.mjs'
 async function load(){
     this._session=new Map
     this._database=new Database
-    this._chat=new ChatServer
-    this._chat.out.out(a=>{
-        switch(a[0]){
-            case'update':
-                this._database.update(a[1]).then(a[2])
-            break
-        }
-    })
-    this._user=new UserServer
-    this._user.out.out(async a=>{
-        switch(a[0]){
-            case'chatCall':
-                this._chat.call(...a[1])
-                a[2]()
-            break
-            case'cutUser':
-                pushUserForAllSession.call(this,a[1])
-                for(let s of this._session)
-                if(s[1].user==a[1]){
-                    this._chat.call(...s,['logOut'])
-                    s[1].user=undefined
-                    s[0].logOut()
-                }
-            break
-            case'update':
-                this._database.update(a[1]).then(a[2])
-            break
-        }
-    })
-    ;(async()=>{
-        await this._database.load
-        this._chat.loadDatabase()
-        this._user.loadDatabase()
-    })()
+    loadSubmodule.call(this)
     this._ipcServer=new IpcServer
     this._ipcServer.out=async b=>{
         await this._load
@@ -60,20 +20,20 @@ async function load(){
                     this._loadHttpTls()
                     this._loadWsTls()
                 })()
-                break
+            break
             case 1:
                 {
                     let
                         passwordLength=b.readUInt32BE(1),
                         password=''+b.slice(1+4,1+4+passwordLength)
-                    let id=await this._user_database.putSuperUser(
+                    let id=await this._user._database.putSuperUser(
                         password
                     )
                     let buffer=Buffer.allocUnsafe(4)
                     buffer.writeUInt32BE(id,0)
                     return buffer
                 }
-                break
+            break
         }
     }
     async function readListen(path){
