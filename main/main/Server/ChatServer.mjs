@@ -29,7 +29,7 @@ ChatServer.prototype.cutSession=function(session){
 ChatServer.prototype.putSession=function(session){
     this._session.set(session,{})
 }
-ChatServer.prototype.call=async function(session,doc,a){
+ChatServer.prototype.call=function(session,doc,a){
     let chatDoc=this._session.get(session)
     switch(a[0]){
         case'logOut':

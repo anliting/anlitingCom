@@ -27,11 +27,15 @@ async function load(){
     this._user=new UserServer
     this._user.out.out(async a=>{
         switch(a[0]){
+            case'chatCall':
+                this._chat.call(...a[1])
+                a[2]()
+            break
             case'cutUser':
                 pushUserForAllSession.call(this,a[1])
                 for(let s of this._session)
                 if(s[1].user==a[1]){
-                    await this._chat.call(...s,['logOut'])
+                    this._chat.call(...s,['logOut'])
                     s[1].user=undefined
                     s[0].logOut()
                 }

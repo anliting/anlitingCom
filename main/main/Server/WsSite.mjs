@@ -1,24 +1,9 @@
 import WsServer from        './WsSite/WsServer.mjs'
 import Stream from          './Stream.mjs'
-async function logIn(connection,message){
-    this._connectionMap.get(connection).session.out.in([
-        'logIn',
-        message.readUInt32BE(1),
-        message.slice(5)
-    ])
-}
-async function logOut(connection){
-    this._connectionMap.get(connection).session.out.in(['logOut'])
-}
 function onMessage(connection,message){
     let doc=this._connectionMap.get(connection)
     let operationCode=message.readUInt8()
-    if(operationCode<2){
-        if(operationCode==0)
-            logIn.call(this,connection,message)
-        if(operationCode==1)
-            logOut.call(this,connection)
-    }else if(2<=operationCode&&operationCode<16)
+    if(operationCode<16)
         doc.session.out.in(['user',message,operationCode])
     else if(16<=operationCode&&operationCode<32)
         doc.session.out.in(['chat',message,operationCode])
