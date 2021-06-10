@@ -1,12 +1,13 @@
-import core from'@anliting/core'
-import fs from'fs'
-import AtomicDirectoryUpdater from'../AtomicDirectoryUpdater.mjs'
+import core from    '@anliting/core'
+import fs from      'fs'
+import Stream from  '../Stream.mjs'
 function ChatDatabase(ready){
+    this._out=(this.out=new Stream).caller
     this._ready=(async()=>{
         await ready
         if(await core.existFile('data/chat'))
             return
-        await this._atomicDirectoryUpdater.update([
+        await this._out.update([
             [1,'data/chat'],
             [1,'data/chat/room'],
             [
@@ -20,9 +21,8 @@ function ChatDatabase(ready){
             [1,'data/chat/room/room'],
         ])
     })()
-    this._atomicDirectoryUpdater=new AtomicDirectoryUpdater
 }
-ChatDatabase.prototype._getRoom=async function(){
+ChatDatabase.prototype._getRoomSetMain=async function(){
     return JSON.parse(
         await fs.promises.readFile(`data/chat/room/main`)
     )
@@ -35,7 +35,7 @@ ChatDatabase.prototype._getRoomMain=async function(room){
 ChatDatabase.prototype.getRoom=function(){
     return this._ready=(async()=>{
         await this._ready
-        return this._getRoom()
+        return this._getRoomSetMain()
     })()
 }
 ChatDatabase.prototype.getRoomMessage=async function(room){
@@ -55,7 +55,7 @@ ChatDatabase.prototype.putRoomMessage=function(room,user,content){
         await this._ready
         let main=await this._getRoomMain(room)
         let id=main.index++
-        await this._atomicDirectoryUpdater.update([
+        await this._out.update([
             [0,`data/chat/room/room/${room}/main`,JSON.stringify(main)],
             [
                 0,
@@ -72,14 +72,14 @@ ChatDatabase.prototype.putRoom=function(user){
     return this._ready=(async()=>{
         await this._ready
         let
-            room=await this._getRoom(),
+            room=await this._getRoomSetMain(),
             id=room.index
         room.array.push({
             id,
             user:[user],
         })
         room.index++
-        await this._atomicDirectoryUpdater.update([
+        await this._out.update([
             [0,`data/chat/room/main`,JSON.stringify(room)],
             [1,`data/chat/room/room/${id}`],
             [0,`data/chat/room/room/${id}/main`,JSON.stringify({
@@ -93,7 +93,7 @@ ChatDatabase.prototype.putRoom=function(user){
 ChatDatabase.prototype.setRoomList=function(doc){
     return this._ready=(async()=>{
         await this._ready
-        await this._atomicDirectoryUpdater.update([
+        await this._out.update([
             [0,`data/chat/room/main`,JSON.stringify(doc)],
         ])
     })()

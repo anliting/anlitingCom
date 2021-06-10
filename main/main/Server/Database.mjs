@@ -11,11 +11,6 @@ async function load(){
         await rmrf('data-next')
         await fs.promises.mkdir('data-next')
         await fs.promises.mkdir('data-next/tmp')
-        await fs.promises.mkdir('data-next/user')
-        await fs.promises.writeFile('data-next/user/main',JSON.stringify({
-            index:0,
-        }))
-        await fs.promises.mkdir('data-next/user/user')
         await fs.promises.rename('data-next','data')
     }
     this._atomicDirectoryUpdater=new AtomicDirectoryUpdater
@@ -124,6 +119,12 @@ Database.prototype.testCredential=function(user,password){
                 return 0
             throw e
         }
+    })()
+}
+Database.prototype.update=function(a){
+    return this._ready=(async()=>{
+        await this._ready
+        return this._atomicDirectoryUpdater.update(a)
     })()
 }
 export default Database

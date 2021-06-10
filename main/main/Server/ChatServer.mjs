@@ -5,6 +5,7 @@ function ChatServer(){
         this.loadDatabase=rs
     }))
     this._session=new Map
+    this.out=this._database.out
     this.load=(async()=>{
         this.room=await this._database.getRoom()
         this.roomMessage={}
