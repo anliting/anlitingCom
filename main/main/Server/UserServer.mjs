@@ -5,20 +5,9 @@ function UserServer(){
         this.loadDatabase=rs
     }))
     this.out=this._database.out
-    this._session=new Map
 }
 UserServer.prototype.end=function(){
     return this._database.end()
-}
-UserServer.prototype.cutSession=async function(session){
-    await this._session.get(session).ready
-    this._session.delete(session)
-}
-UserServer.prototype.putSession=function(session){
-    this._session.set(session,{})
-}
-UserServer.prototype.call=async function(session,doc,a){
-    let userDoc=this._session.get(session)
 }
 UserServer.prototype.message=message
 UserServer.prototype.pushUser=async function(id,cb){

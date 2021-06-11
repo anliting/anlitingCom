@@ -64,10 +64,7 @@ async function load(){
         putSession:putSession.bind(this),
         cutSession:async session=>{
             await this._session.get(session).ready
-            await Promise.all([
-                this._chat.cutSession(session),
-                this._user.cutSession(session),
-            ])
+            await this._chat.cutSession(session),
             this._session.delete(session)
         },  
     }   
