@@ -1,6 +1,7 @@
 import invite from      './message/invite.mjs'
 import putMessage from  './message/putMessage.mjs'
 function leave(session,doc,message){
+    session.refer()
     let i=session.get()
     doc.ready=(async()=>{
         await doc.ready
@@ -24,9 +25,11 @@ function leave(session,doc,message){
             this._pushRoomList()
         })())
         session.reply(i,Buffer.allocUnsafe(0))
+        session.unrefer()
     })()
 }
 function listenMessageList(session,doc,message){
+    session.refer()
     let chatDoc=this._session.get(session)
     let i=session.get(),roomId=message.readUInt32BE(1),reply=a=>{
         session.reply(i,Buffer.from(JSON.stringify(a)))
@@ -42,9 +45,11 @@ function listenMessageList(session,doc,message){
             return
         chatDoc.listenMessageList=[roomId,reply]
         reply(this.roomMessage[roomId])
+        session.unrefer()
     })()
 }
 function listenRoomList(session,doc){
+    session.refer()
     let chatDoc=this._session.get(session)
     let i=session.get(),reply=a=>{
         session.reply(i,Buffer.from(JSON.stringify(a)))
@@ -59,9 +64,11 @@ function listenRoomList(session,doc){
         reply(this.room.array.filter(a=>
             a.user.includes(doc.user)
         ))
+        session.unrefer()
     })()
 }
 function putRoom(session,doc){
+    session.refer()
     let i=session.get()
     doc.ready=(async()=>{
         await doc.ready
@@ -81,9 +88,11 @@ function putRoom(session,doc){
             this._pushRoomList()
         })())
         session.reply(i,Buffer.allocUnsafe(0))
+        session.unrefer()
     })()
 }
 function unlistenRoomList(session,doc){
+    session.refer()
     let chatDoc=this._session.get(session)
     doc.ready=(async()=>{
         await doc.ready
@@ -92,6 +101,7 @@ function unlistenRoomList(session,doc){
         ))
             return
         chatDoc.listenRoomList=0
+        session.unrefer()
     })()
 }
 function message(session,doc,message,operationCode){

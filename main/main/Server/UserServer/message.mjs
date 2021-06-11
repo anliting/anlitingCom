@@ -1,4 +1,5 @@
 function logIn(session,doc,message){
+    session.refer()
     doc.ready=(async()=>{
         await doc.ready
         if(doc.user!=undefined){
@@ -13,9 +14,11 @@ function logIn(session,doc,message){
             doc.user=id
         else
             session.logOut()
+        session.unrefer()
     })()
 }
 function logOut(session,doc){
+    session.refer()
     doc.ready=(async()=>{
         await doc.ready
         if(!(
@@ -27,9 +30,11 @@ function logOut(session,doc){
         )
         doc.user=undefined
         session.logOut()
+        session.unrefer()
     })()
 }
 function cutCurrentUser(session,doc){
+    session.refer()
     let i=session.get()
     doc.ready=(async()=>{
         await doc.ready
@@ -40,9 +45,11 @@ function cutCurrentUser(session,doc){
         await this._database.cutUser(doc.user)
         this.out.in(['cutUser',doc.user])
         session.reply(i,Buffer.allocUnsafe(0))
+        session.unrefer()
     })()
 }
 function listenUserProfile(session,doc,message){
+    session.refer()
     let i=session.get(),reply=a=>{
         session.reply(i,Buffer.from(JSON.stringify(a)))
     },id=message.readUInt32BE(1)
@@ -50,9 +57,11 @@ function listenUserProfile(session,doc,message){
         await doc.ready
         doc.listenUser.set(id,reply)
         this.pushUser(id,reply)
+        session.unrefer()
     })()
 }
 function putUser(session,doc,message){
+    session.refer()
     let i=session.get()
     doc.ready=(async()=>{
         await doc.ready
@@ -61,14 +70,17 @@ function putUser(session,doc,message){
             await this._database.putUser(message.slice(1))
         )
         session.reply(i,buf)
+        session.unrefer()
     })()
 }
 function unlistenUserProfile(session,doc,message){
+    session.refer()
     let i=session.get()
     doc.ready=(async()=>{
         await doc.ready
         doc.listenUser.delete(message.readUInt32BE(1))
         session.reply(i,Buffer.allocUnsafe(0))
+        session.unrefer()
     })()
 }
 function message(session,doc,message,operationCode){

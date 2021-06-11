@@ -24,7 +24,6 @@ ChatServer.prototype._pushRoomList=function(){
             )
 }
 ChatServer.prototype.cutSession=async function(session){
-    await this._session.get(session).ready
     this._session.delete(session)
 }
 ChatServer.prototype.putSession=function(session){
