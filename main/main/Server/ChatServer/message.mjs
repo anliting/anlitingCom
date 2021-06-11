@@ -27,6 +27,7 @@ function leave(session,doc,message){
     })()
 }
 function listenMessageList(session,doc,message){
+    let chatDoc=this._session.get(session)
     let i=session.get(),roomId=message.readUInt32BE(1),reply=a=>{
         session.reply(i,Buffer.from(JSON.stringify(a)))
     }
@@ -39,12 +40,12 @@ function listenMessageList(session,doc,message){
             )
         ))
             return
-        let chatDoc=this._session.get(session)
         chatDoc.listenMessageList=[roomId,reply]
         reply(this.roomMessage[roomId])
     })()
 }
 function listenRoomList(session,doc){
+    let chatDoc=this._session.get(session)
     let i=session.get(),reply=a=>{
         session.reply(i,Buffer.from(JSON.stringify(a)))
     }
@@ -54,7 +55,6 @@ function listenRoomList(session,doc){
             doc.user!=undefined
         ))
             return
-        let chatDoc=this._session.get(session)
         chatDoc.listenRoomList=[doc.user,reply]
         reply(this.room.array.filter(a=>
             a.user.includes(doc.user)
@@ -84,13 +84,13 @@ function putRoom(session,doc){
     })()
 }
 function unlistenRoomList(session,doc){
+    let chatDoc=this._session.get(session)
     doc.ready=(async()=>{
         await doc.ready
         if(!(
             doc.user!=undefined
         ))
             return
-        let chatDoc=this._session.get(session)
         chatDoc.listenRoomList=0
     })()
 }
