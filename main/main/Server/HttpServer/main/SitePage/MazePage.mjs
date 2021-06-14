@@ -1,11 +1,23 @@
 import doe from                 'doe'
 import Variable from            '../Variable.mjs'
 import Stream from              '../Stream.mjs'
+import generateAStyleMaze from  './MazePage/generateAStyleMaze.mjs'
 let blockWidth=8
+let width=10,height=10
+function generateMaze(){
+    let edgeCount=2*width*height-width-height
+    let a=Array(edgeCount)
+    for(let i=0;i<edgeCount;i++)
+        a[i]=1
+    for(let e of generateAStyleMaze(width,height))
+        a[e]=0
+    return a
+}
 function MazePage(){
     this.credential=new Variable
     this.out=new Stream
     this._node={}
+    this._maze=generateMaze()
     this.node=doe.div(
         {className:'mazePage'},
         doe.div(
@@ -43,6 +55,25 @@ function MazePage(){
                 (blockWidth+1)*(j+1)/imageHeight,
                 1/imageWidth,1/imageHeight
             )
+        context.fillStyle='#fff'
+        for(let i=0;i<(width-1)*height;i++)
+            if(this._maze[i]){
+                let x=i%(width-1),y=~~(i/(width-1))
+                context.fillRect(
+                    (blockWidth+1)*(x+1)/imageWidth,
+                    ((blockWidth+1)*y+1)/imageHeight,
+                    1/imageWidth,blockWidth/imageHeight
+                )
+            }
+        for(let i=0;i<width*(height-1);i++)
+            if(this._maze[(width-1)*height+i]){
+                let x=i%width,y=~~(i/width)
+                context.fillRect(
+                    ((blockWidth+1)*x+1)/imageWidth,
+                    (blockWidth+1)*(y+1)/imageHeight,
+                    blockWidth/imageWidth,1/imageHeight
+                )
+            }
     })
 }
 MazePage.style=`
