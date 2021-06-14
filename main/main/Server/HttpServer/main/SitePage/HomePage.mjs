@@ -43,23 +43,25 @@ function HomePage(){
             ),
             doe.div(
                 {className:'b'},
-                'You might also want to visit ',
-                doe.a({href:'https://althea.anliting.com/'},'my blog'),
-                '.'
+                doe.div({className:'button',onclick:()=>{
+                    this.out.in('maze')
+                }},'Maze'),
             ),
             doe.div(
                 {className:'b'},
-                'Here are some services this website provides:',
                 doe.ul(
                     doe.li(doe.a({
+                        href:'https://althea.anliting.com/'
+                    },'My blog')),
+                    doe.li(doe.a({
                         href:'https://stopwatch.anliting.com/'
-                    },'Stopwatch'))
+                    },'Stopwatch')),
                 )
             ),
         ),
     )
-    this.size=new Variable([1,1]).for(a=>
-        this.node.style.setProperty('--zoom',''+Math.min(a[0],a[1]/(16/22)))
-    )
+    this.size=new Variable([1,1]).for(a=>{
+        this.node.style.setProperty('--zoom',''+Math.min(a[0],a[1]/(3/4)))
+    })
 }
 export default HomePage

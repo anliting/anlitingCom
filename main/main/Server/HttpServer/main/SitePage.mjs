@@ -1,6 +1,7 @@
 import doe from                 'doe'
 import HomePage from            './SitePage/HomePage.mjs'
 import UserPage from            './SitePage/UserPage.mjs'
+import MazePage from            './SitePage/MazePage.mjs'
 import LoggedInUserPage from    './SitePage/LoggedInUserPage.mjs'
 import Stream from              './Stream.mjs'
 import Variable from            './Variable.mjs'
@@ -9,6 +10,7 @@ function SitePage(){
         userPage=new UserPage,
         loggedInUserPage=new LoggedInUserPage,
         homePage=new HomePage,
+        mazePage=new MazePage,
         roomListListener=new Variable
     this.page=new Variable
     this.credential=new Variable
@@ -36,6 +38,9 @@ function SitePage(){
             break
             case'loggedInUserPage':
                 this.page.bind(loggedInUserPage.page)
+            break
+            case'maze':
+                this.page.value=mazePage
             break
         }
     })
@@ -79,15 +84,22 @@ function SitePage(){
             break
         }
     })
+    mazePage.out.out(a=>{
+        switch(a[0]){
+            case'back':
+                this.page.value=homePage
+            break
+        }
+    })
     this.page.value=homePage
 }
 SitePage.style=UserPage.style+LoggedInUserPage.style+`
     body>.homePage{
         display:inline-block;
         padding:1em;
-        width:20em;
-        height:14em;
-        font-size:calc(var(--zoom) * 1 / 22 * 1px);
+        width:22em;
+        height:16em;
+        font-size:calc(var(--zoom) * 1 / 24 * 1px);
         text-shadow:
             0 0 .0625em rgba(0,0,0,.4),
             .0625em .0625em .0625em rgba(0,0,0,.2);
@@ -111,9 +123,9 @@ SitePage.style=UserPage.style+LoggedInUserPage.style+`
         display:inline-block;
         margin:0 auto;
         padding:1em;
-        width:20em;
-        height:14em;
-        font-size:calc(var(--zoom) * 1 / 22 * 1px);
+        width:22em;
+        height:16em;
+        font-size:calc(var(--zoom) * 1 / 24 * 1px);
         text-shadow:
             0 0 .0625em rgba(0,0,0,.4),
             .0625em .0625em .0625em rgba(0,0,0,.2);
@@ -123,6 +135,17 @@ SitePage.style=UserPage.style+LoggedInUserPage.style+`
         margin-top:1em;
         box-shadow:0 -.05em rgba(0,0,0,.2);
         padding-top:1em;
+    }
+    body>.mazePage{
+        display:inline-block;
+        padding:1em;
+        width:22em;
+        height:16em;
+        font-size:calc(var(--zoom) * 1 / 24 * 1px);
+        text-shadow:
+            0 0 .0625em rgba(0,0,0,.4),
+            .0625em .0625em .0625em rgba(0,0,0,.2);
+        vertical-align:middle;
     }
 `
 export default SitePage

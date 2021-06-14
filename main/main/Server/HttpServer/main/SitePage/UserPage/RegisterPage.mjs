@@ -112,9 +112,9 @@ function RegisterPage(site){
         ),
         this._registerPanel.node
     )
-    this.size=new Variable([1,1]).for(a=>
-        this.node.style.setProperty('--zoom',''+Math.min(a[0],a[1]/(16/22)))
-    )
+    this.size=new Variable([1,1]).for(a=>{
+        this.node.style.setProperty('--zoom',''+Math.min(a[0],a[1]/(3/4)))
+    })
 }
 RegisterPage.prototype.focus=function(){
     this._registerPanel.focus()

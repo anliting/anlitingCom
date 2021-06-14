@@ -4,9 +4,9 @@ export default`
         display:inline-block;
         margin:0 auto;
         padding:1em;
-        width:20em;
-        height:14em;
-        font-size:calc(var(--zoom) * 1 / 22 * 1px);
+        width:22em;
+        height:16em;
+        font-size:calc(var(--zoom) * 1 / 24 * 1px);
         text-shadow:
             0 0 .0625em rgba(0,0,0,.4),
             .0625em .0625em .0625em rgba(0,0,0,.2);

@@ -84,9 +84,7 @@ function MemberPage(){
         ),*/
     )
     this.size=new Variable([1,1]).for(a=>{
-        this.node.style.setProperty(
-            '--zoom',''+Math.min(a[0],a[1]/(16/22))
-        )
+        this.node.style.setProperty('--zoom',''+Math.min(a[0],a[1]/(3/4)))
     })
 }
 MemberPage.prototype.clear=function(){
@@ -98,9 +96,9 @@ MemberPage.style=`
         display:inline-block;
         margin:0 auto;
         padding:1em;
-        width:20em;
-        height:14em;
-        font-size:calc(var(--zoom) * 1 / 22 * 1px);
+        width:22em;
+        height:16em;
+        font-size:calc(var(--zoom) * 1 / 24 * 1px);
         text-shadow:
             0 0 .0625em rgba(0,0,0,.4),
             .0625em .0625em .0625em rgba(0,0,0,.2);

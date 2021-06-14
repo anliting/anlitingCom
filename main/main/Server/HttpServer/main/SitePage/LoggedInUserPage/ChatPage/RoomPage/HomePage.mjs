@@ -95,9 +95,7 @@ function HomePage(){
     )
     this.size=new Variable([1,1]).for(a=>{
         this._skipOnScroll=1
-        this.node.style.setProperty(
-            '--zoom',''+Math.min(a[0],a[1]/(16/22))
-        )
+        this.node.style.setProperty('--zoom',''+Math.min(a[0],a[1]/(3/4)))
         reactScrollRatioToScrollTop.call(this)
     })
 }
