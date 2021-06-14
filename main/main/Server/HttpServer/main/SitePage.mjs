@@ -93,7 +93,7 @@ function SitePage(){
     })
     this.page.value=homePage
 }
-SitePage.style=UserPage.style+LoggedInUserPage.style+`
+SitePage.style=UserPage.style+LoggedInUserPage.style+MazePage.style+`
     body>.homePage{
         display:inline-block;
         padding:1em;
@@ -135,17 +135,6 @@ SitePage.style=UserPage.style+LoggedInUserPage.style+`
         margin-top:1em;
         box-shadow:0 -.05em rgba(0,0,0,.2);
         padding-top:1em;
-    }
-    body>.mazePage{
-        display:inline-block;
-        padding:1em;
-        width:22em;
-        height:16em;
-        font-size:calc(var(--zoom) * 1 / 24 * 1px);
-        text-shadow:
-            0 0 .0625em rgba(0,0,0,.4),
-            .0625em .0625em .0625em rgba(0,0,0,.2);
-        vertical-align:middle;
     }
 `
 export default SitePage

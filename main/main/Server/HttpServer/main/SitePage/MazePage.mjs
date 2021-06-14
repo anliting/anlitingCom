@@ -9,6 +9,7 @@ function MazePage(){
     this.node=doe.div(
         {className:'mazePage'},
         doe.div(
+            {className:'a'},
             doe.div({
                 className:'button',
                 onclick:()=>{
@@ -16,24 +17,49 @@ function MazePage(){
                 },
             },'Back'),
         ),
-        this._node.canvas=doe.canvas({
-            width:11*blockWidth+1,height:11*blockWidth+1
-        },n=>{
-            let context=n.getContext('2d')
-            context.fillStyle='#000'
-            context.fillRect(0,0,11*blockWidth+1,11*blockWidth+1)
-        }),
+        doe.div(
+            {className:'b'},
+            this._node.canvas=doe.canvas(),
+        ),
     )
     this.size=new Variable([1,1]).for(a=>{
         let zoom=Math.min(a[0],a[1]/(3/4))
         this.node.style.setProperty('--zoom',''+zoom)
-        this._node.canvas.width=(14/18)*zoom
-        this._node.canvas.height=(14/18)*zoom
+        this._node.canvas.width=(14/24)*zoom
+        this._node.canvas.height=(14/24)*zoom
         let context=this._node.canvas.getContext('2d')
-        context.setTransform((14/18)*zoom,0,0,(14/18)*zoom,0,0)
-        context.fillStyle='#000'
-        //context.fillRect(0,0,11*blockWidth+1,11*blockWidth+1)
-        context.fillRect(0,0,1,1)
+        context.setTransform((14/24)*zoom,0,0,(14/24)*zoom,0,0)
+        context.clearRect(0,0,1,1)
+        let imageWidth=10*(blockWidth+1)+1,imageHeight=10*(blockWidth+1)+1
+        context.fillStyle='#fff'
+        context.fillRect(0,0,1,1/imageHeight)
+        context.fillRect(0,0,1/imageWidth,1)
+        context.fillRect(0,10*(blockWidth+1)/imageHeight,1,1/imageHeight)
+        context.fillRect(10*(blockWidth+1)/imageWidth,0,1/imageWidth,1)
+        for(let i=0;i<9;i++)
+        for(let j=0;j<9;j++)
+            context.fillRect(
+                (blockWidth+1)*(i+1)/imageWidth,
+                (blockWidth+1)*(j+1)/imageHeight,
+                1/imageWidth,1/imageHeight
+            )
     })
 }
+MazePage.style=`
+    body>.mazePage{
+        display:inline-block;
+        padding:1em;
+        width:22em;
+        height:16em;
+        font-size:calc(var(--zoom) * 1 / 24 * 1px);
+        text-shadow:
+            0 0 .0625em rgba(0,0,0,.4),
+            .0625em .0625em .0625em rgba(0,0,0,.2);
+        vertical-align:middle;
+    }
+    body>.mazePage>.b{
+        margin-top:.25em;
+        text-align:center;
+    }
+`
 export default MazePage
