@@ -3,7 +3,7 @@ import Variable from            '../Variable.mjs'
 import Stream from              '../Stream.mjs'
 import generateAStyleMaze from  './MazePage/generateAStyleMaze.mjs'
 let blockWidth=8
-let width=10,height=10
+let width=20,height=20
 function generateMaze(){
     let edgeCount=2*width*height-width-height
     let a=Array(edgeCount)
@@ -42,14 +42,20 @@ function MazePage(){
         let context=this._node.canvas.getContext('2d')
         context.setTransform((14/24)*zoom,0,0,(14/24)*zoom,0,0)
         context.clearRect(0,0,1,1)
-        let imageWidth=10*(blockWidth+1)+1,imageHeight=10*(blockWidth+1)+1
+        let
+            imageWidth=width*(blockWidth+1)+1,
+            imageHeight=height*(blockWidth+1)+1
         context.fillStyle='#fff'
         context.fillRect(0,0,1,1/imageHeight)
         context.fillRect(0,0,1/imageWidth,1)
-        context.fillRect(0,10*(blockWidth+1)/imageHeight,1,1/imageHeight)
-        context.fillRect(10*(blockWidth+1)/imageWidth,0,1/imageWidth,1)
-        for(let i=0;i<9;i++)
-        for(let j=0;j<9;j++)
+        context.fillRect(
+            0,height*(blockWidth+1)/imageHeight,1,1/imageHeight
+        )
+        context.fillRect(
+            width*(blockWidth+1)/imageWidth,0,1/imageWidth,1
+        )
+        for(let i=0;i<width-1;i++)
+        for(let j=0;j<height-1;j++)
             context.fillRect(
                 (blockWidth+1)*(i+1)/imageWidth,
                 (blockWidth+1)*(j+1)/imageHeight,
