@@ -33,16 +33,6 @@ function outSize(){
 }
 outSize()
 onresize=outSize
-sitePage.page.for((to,from)=>{
-    if(from){
-        from.size.value=[1,1]
-        doe.body(1,from.node)
-    }
-    doe.body(to.node)
-    to.size.bind(windowSize)
-    if(to.focus)
-        to.focus()
-})
 let connectionStatusPanel=doe.div()
 connectionStatus.putTransform((to,from)=>{
     connectionStatusPanel.classList.add('changed')
@@ -62,4 +52,14 @@ windowSize.for(a=>
         '--zoom',''+Math.min(a[0],a[1]/(16/22))
     )
 )
+sitePage.page.for((to,from)=>{
+    if(from){
+        from.size.value=[1,1]
+        doe.body(1,from.node)
+    }
+    doe.body(to.node)
+    to.size.bind(windowSize)
+    if(to.focus)
+        to.focus()
+})
 navigator.serviceWorker.register('%23sw')
