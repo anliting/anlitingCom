@@ -183,6 +183,7 @@ MazePage.style=`
             0 0 .0625em rgba(0,0,0,.4),
             .0625em .0625em .0625em rgba(0,0,0,.2);
         vertical-align:middle;
+        overflow:hidden;
     }
     body>.mazePage>.a{
         display:table;
