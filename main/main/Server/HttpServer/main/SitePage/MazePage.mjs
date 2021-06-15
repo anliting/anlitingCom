@@ -13,7 +13,9 @@ function draw(){
     let
         imageWidth=width*(blockSize+1)+1,
         imageHeight=height*(blockSize+1)+1,
-        zoom=this._zoom*Math.min((22/24)*1/imageWidth,(14/24)*1/imageHeight)*this._dpr
+        zoom=this._zoom*Math.min(
+            (22/24)*1/imageWidth,(14/24)*1/imageHeight
+        )*this._dpr
     this._node.canvas.width=imageWidth*zoom*this._dpr
     this._node.canvas.height=imageHeight*zoom*this._dpr
     let context=this._node.canvas.getContext('2d')
@@ -40,7 +42,7 @@ function draw(){
             let x=i%(width-1),y=~~(i/(width-1))
             context.fillRect(
                 (blockSize+1)*(x+1),
-                ((blockSize+1)*y+1),
+                (blockSize+1)*y+1,
                 1,blockSize
             )
         }
@@ -48,7 +50,7 @@ function draw(){
         if(this._maze[(width-1)*height+i]){
             let x=i%width,y=~~(i/width)
             context.fillRect(
-                ((blockSize+1)*x+1),
+                (blockSize+1)*x+1,
                 (blockSize+1)*(y+1),
                 blockSize,1,
             )
