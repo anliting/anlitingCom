@@ -2,26 +2,21 @@ import doe from                 'doe'
 import Variable from            '../Variable.mjs'
 import Stream from              '../Stream.mjs'
 import generateAStyleMaze from  './MazePage/generateAStyleMaze.mjs'
-let blockSize=8,width=44,height=28
+let blockSize=16,width=44,height=28
 function generateMaze(){
     let edgeCount=2*width*height-width-height,a=Array(edgeCount).fill(1)
     for(let e of generateAStyleMaze(width,height))
         a[e]=0
     return a
 }
-function draw(){
-    let
-        imageWidth=width*(blockSize+1)+1,
-        imageHeight=height*(blockSize+1)+1,
-        zoom=this._zoom*Math.min(
-            (22/24)*1/imageWidth,(14/24)*1/imageHeight
-        )*this._dpr
-    this._node.canvas.width=imageWidth*zoom*this._dpr
-    this._node.canvas.height=imageHeight*zoom*this._dpr
-    let context=this._node.canvas.getContext('2d')
+function drawMaze(imageWidth,imageHeight,zoom){
+    zoom=Math.ceil(zoom)
+    this._node.mazeCanvas.width=imageWidth*zoom
+    this._node.mazeCanvas.height=imageHeight*zoom
+    let context=this._node.mazeCanvas.getContext('2d')
     context.setTransform(zoom,0,0,zoom,0,0)
     context.clearRect(0,0,imageWidth,imageHeight)
-    context.fillStyle='#fff'
+    context.fillStyle='#bfbfbf'
     context.fillRect(0,0,imageWidth,1)
     context.fillRect(0,0,1,imageHeight)
     context.fillRect(
@@ -55,6 +50,20 @@ function draw(){
                 blockSize,1,
             )
         }
+}
+function draw(){
+    let
+        imageWidth=width*(blockSize+1)+1,
+        imageHeight=height*(blockSize+1)+1,
+        zoom=this._zoom*Math.min(
+            (22/24)*1/imageWidth,(14/24)*1/imageHeight
+        )*this._dpr
+    this._node.canvas.width=Math.ceil(imageWidth*zoom)
+    this._node.canvas.height=Math.ceil(imageHeight*zoom)
+    drawMaze.call(this,imageWidth,imageHeight,zoom)
+    let context=this._node.canvas.getContext('2d')
+    context.setTransform(zoom,0,0,zoom,0,0)
+    context.drawImage(this._node.mazeCanvas,0,0,imageWidth,imageHeight)
     context.fillStyle='#afafff'
     context.beginPath()
     context.arc(
@@ -79,7 +88,9 @@ function draw(){
 function MazePage(){
     this.credential=new Variable
     this.out=new Stream
-    this._node={}
+    this._node={
+        mazeCanvas:doe.canvas()
+    }
     this._queue=[]
     this._maze=generateMaze()
     this.node=doe.div(
@@ -100,8 +111,7 @@ function MazePage(){
                 doe.div({
                     className:'button',
                     onclick:()=>{
-                        this._maze=generateMaze()
-                        draw.call(this)
+                        this.clear()
                     },
                 },'New Maze'),
             ),
@@ -116,6 +126,10 @@ function MazePage(){
                             e.timeStamp*1e3,e.key.toLowerCase()
                         ])
                 },
+                oncontextmenu:e=>{
+                    e.preventDefault()
+                    e.stopPropagation()
+                },
             }),
         ),
     )
@@ -127,6 +141,13 @@ function MazePage(){
         this.node.style.setProperty('--zoom',''+zoom)
         draw.call(this)
     })
+}
+MazePage.prototype.clear=function(){
+    this._maze=generateMaze()
+    draw.call(this)
+}
+MazePage.prototype.focus=function(){
+    this._node.canvas.focus()
 }
 MazePage.style=`
     body>.mazePage{

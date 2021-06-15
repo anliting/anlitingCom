@@ -40,6 +40,7 @@ function SitePage(){
                 this.page.bind(loggedInUserPage.page)
             break
             case'maze':
+                mazePage.clear()
                 this.page.value=mazePage
             break
         }
