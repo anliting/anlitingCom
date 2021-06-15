@@ -67,29 +67,52 @@ function draw(){
     context.fillStyle='#afafff'
     context.beginPath()
     context.arc(
-        (1+blockSize/2),
-        (1+(blockSize+1)*(height-1)+blockSize/2),
-        (blockSize/4),
+        1+blockSize/2,
+        1+(blockSize+1)*(height-1)+blockSize/2,
+        blockSize/4,
         0,
         2*Math.PI
     )
     context.fill()
-    context.fillStyle='#7fff7f'
+    context.shadowColor='rgba(0,0,0,.2)'
+    context.shadowBlur=zoom
+    context.shadowOffsetX=(
+        blockSize*.3125+
+        1+(blockSize+1)*(width-1)+
+        blockSize*.5
+    )*zoom
+    context.shadowOffsetY=(
+        blockSize*.0625+
+        1+
+        blockSize*.8125
+    )*zoom
+    context.fillStyle='#fff'
     context.beginPath()
-    context.arc(
-        (1+(blockSize+1)*(width-1)+blockSize/2),
-        (1+blockSize/2),
-        (blockSize/4),
+    context.ellipse(
+        -blockSize*.3125,
+        -blockSize*.0625,
+        blockSize*.3125,
+        blockSize*.0625,
+        0,
         0,
         2*Math.PI
     )
     context.fill()
+    context.shadowColor='rgba(0,0,0,0)'
+    context.drawImage(
+        this._node.diamond,
+        1+(blockSize+1)*(width-1)+blockSize*.125,
+        1+blockSize*.125,
+        blockSize*.75,
+        blockSize*.75,
+    )
 }
 function MazePage(){
     this.credential=new Variable
     this.out=new Stream
     this._node={
-        mazeCanvas:doe.canvas()
+        mazeCanvas:doe.canvas(),
+        diamond:doe.img({src:'blue-diamond.png'}),
     }
     this._queue=[]
     this._maze=generateMaze()
