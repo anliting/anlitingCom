@@ -87,8 +87,15 @@ export default`
     body>.connectionStatusPanel{
         position:fixed;
         left:0;
+        top:0;
+        width:100%;
+        height:100%;
+    }
+    body>.connectionStatusPanel>*{
+        position:absolute;
+        left:0;
         bottom:0;
-        font-size:calc(var(--zoom) * .5 / 22 * 1px);
+        font-size:calc(var(--zoom) * .5 / 24 * 1px);
         text-shadow:
             0 0 .0625em rgba(0,0,0,.4),
             .0625em .0625em .0625em rgba(0,0,0,.2);
@@ -96,23 +103,23 @@ export default`
         line-height:2em;
         width:min-content;
     }
-    body>.connectionStatusPanel.changed:not(.connected){
+    body>.connectionStatusPanel>.changed:not(.connected){
         animation-duration:.5s;
         animation-name:notConnectedBeat;
         animation-direction:alternate;
         animation-timing-function:linear;
     }
-    body>.connectionStatusPanel:not(.connected)::after{
+    body>.connectionStatusPanel>:not(.connected)::after{
         margin:0 .5em;
         content:'Offline';
     }
-    body>.connectionStatusPanel.changed.connected{
+    body>.connectionStatusPanel>.changed.connected{
         animation-duration:.5s;
         animation-name:connectedBeat;
         animation-direction:alternate;
         animation-timing-function:linear;
     }
-    body>.connectionStatusPanel.connected::after{
+    body>.connectionStatusPanel>.connected::after{
         margin:0 .5em;
         content:'Online';
     }

@@ -43,9 +43,7 @@ sitePage.page.for((to,from)=>{
     if(to.focus)
         to.focus()
 })
-let connectionStatusPanel=doe.div(
-    {className:'connectionStatusPanel'},
-)
+let connectionStatusPanel=doe.div()
 connectionStatus.putTransform((to,from)=>{
     connectionStatusPanel.classList.add('changed')
     if(from)
@@ -53,7 +51,12 @@ connectionStatus.putTransform((to,from)=>{
     if(to)
         connectionStatusPanel.classList.add('connected')
 })
-doe.body(connectionStatusPanel)
+doe.body(
+    doe.div(
+        {className:'connectionStatusPanel'},
+        connectionStatusPanel
+    )
+)
 windowSize.for(a=>
     connectionStatusPanel.style.setProperty(
         '--zoom',''+Math.min(a[0],a[1]/(16/22))
