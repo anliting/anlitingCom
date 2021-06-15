@@ -33,7 +33,7 @@ function outSize(){
 }
 outSize()
 onresize=outSize
-let connectionStatusPanel=doe.div()
+let connectionStatusPanel=doe.div({className:'connectionStatusPanel'})
 connectionStatus.putTransform((to,from)=>{
     connectionStatusPanel.classList.add('changed')
     if(from)
@@ -41,12 +41,7 @@ connectionStatus.putTransform((to,from)=>{
     if(to)
         connectionStatusPanel.classList.add('connected')
 })
-doe.body(
-    doe.div(
-        {className:'connectionStatusPanel'},
-        connectionStatusPanel
-    )
-)
+doe.body(connectionStatusPanel)
 windowSize.for(a=>
     connectionStatusPanel.style.setProperty(
         '--zoom',''+Math.min(a[0],a[1]/(3/4))
