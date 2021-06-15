@@ -49,7 +49,7 @@ doe.body(
 )
 windowSize.for(a=>
     connectionStatusPanel.style.setProperty(
-        '--zoom',''+Math.min(a[0],a[1]/(16/22))
+        '--zoom',''+Math.min(a[0],a[1]/(3/4))
     )
 )
 sitePage.page.for((to,from)=>{
