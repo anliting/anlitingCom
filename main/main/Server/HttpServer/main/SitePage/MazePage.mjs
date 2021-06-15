@@ -35,7 +35,6 @@ function draw(){
             (blockSize+1)*(j+1),
             1,1
         )
-    context.fillStyle='#fff'
     for(let i=0;i<(width-1)*height;i++)
         if(this._maze[i]){
             let x=i%(width-1),y=~~(i/(width-1))
