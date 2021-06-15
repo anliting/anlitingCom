@@ -10,6 +10,7 @@ export default`
         color:#fff;
         overflow:hidden;
         text-align:center;
+        touch-action:none;
     }
     body>*{
         text-align:left;
