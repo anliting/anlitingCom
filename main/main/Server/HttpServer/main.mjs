@@ -57,6 +57,10 @@ sitePage.page.for((to,from)=>{
     if(to.focus)
         to.focus()
 })
+onkeydown=e=>{
+    if(sitePage.page.value.keyDown)
+        sitePage.page.value.keyDown(e)
+}
 let frame=t=>{
     requestAnimationFrame(frame)
     if(sitePage.page.value.animationFrame)

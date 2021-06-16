@@ -145,50 +145,11 @@ function MazePage(){
             {className:'b'},
             this._node.canvas=doe.canvas({
                 tabIndex:0,
-                onkeydown:e=>{
-                    if(!(
-                        !e.repeat
-                    ))
-                        return
-                    /*this._queue.push([
-                        e.timeStamp*1e3,e.key.toLowerCase()
-                    ])*/
-                    this._drew=0
-                    if(e.key=='ArrowLeft')
-                        if(
-                            this._x&&
-                            !this._maze[this._y*(width-1)+this._x-1]
-                        )
-                            this._x--
-                    if(e.key=='ArrowRight')
-                        if(
-                            this._x<width-1&&
-                            !this._maze[this._y*(width-1)+this._x]
-                        )
-                            this._x++
-                    if(e.key=='ArrowUp')
-                        if(
-                            this._y&&
-                            !this._maze[
-                                (width-1)*height+
-                                (this._y-1)*width+this._x
-                            ]
-                        )
-                            this._y--
-                    if(e.key=='ArrowDown')
-                        if(
-                            this._y<height-1&&
-                            !this._maze[
-                                (width-1)*height+
-                                this._y*width+this._x
-                            ]
-                        )
-                            this._y++
-                },
                 oncontextmenu:e=>{
                     e.preventDefault()
                     e.stopPropagation()
                 },
+                onkeydown:this.keyDown.bind(this),
             }),
         ),
     )
@@ -212,6 +173,48 @@ MazePage.prototype.clear=function(){
 }
 MazePage.prototype.focus=function(){
     this._node.canvas.focus()
+}
+MazePage.prototype.keyDown=function(e){
+    if(!(
+        !e.repeat
+    ))
+        return
+    e.preventDefault()
+    e.stopPropagation()
+    /*this._queue.push([
+        e.timeStamp*1e3,e.key.toLowerCase()
+    ])*/
+    this._drew=0
+    if(e.key=='ArrowLeft')
+        if(
+            this._x&&
+            !this._maze[this._y*(width-1)+this._x-1]
+        )
+            this._x--
+    if(e.key=='ArrowRight')
+        if(
+            this._x<width-1&&
+            !this._maze[this._y*(width-1)+this._x]
+        )
+            this._x++
+    if(e.key=='ArrowUp')
+        if(
+            this._y&&
+            !this._maze[
+                (width-1)*height+
+                (this._y-1)*width+this._x
+            ]
+        )
+            this._y--
+    if(e.key=='ArrowDown')
+        if(
+            this._y<height-1&&
+            !this._maze[
+                (width-1)*height+
+                this._y*width+this._x
+            ]
+        )
+            this._y++
 }
 MazePage.style=`
     body>.mazePage{
