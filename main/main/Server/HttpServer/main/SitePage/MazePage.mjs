@@ -64,16 +64,6 @@ function draw(){
     let context=this._node.canvas.getContext('2d')
     context.setTransform(zoom,0,0,zoom,0,0)
     context.drawImage(this._node.mazeCanvas,0,0,imageWidth,imageHeight)
-    context.fillStyle='#afafff'
-    context.beginPath()
-    context.arc(
-        1+blockSize/2,
-        1+(blockSize+1)*(height-1)+blockSize/2,
-        blockSize/4,
-        0,
-        2*Math.PI
-    )
-    context.fill()
     context.shadowColor='rgba(0,0,0,.2)'
     context.shadowBlur=zoom
     context.shadowOffsetX=(
@@ -106,9 +96,18 @@ function draw(){
         blockSize*.75,
         blockSize*.75,
     )
+    context.fillStyle='#afafff'
+    context.beginPath()
+    context.arc(
+        1+(blockSize+1)*this._x+blockSize/2,
+        1+(blockSize+1)*this._y+blockSize/2,
+        blockSize/4,
+        0,
+        2*Math.PI
+    )
+    context.fill()
 }
 function MazePage(){
-    this.credential=new Variable
     this.out=new Stream
     this._node={
         mazeCanvas:doe.canvas(),
@@ -116,6 +115,8 @@ function MazePage(){
     }
     this._queue=[]
     this._maze=generateMaze()
+    this._x=0
+    this._y=height-1
     this.node=doe.div(
         {className:'mazePage'},
         doe.div(
@@ -136,7 +137,7 @@ function MazePage(){
                     onclick:()=>{
                         this.clear()
                     },
-                },'New Maze'),
+                },'New Game'),
             ),
         ),
         doe.div(
@@ -144,10 +145,43 @@ function MazePage(){
             this._node.canvas=doe.canvas({
                 tabIndex:0,
                 onkeydown:e=>{
-                    if(!e.repeat)
-                        this._queue.push([
-                            e.timeStamp*1e3,e.key.toLowerCase()
-                        ])
+                    if(!(
+                        !e.repeat
+                    ))
+                        return
+                    /*this._queue.push([
+                        e.timeStamp*1e3,e.key.toLowerCase()
+                    ])*/
+                    if(e.key=='ArrowLeft')
+                        if(
+                            this._x&&
+                            !this._maze[this._y*(width-1)+this._x-1]
+                        )
+                            this._x--
+                    if(e.key=='ArrowRight')
+                        if(
+                            this._x<width-1&&
+                            !this._maze[this._y*(width-1)+this._x]
+                        )
+                            this._x++
+                    if(e.key=='ArrowUp')
+                        if(
+                            this._y&&
+                            !this._maze[
+                                (width-1)*height+
+                                (this._y-1)*width+this._x
+                            ]
+                        )
+                            this._y--
+                    if(e.key=='ArrowDown')
+                        if(
+                            this._y<height-1&&
+                            !this._maze[
+                                (width-1)*height+
+                                this._y*width+this._x
+                            ]
+                        )
+                            this._y++
                 },
                 oncontextmenu:e=>{
                     e.preventDefault()
@@ -165,8 +199,13 @@ function MazePage(){
         draw.call(this)
     })
 }
+MazePage.prototype.animationFrame=function(){
+    draw.call(this)
+}
 MazePage.prototype.clear=function(){
     this._maze=generateMaze()
+    this._x=0
+    this._y=height-1
     draw.call(this)
 }
 MazePage.prototype.focus=function(){

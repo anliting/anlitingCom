@@ -57,4 +57,10 @@ sitePage.page.for((to,from)=>{
     if(to.focus)
         to.focus()
 })
+let frame=t=>{
+    requestAnimationFrame(frame)
+    if(sitePage.page.value.animationFrame)
+        sitePage.page.value.animationFrame(t)
+}
+requestAnimationFrame(frame)
 navigator.serviceWorker.register('%23sw')
