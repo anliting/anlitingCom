@@ -3,6 +3,7 @@ import Variable from            '../Variable.mjs'
 import Stream from              '../Stream.mjs'
 import generateAStyleMaze from  './MazePage/generateAStyleMaze.mjs'
 let blockSize=16,width=44,height=28
+width=11,height=7
 function generateMaze(){
     let edgeCount=2*width*height-width-height,a=Array(edgeCount).fill(1)
     for(let e of generateAStyleMaze(width,height))
@@ -109,6 +110,8 @@ function draw(){
         2*Math.PI
     )
     context.fill()
+}
+function Game(){
 }
 function MazePage(){
     this.out=new Stream
