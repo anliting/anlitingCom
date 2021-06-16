@@ -52,6 +52,9 @@ function drawMaze(imageWidth,imageHeight,zoom){
         }
 }
 function draw(){
+    if(this._drew)
+        return
+    this._drew=1
     let
         imageWidth=width*(blockSize+1)+1,
         imageHeight=height*(blockSize+1)+1,
@@ -114,9 +117,7 @@ function MazePage(){
         diamond:doe.img({src:'blue-diamond.png'}),
     }
     this._queue=[]
-    this._maze=generateMaze()
-    this._x=0
-    this._y=height-1
+    this.clear()
     this.node=doe.div(
         {className:'mazePage'},
         doe.div(
@@ -152,6 +153,7 @@ function MazePage(){
                     /*this._queue.push([
                         e.timeStamp*1e3,e.key.toLowerCase()
                     ])*/
+                    this._drew=0
                     if(e.key=='ArrowLeft')
                         if(
                             this._x&&
@@ -191,22 +193,22 @@ function MazePage(){
         ),
     )
     this.size=new Variable([1,1]).for(a=>{
+        this._drew=0
         this._dpr=devicePixelRatio
         this.node.style.setProperty('--dpr',''+this._dpr)
         let zoom=Math.min(a[0],a[1]/(3/4))
         this._zoom=zoom
         this.node.style.setProperty('--zoom',''+zoom)
-        draw.call(this)
     })
 }
 MazePage.prototype.animationFrame=function(){
     draw.call(this)
 }
 MazePage.prototype.clear=function(){
+    this._drew=0
     this._maze=generateMaze()
     this._x=0
     this._y=height-1
-    draw.call(this)
 }
 MazePage.prototype.focus=function(){
     this._node.canvas.focus()
