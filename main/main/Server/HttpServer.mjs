@@ -71,7 +71,7 @@ function HttpServer(mainDir,tls,wsEndListen){
             })
             return stream.end(await this._swPromise)
         }
-        if(header[':method']=='GET'&&url.pathname=='/blue-diamond.png'){
+        if(header[':method']=='GET'&&url.pathname=='/diamond-red.png'){
             if(stream.closed)
                 return
             stream.respond({
@@ -80,7 +80,7 @@ function HttpServer(mainDir,tls,wsEndListen){
                 'strict-transport-security':
                     'includeSubDomains;max-age=63072000;preload'
             })
-            fs.createReadStream(`${mainDir}/main/Server/HttpServer/blue-diamond.png`).pipe(stream)
+            fs.createReadStream(`${mainDir}/main/Server/HttpServer/diamond-red.png`).pipe(stream)
             return
         }
         stream.respond({

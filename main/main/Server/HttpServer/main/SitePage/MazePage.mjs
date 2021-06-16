@@ -114,7 +114,7 @@ function MazePage(){
     this.out=new Stream
     this._node={
         mazeCanvas:doe.canvas(),
-        diamond:doe.img({src:'blue-diamond.png'}),
+        diamond:doe.img({src:'diamond-red.png'}),
     }
     this._queue=[]
     this.clear()
