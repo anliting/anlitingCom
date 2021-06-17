@@ -50,40 +50,54 @@ MazeGame.prototype.animationFrame=function(t){
     ){
         let a=this._queue.shift()
         this._drew=0
-        if(a[1]=='keyDown'){
-            if(a[2]=='ArrowLeft')
-                if(
-                    this._status.x&&
-                    !this._status.maze[this._status.y*(this._width-1)+this._status.x-1]
-                )
-                    this._status.x--
-            if(a[2]=='ArrowRight')
-                if(
-                    this._status.x<this._width-1&&
-                    !this._status.maze[this._status.y*(this._width-1)+this._status.x]
-                )
-                    this._status.x++
-            if(a[2]=='ArrowUp')
-                if(
-                    this._status.y&&
-                    !this._status.maze[
-                        (this._width-1)*this._height+
-                        (this._status.y-1)*this._width+this._status.x
-                    ]
-                )
-                    this._status.y--
-            if(a[2]=='ArrowDown')
-                if(
-                    this._status.y<this._height-1&&
-                    !this._status.maze[
-                        (this._width-1)*this._height+
-                        this._status.y*this._width+this._status.x
-                    ]
-                )
-                    this._status.y++
+        if({
+            'ArrowLeft':1,
+            'ArrowRight':1,
+            'ArrowUp':1,
+            'ArrowDown':1,
+        }[a[2]]){
+            if(a[1]=='keyDown'){
+                this._status.key[a[2]]=1
+                if(a[2]=='ArrowLeft')
+                    if(
+                        this._status.x&&
+                        !this._status.maze[
+                            this._status.y*(this._width-1)+this._status.x-1
+                        ]
+                    )
+                        this._status.x--
+                if(a[2]=='ArrowRight')
+                    if(
+                        this._status.x<this._width-1&&
+                        !this._status.maze[
+                            this._status.y*(this._width-1)+this._status.x
+                        ]
+                    )
+                        this._status.x++
+                if(a[2]=='ArrowUp')
+                    if(
+                        this._status.y&&
+                        !this._status.maze[
+                            (this._width-1)*this._height+
+                            (this._status.y-1)*this._width+this._status.x
+                        ]
+                    )
+                        this._status.y--
+                if(a[2]=='ArrowDown')
+                    if(
+                        this._status.y<this._height-1&&
+                        !this._status.maze[
+                            (this._width-1)*this._height+
+                            this._status.y*this._width+this._status.x
+                        ]
+                    )
+                        this._status.y++
+            }
+            if(a[1]=='keyUp'){
+                this._status.key[a[2]]=0
+            }
         }
-        if(a[1]=='keyUp'){
-        }
+        this._status.time=a[0]
     }
     this._status.time=t
     draw.call(this,this._status)
@@ -98,6 +112,7 @@ MazeGame.prototype.start=function(){
         x:0,
         y:this._height-1,
     }
+    window.anlitingComDebug=this._status
 }
 MazeGame.prototype.focus=function(){
     this._node.canvas.focus()
