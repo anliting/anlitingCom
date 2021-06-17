@@ -2,13 +2,14 @@ import doe from                 'doe'
 import Variable from            '../../Variable.mjs'
 import generateAStyleMaze from  './MazeGame/generateAStyleMaze.mjs'
 let blockSize=16,width=44,height=28
+width=11,height=7
 function generateMaze(){
     let edgeCount=2*width*height-width-height,a=Array(edgeCount).fill(1)
     for(let e of generateAStyleMaze(width,height))
         a[e]=0
     return a
 }
-function drawMaze(zoom){
+function drawMaze(zoom,status){
     zoom=Math.ceil(zoom)
     this._node.mazeCanvas.width=this._imageWidth*zoom
     this._node.mazeCanvas.height=this._imageHeight*zoom
@@ -32,7 +33,7 @@ function drawMaze(zoom){
             1,1
         )
     for(let i=0;i<(width-1)*height;i++)
-        if(this._maze[i]){
+        if(status.maze[i]){
             let x=i%(width-1),y=~~(i/(width-1))
             context.fillRect(
                 (blockSize+1)*(x+1),
@@ -41,7 +42,7 @@ function drawMaze(zoom){
             )
         }
     for(let i=0;i<width*(height-1);i++)
-        if(this._maze[(width-1)*height+i]){
+        if(status.maze[(width-1)*height+i]){
             let x=i%width,y=~~(i/width)
             context.fillRect(
                 (blockSize+1)*x+1,
@@ -50,14 +51,14 @@ function drawMaze(zoom){
             )
         }
 }
-function draw(){
+function draw(status){
     if(this._drew)
         return
     this._drew=1
     let zoom=this._zoom*this._dpr
     this._node.canvas.width=Math.ceil(this._imageWidth*zoom)
     this._node.canvas.height=Math.ceil(this._imageHeight*zoom)
-    drawMaze.call(this,zoom)
+    drawMaze.call(this,zoom,status)
     let context=this._node.canvas.getContext('2d')
     context.setTransform(zoom,0,0,zoom,0,0)
     context.drawImage(
@@ -98,8 +99,8 @@ function draw(){
     context.fillStyle='#afafff'
     context.beginPath()
     context.arc(
-        1+(blockSize+1)*this._x+blockSize/2,
-        1+(blockSize+1)*this._y+blockSize/2,
+        1+(blockSize+1)*status.x+blockSize/2,
+        1+(blockSize+1)*status.y+blockSize/2,
         blockSize/4,
         0,
         2*Math.PI
@@ -114,7 +115,7 @@ function MazeGame(){
         diamond:doe.img({src:'diamond-red.png'}),
     }
     this._queue=[]
-    this.clear()
+    this._status={}
     this.node=this._node.div=doe.div(
         {className:'mazeGame'},
         this._node.canvas=doe.canvas({
@@ -124,6 +125,7 @@ function MazeGame(){
                 e.stopPropagation()
             },
             onkeydown:this.keyDown.bind(this),
+            onkeyup:this.keyUp.bind(this),
         }),
     )
     this.size=new Variable([1,1]).for(a=>{
@@ -137,14 +139,57 @@ function MazeGame(){
         })
     })
 }
-MazeGame.prototype.animationFrame=function(){
-    draw.call(this)
+MazeGame.prototype.animationFrame=function(t){
+    t=Math.floor(1e3*t)-this._startTime
+    while(
+        this._queue.length
+    ){
+        let a=this._queue.shift()
+        this._drew=0
+        if(a[1]=='keyDown'){
+            if(a[2]=='ArrowLeft')
+                if(
+                    this._status.x&&
+                    !this._status.maze[this._status.y*(width-1)+this._status.x-1]
+                )
+                    this._status.x--
+            if(a[2]=='ArrowRight')
+                if(
+                    this._status.x<width-1&&
+                    !this._status.maze[this._status.y*(width-1)+this._status.x]
+                )
+                    this._status.x++
+            if(a[2]=='ArrowUp')
+                if(
+                    this._status.y&&
+                    !this._status.maze[
+                        (width-1)*height+
+                        (this._status.y-1)*width+this._status.x
+                    ]
+                )
+                    this._status.y--
+            if(a[2]=='ArrowDown')
+                if(
+                    this._status.y<height-1&&
+                    !this._status.maze[
+                        (width-1)*height+
+                        this._status.y*width+this._status.x
+                    ]
+                )
+                    this._status.y++
+        }
+    }
+    draw.call(this,this._status)
 }
-MazeGame.prototype.clear=function(){
+MazeGame.prototype.start=function(){
+    this._startTime=Math.floor(1e3*performance.now())
     this._drew=0
-    this._maze=generateMaze()
-    this._x=0
-    this._y=height-1
+    this._keyStatus={}
+    this._status={
+        maze:generateMaze(),
+        x:0,
+        y:height-1,
+    }
 }
 MazeGame.prototype.focus=function(){
     this._node.canvas.focus()
@@ -156,40 +201,16 @@ MazeGame.prototype.keyDown=function(e){
         return
     e.preventDefault()
     e.stopPropagation()
-    /*this._queue.push([
-        e.timeStamp*1e3,e.key.toLowerCase()
-    ])*/
-    this._drew=0
-    if(e.key=='ArrowLeft')
-        if(
-            this._x&&
-            !this._maze[this._y*(width-1)+this._x-1]
-        )
-            this._x--
-    if(e.key=='ArrowRight')
-        if(
-            this._x<width-1&&
-            !this._maze[this._y*(width-1)+this._x]
-        )
-            this._x++
-    if(e.key=='ArrowUp')
-        if(
-            this._y&&
-            !this._maze[
-                (width-1)*height+
-                (this._y-1)*width+this._x
-            ]
-        )
-            this._y--
-    if(e.key=='ArrowDown')
-        if(
-            this._y<height-1&&
-            !this._maze[
-                (width-1)*height+
-                this._y*width+this._x
-            ]
-        )
-            this._y++
+    this._queue.push([
+        Math.floor(e.timeStamp*1e3)-this._startTime,'keyDown',e.key
+    ])
+}
+MazeGame.prototype.keyUp=function(e){
+    e.preventDefault()
+    e.stopPropagation()
+    this._queue.push([
+        Math.floor(e.timeStamp*1e3)-this._startTime,'keyUp',e.key
+    ])
 }
 MazeGame.style=`
     .mazeGame{
