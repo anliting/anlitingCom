@@ -10,6 +10,11 @@ function generateMaze(){
         a[e]=0
     return a
 }
+function positionTo(t){
+    this._status.position.add(
+        this._status.direction.newMulN((t-this._status.time)*speed)
+    )
+}
 function MazeGame(){
     this._blockSize=16
     this._width=44
@@ -52,10 +57,7 @@ MazeGame.prototype.animationFrame=function(t){
     ){
         this._drew=0
         let a=this._queue.shift()
-        this._status.x0+=
-            this._status.direction.x*(a[0]-this._status.time)*speed
-        this._status.y0+=
-            this._status.direction.y*(a[0]-this._status.time)*speed
+        positionTo.call(this,a[0])
         if({
             'ArrowLeft':1,
             'ArrowRight':1,
@@ -113,10 +115,7 @@ MazeGame.prototype.animationFrame=function(t){
         this._status.time=a[0]
     }
     this._drew=0
-    this._status.x0+=
-        this._status.direction.x*(t-this._status.time)*speed
-    this._status.y0+=
-        this._status.direction.y*(t-this._status.time)*speed
+    positionTo.call(this,t)
     this._status.time=t
     draw.call(this,this._status)
 }
@@ -130,8 +129,7 @@ MazeGame.prototype.start=function(){
         direction:new dt.Vector2,
         x:0,
         y:this._height-1,
-        x0:0,
-        y0:this._height-1,
+        position:new dt.Vector2(0,this._height-1),
     }
 }
 MazeGame.prototype.focus=function(){
