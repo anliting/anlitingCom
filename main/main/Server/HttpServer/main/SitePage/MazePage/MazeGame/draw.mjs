@@ -85,6 +85,16 @@ function draw(status){
         this._blockSize*.75,
         this._blockSize*.75,
     )
+    /*context.fillStyle='#fff'
+    context.beginPath()
+    context.arc(
+        1+(this._blockSize+1)*status.x0+this._blockSize/2,
+        1+(this._blockSize+1)*status.y0+this._blockSize/2,
+        this._blockSize/4,
+        0,
+        2*Math.PI
+    )
+    context.fill()*/
     context.fillStyle='#afafff'
     context.beginPath()
     context.arc(

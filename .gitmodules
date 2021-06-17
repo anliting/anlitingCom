@@ -1,3 +1,6 @@
 [submodule "lib/doe"]
 	path = lib/doe
 	url = https://github.com/anliting/doe.git
+[submodule "lib/dt"]
+	path = lib/dt
+	url = https://github.com/anliting/dt.git

@@ -1,7 +1,9 @@
 import doe from                 'doe'
+import dt from                  'dt'
 import Variable from            '../../Variable.mjs'
 import generateAStyleMaze from  './MazeGame/generateAStyleMaze.mjs'
 import draw from                './MazeGame/draw.mjs'
+let speed=4e-6
 function generateMaze(){
     let edgeCount=2*this._width*this._height-this._width-this._height,a=Array(edgeCount).fill(1)
     for(let e of generateAStyleMaze(this._width,this._height))
@@ -48,8 +50,12 @@ MazeGame.prototype.animationFrame=function(t){
     while(
         this._queue.length
     ){
-        let a=this._queue.shift()
         this._drew=0
+        let a=this._queue.shift()
+        this._status.x0+=
+            this._status.direction.x*(a[0]-this._status.time)*speed
+        this._status.y0+=
+            this._status.direction.y*(a[0]-this._status.time)*speed
         if({
             'ArrowLeft':1,
             'ArrowRight':1,
@@ -97,8 +103,20 @@ MazeGame.prototype.animationFrame=function(t){
                 this._status.key[a[2]]=0
             }
         }
+        this._status.direction=new dt.Vector2(
+                (this._status.key.ArrowLeft?-1:0)+
+                (this._status.key.ArrowRight?1:0)
+            ,
+                (this._status.key.ArrowUp?-1:0)+
+                (this._status.key.ArrowDown?1:0)
+        )
         this._status.time=a[0]
     }
+    this._drew=0
+    this._status.x0+=
+        this._status.direction.x*(t-this._status.time)*speed
+    this._status.y0+=
+        this._status.direction.y*(t-this._status.time)*speed
     this._status.time=t
     draw.call(this,this._status)
 }
@@ -109,12 +127,12 @@ MazeGame.prototype.start=function(){
         time:0,
         key:{},
         maze:generateMaze.call(this),
+        direction:new dt.Vector2,
         x:0,
         y:this._height-1,
         x0:0,
         y0:this._height-1,
     }
-    window.anlitingComDebug=this._status
 }
 MazeGame.prototype.focus=function(){
     this._node.canvas.focus()

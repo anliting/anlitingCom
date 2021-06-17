@@ -12,7 +12,8 @@ async function calcRootContent(mainDir,wsEndListen){
         JSON.stringify(wsEndListen)
     };${
         await link(`${mainDir}/main/Server/HttpServer/main.mjs`,{
-            doe:`${mainDir}/../lib/doe/export/main.mjs`
+            doe:`${mainDir}/../lib/doe/export/main.mjs`,
+            dt:`${mainDir}/../lib/dt/export/main.mjs`,
         })
     }`))()
     return htmlMinifier.minify(`
