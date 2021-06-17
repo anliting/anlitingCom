@@ -111,6 +111,8 @@ MazeGame.prototype.start=function(){
         maze:generateMaze.call(this),
         x:0,
         y:this._height-1,
+        x0:0,
+        y0:this._height-1,
     }
     window.anlitingComDebug=this._status
 }
