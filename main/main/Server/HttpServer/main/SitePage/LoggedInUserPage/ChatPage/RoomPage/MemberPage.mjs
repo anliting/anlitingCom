@@ -1,5 +1,5 @@
 import doe from                 'doe'
-import Stream from              '../../../../Stream.mjs'
+import{Stream}from              'dt'
 import Variable from            '../../../../Variable.mjs'
 function submit(){
     this._node.input.required=true

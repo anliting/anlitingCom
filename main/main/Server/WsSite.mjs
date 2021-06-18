@@ -1,5 +1,5 @@
 import WsServer from        './WsSite/WsServer.mjs'
-import Stream from          './Stream.mjs'
+import{Stream}from          '@anliting/dt'
 function onMessage(connection,message){
     let doc=this._connectionMap.get(connection)
     let operationCode=message.readUInt8()

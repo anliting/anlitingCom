@@ -1,6 +1,6 @@
-import doe from                 'doe'
-import Stream from              '../../../Stream.mjs'
-import Variable from            '../../../Variable.mjs'
+import doe from             'doe'
+import{Stream}from          'dt'
+import Variable from        '../../../Variable.mjs'
 function HomePage(){
     this.roomList=new Variable([])
     this.out=new Stream

@@ -1,5 +1,5 @@
 import doe from         'doe'
-import Stream from      '../../../Stream.mjs'
+import{Stream}from      'dt'
 function submit(){
     this._idInput.required=true
     if(this._idInput.checkValidity()){

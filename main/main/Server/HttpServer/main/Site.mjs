@@ -1,4 +1,4 @@
-import Stream from      './Stream.mjs'
+import{Stream}from      'dt'
 import Connection from  './Site/Connection.mjs'
 import chatSite from    './Site/chatSite.mjs'
 function setVariable(o,k,f){

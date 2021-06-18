@@ -2,7 +2,7 @@ import doe from             'doe'
 import RegisterPage from    './UserPage/RegisterPage.mjs'
 import LogInPage from       './UserPage/LogInPage.mjs'
 import Variable from        '../Variable.mjs'
-import Stream from          '../Stream.mjs'
+import{Stream}from          'dt'
 function back(){
     this._logInPage.clear()
     this.out.in(['back'])

@@ -89,7 +89,7 @@ function draw(status){
     context.fillStyle='#fff'
     context.beginPath()
     context.arc(
-        ...dt.Vector2.numeric([status.position],a=>
+        ...dt.NumberPair.numeric([status.position],a=>
             1+(this._blockSize+1)*a+this._blockSize/2,
         ),
         this._blockSize/4,

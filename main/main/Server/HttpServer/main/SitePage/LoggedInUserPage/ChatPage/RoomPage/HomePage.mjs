@@ -1,5 +1,5 @@
 import doe from                 'doe'
-import Stream from              '../../../../Stream.mjs'
+import{Stream}from              'dt'
 import Variable from            '../../../../Variable.mjs'
 import createControlPanel from  './HomePage/createControlPanel.mjs'
 import style from               './HomePage/style.mjs'

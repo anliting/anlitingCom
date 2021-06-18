@@ -1,5 +1,5 @@
 import doe from         'doe'
-import Stream from      '../../Stream.mjs'
+import{Stream}from      'dt'
 import Variable from    '../../Variable.mjs'
 async function submit(){
     this._status='inProgress'

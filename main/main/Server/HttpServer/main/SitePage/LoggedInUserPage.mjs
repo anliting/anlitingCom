@@ -1,5 +1,5 @@
 import doe from                 'doe'
-import Stream from              '../Stream.mjs'
+import{Stream}from              'dt'
 import Variable from            '../Variable.mjs'
 import ChatPage from            './LoggedInUserPage/ChatPage.mjs'
 import EditProfilePage from     './LoggedInUserPage/EditProfilePage.mjs'

@@ -5,6 +5,7 @@
         "rollup":"",
         "terser":"",
         "ws":"",
-        "@anliting/core":"anliting/core"
+        "@anliting/core":"anliting/core",
+        "@anliting/dt":"anliting/dt"
     }
 }

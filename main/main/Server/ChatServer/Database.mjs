@@ -1,6 +1,6 @@
 import core from    '@anliting/core'
 import fs from      'fs'
-import Stream from  '../Stream.mjs'
+import{Stream}from  '@anliting/dt'
 function Database(ready){
     this._out=(this.out=new Stream).caller
     this._ready=(async()=>{

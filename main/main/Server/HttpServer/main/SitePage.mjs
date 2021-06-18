@@ -3,7 +3,7 @@ import HomePage from            './SitePage/HomePage.mjs'
 import UserPage from            './SitePage/UserPage.mjs'
 import MazePage from            './SitePage/MazePage.mjs'
 import LoggedInUserPage from    './SitePage/LoggedInUserPage.mjs'
-import Stream from              './Stream.mjs'
+import{Stream}from              'dt'
 import Variable from            './Variable.mjs'
 function SitePage(){
     let
