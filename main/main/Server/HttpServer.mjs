@@ -18,7 +18,7 @@ async function calcRootContent(mainDir,wsEndListen){
     }`))()
     return htmlMinifier.minify(`
         <!doctype html>
-        <meta name=viewport content='width=device-width,initial-scale=1'>
+        <meta name=viewport content='initial-scale=1,width=device-width'>
         <link rel=icon href=data:,>
         <title>anliting.com</title>
         <body>
