@@ -24,8 +24,9 @@ function segment(aPosition,aVector,bPosition,bVector){
         b1=-bVector.x,
         c1=bVector.x*bPosition.y-bVector.y*bPosition.x,
         x=(b0*c1-b1*c0)/(a0*b1-a1*b0),
-        y=(c0*a1-c1*a0)/(a0*b1-a1*b0)
-    return new dt.Vector2(x,y)
+        y=(c0*a1-c1*a0)/(a0*b1-a1*b0),
+        intersection=new dt.Vector2(x,y)
+    return intersection
 }
 function move(wallX,wallY,wallWidth,wallHeight,position,direction,length){
     if(!debug&&direction.len){
@@ -37,7 +38,7 @@ function move(wallX,wallY,wallWidth,wallHeight,position,direction,length){
             direction.newMulN(length),
         )
         console.log(s)
-            //wallX,wallY,wallWidth,wallHeight,position,direction,length
+        //wallX,wallY,wallWidth,wallHeight,position,direction,length
     }
 }
 function positionTo(t){
