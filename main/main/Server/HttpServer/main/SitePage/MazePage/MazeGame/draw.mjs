@@ -89,9 +89,7 @@ function draw(status){
     context.fillStyle='#fff'
     context.beginPath()
     context.arc(
-        ...dt.NumberPair.numeric([status.position],a=>
-            1+(this._blockSize+1)*a+this._blockSize/2,
-        ),
+        ...status.position,
         this._blockSize/4,
         0,
         2*Math.PI

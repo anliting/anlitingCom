@@ -3,14 +3,70 @@ import dt from                  'dt'
 import Variable from            '../../Variable.mjs'
 import generateAStyleMaze from  './MazeGame/generateAStyleMaze.mjs'
 import draw from                './MazeGame/draw.mjs'
-let speed=4e-6
+let speed=64e-6
 function generateMaze(){
-    let edgeCount=2*this._width*this._height-this._width-this._height,a=Array(edgeCount).fill(1)
+    let
+        edgeCount=2*this._width*this._height-this._width-this._height,
+        a=Array(edgeCount).fill(1)
     for(let e of generateAStyleMaze(this._width,this._height))
         a[e]=0
     return a
 }
+let debug=0
+function segment(aPosition,aVector,bPosition,bVector){
+    if(!aVector.area(bVector))
+        return
+    let
+        a0=aVector.y,
+        b0=-aVector.x,
+        c0=aVector.x*aPosition.y-aVector.y*aPosition.x,
+        a1=bVector.y,
+        b1=-bVector.x,
+        c1=bVector.x*bPosition.y-bVector.y*bPosition.x,
+        x=(b0*c1-b1*c0)/(a0*b1-a1*b0),
+        y=(c0*a1-c1*a0)/(a0*b1-a1*b0)
+    return new dt.Vector2(x,y)
+}
+function move(wallX,wallY,wallWidth,wallHeight,position,direction,length){
+    if(!debug&&direction.len){
+        debug=1
+        let s=segment(
+            new dt.Vector2(wallX,wallY),
+            new dt.Vector2(0,wallHeight),
+            position,
+            direction.newMulN(length),
+        )
+        console.log(s)
+            //wallX,wallY,wallWidth,wallHeight,position,direction,length
+    }
+}
 function positionTo(t){
+    for(let i=0;i<(this._width-1)*this._height;i++)
+        if(this._status.maze[i]){
+            let x=i%(this._width-1),y=~~(i/(this._width-1))
+            move(
+                (this._blockSize+1)*(x+1),
+                (this._blockSize+1)*y+1,
+                1,
+                this._blockSize,
+                this._status.position,
+                this._status.direction,
+                (t-this._status.time)*speed,
+            )
+        }
+    for(let i=0;i<this._width*(this._height-1);i++)
+        if(this._status.maze[(this._width-1)*this._height+i]){
+            let x=i%this._width,y=~~(i/this._width)
+            move(
+                (this._blockSize+1)*x+1,
+                (this._blockSize+1)*(y+1),
+                this._blockSize,
+                1,
+                this._status.position,
+                this._status.direction,
+                (t-this._status.time)*speed,
+            )
+        }
     this._status.position.add(
         this._status.direction.newMulN((t-this._status.time)*speed)
     )
@@ -112,6 +168,9 @@ MazeGame.prototype.animationFrame=function(t){
                 (this._status.key.ArrowUp?-1:0)+
                 (this._status.key.ArrowDown?1:0)
         )
+        let l=this._status.direction.len
+        if(l)
+            this._status.direction.divN(l)
         this._status.time=a[0]
     }
     this._drew=0
@@ -129,7 +188,10 @@ MazeGame.prototype.start=function(){
         direction:new dt.Vector2,
         x:0,
         y:this._height-1,
-        position:new dt.Vector2(0,this._height-1),
+        position:new dt.Vector2(
+            1+this._blockSize/2,
+            (this._blockSize+1)*(this._height-1)+1+this._blockSize/2
+        ),
     }
 }
 MazeGame.prototype.focus=function(){
