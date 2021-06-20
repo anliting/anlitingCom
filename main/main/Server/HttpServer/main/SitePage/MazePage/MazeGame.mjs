@@ -12,7 +12,7 @@ function generateMaze(){
         a[e]=0
     return a
 }
-let debug=0
+/*let debug=0
 function segment(aPosition,aVector,bPosition,bVector){
     if(!aVector.area(bVector))
         return
@@ -40,9 +40,9 @@ function move(wallX,wallY,wallWidth,wallHeight,position,direction,length){
         console.log(s)
         //wallX,wallY,wallWidth,wallHeight,position,direction,length
     }
-}
+}*/
 function positionTo(t){
-    for(let i=0;i<(this._width-1)*this._height;i++)
+    /*for(let i=0;i<(this._width-1)*this._height;i++)
         if(this._status.maze[i]){
             let x=i%(this._width-1),y=~~(i/(this._width-1))
             move(
@@ -67,10 +67,13 @@ function positionTo(t){
                 this._status.direction,
                 (t-this._status.time)*speed,
             )
-        }
+        }*/
     this._status.position.add(
-        this._status.direction.newMulN((t-this._status.time)*speed)
+        dt.NumberPair.numeric([
+            this._status.direction.newMulN((t-this._status.time)*speed)
+        ],a=>a<0?Math.ceil(a):Math.floor(a))
     )
+    console.log(...this._status.position)
 }
 function MazeGame(){
     this._blockSize=16
