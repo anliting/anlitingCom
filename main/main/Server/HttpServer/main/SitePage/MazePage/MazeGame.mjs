@@ -3,7 +3,7 @@ import dt from                  'dt'
 import Variable from            '../../Variable.mjs'
 import generateAStyleMaze from  './MazeGame/generateAStyleMaze.mjs'
 import draw from                './MazeGame/draw.mjs'
-let speed=64e-6
+let speed=64e-3
 function generateMaze(){
     let
         edgeCount=2*this._width*this._height-this._width-this._height,
@@ -193,8 +193,8 @@ MazeGame.prototype.start=function(){
         x:0,
         y:this._height-1,
         position:new dt.Vector2(
-            1+this._blockSize/2,
-            (this._blockSize+1)*(this._height-1)+1+this._blockSize/2
+            (1+this._blockSize/2)*1e3,
+            ((this._blockSize+1)*(this._height-1)+1+this._blockSize/2)*1e3
         ),
     }
 }

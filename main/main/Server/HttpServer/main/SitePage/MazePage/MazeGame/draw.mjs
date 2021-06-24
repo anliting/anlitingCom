@@ -89,7 +89,7 @@ function draw(status){
     context.fillStyle='#fff'
     context.beginPath()
     context.arc(
-        ...status.position,
+        ...status.position.newMulN(1e-3),
         this._blockSize/4,
         0,
         2*Math.PI
