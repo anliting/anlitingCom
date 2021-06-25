@@ -12,8 +12,8 @@ function generateMaze(){
         a[e]=0
     return a
 }
-/*let debug=0
-function segment(aPosition,aVector,bPosition,bVector){
+let debug=0
+/*function segment(aPosition,aVector,bPosition,bVector){
     if(!aVector.area(bVector))
         return
     let
@@ -27,35 +27,42 @@ function segment(aPosition,aVector,bPosition,bVector){
         y=(c0*a1-c1*a0)/(a0*b1-a1*b0),
         intersection=new dt.Vector2(x,y)
     return intersection
+}*/
+function segmentIntersection(a,b,c,d){
+    function area(p,q,r){
+        let pq=q.newSub(p),pr=r.newSub(p)
+        return pq.x*pr.y-pq.y*pr.x
+    }
+    return area(a,b,c)*area(a,b,d)<0&&area(c,d,a)*area(c,d,b)<0
 }
 function move(wallX,wallY,wallWidth,wallHeight,position,direction,length){
     if(!debug&&direction.len){
-        debug=1
-        let s=segment(
+        //debug=1
+        let s=segmentIntersection(
             new dt.Vector2(wallX,wallY),
-            new dt.Vector2(0,wallHeight),
+            new dt.Vector2(wallX,wallY+wallHeight),
             position,
-            direction.newMulN(length),
+            position.newAdd(direction.newMulN(length)),
         )
         console.log(s)
         //wallX,wallY,wallWidth,wallHeight,position,direction,length
     }
-}*/
+}
 function positionTo(t){
-    /*for(let i=0;i<(this._width-1)*this._height;i++)
+    for(let i=0;i<(this._width-1)*this._height;i++)
         if(this._status.maze[i]){
             let x=i%(this._width-1),y=~~(i/(this._width-1))
             move(
-                (this._blockSize+1)*(x+1),
-                (this._blockSize+1)*y+1,
-                1,
-                this._blockSize,
+                (this._blockSize+1)*(x+1)*1e3,
+                (this._blockSize+1)*y+1*1e3,
+                1e3,
+                this._blockSize*1e3,
                 this._status.position,
                 this._status.direction,
                 (t-this._status.time)*speed,
             )
         }
-    for(let i=0;i<this._width*(this._height-1);i++)
+    /*for(let i=0;i<this._width*(this._height-1);i++)
         if(this._status.maze[(this._width-1)*this._height+i]){
             let x=i%this._width,y=~~(i/this._width)
             move(
@@ -73,12 +80,14 @@ function positionTo(t){
             this._status.direction.newMulN((t-this._status.time)*speed)
         ],a=>a<0?Math.ceil(a):Math.floor(a))
     )
-    console.log(...this._status.position)
+    //console.log(...this._status.position)
 }
 function MazeGame(){
     this._blockSize=16
-    this._width=44
-    this._height=28
+    /*this._width=44
+    this._height=28*/
+    this._width=2
+    this._height=2
     this._imageWidth=this._width*(this._blockSize+1)+1
     this._imageHeight=this._height*(this._blockSize+1)+1
     this._node={
@@ -172,7 +181,7 @@ MazeGame.prototype.animationFrame=function(t){
                 (this._status.key.ArrowUp?-1:0)+
                 (this._status.key.ArrowDown?1:0)
         )
-        let l=this._status.direction.len
+        let l=+this._status.direction
         if(l)
             this._status.direction.divN(l)
         this._status.time=a[0]

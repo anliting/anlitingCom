@@ -51,6 +51,9 @@ MazePage.prototype.focus=function(){
 MazePage.prototype.keyDown=function(e){
     this._game.keyDown(e)
 }
+MazePage.prototype.keyUp=function(e){
+    this._game.keyUp(e)
+}
 MazePage.style=MazeGame.style+`
     body>.mazePage{
         display:inline-block;

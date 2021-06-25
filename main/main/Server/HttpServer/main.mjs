@@ -61,6 +61,10 @@ onkeydown=e=>{
     if(sitePage.page.value.keyDown)
         sitePage.page.value.keyDown(e)
 }
+onkeyup=e=>{
+    if(sitePage.page.value.keyUp)
+        sitePage.page.value.keyUp(e)
+}
 let frame=t=>{
     requestAnimationFrame(frame)
     if(sitePage.page.value.animationFrame)
