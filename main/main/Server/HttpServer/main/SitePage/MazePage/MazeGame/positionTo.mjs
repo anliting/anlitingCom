@@ -144,6 +144,9 @@ function positionTo(t){
         this._status.direction,
         displacement,
     ))
-    this._status.position=ans[1]
+    if(!this._status.position.eq(ans[1])){
+        this._drew=0
+        this._status.position=ans[1]
+    }
 }
 export default positionTo

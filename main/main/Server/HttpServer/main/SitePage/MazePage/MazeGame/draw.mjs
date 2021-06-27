@@ -1,9 +1,16 @@
 import dt from'dt'
-function drawMaze(zoom,status){
+function drawMaze(zoom,maze){
     zoom=Math.ceil(zoom)
-    this._node.mazeCanvas.width=this._imageWidth*zoom
-    this._node.mazeCanvas.height=this._imageHeight*zoom
-    let context=this._node.mazeCanvas.getContext('2d')
+    if(
+        this._cache.mazeCanvasMaze==maze&&
+        this._cache.mazeCanvasZoom==zoom
+    )
+        return
+    this._cache.mazeCanvasMaze=maze
+    this._cache.mazeCanvasZoom=zoom
+    this._cache.mazeCanvas.width=this._imageWidth*zoom
+    this._cache.mazeCanvas.height=this._imageHeight*zoom
+    let context=this._cache.mazeCanvas.getContext('2d')
     context.setTransform(zoom,0,0,zoom,0,0)
     context.clearRect(0,0,this._imageWidth,this._imageHeight)
     context.fillStyle='#bfbfbf'
@@ -23,7 +30,7 @@ function drawMaze(zoom,status){
             1,1
         )
     for(let i=0;i<(this._width-1)*this._height;i++)
-        if(status.maze[i]){
+        if(maze[i]){
             let x=i%(this._width-1),y=~~(i/(this._width-1))
             context.fillRect(
                 (this._blockSize+1)*(x+1),
@@ -32,7 +39,7 @@ function drawMaze(zoom,status){
             )
         }
     for(let i=0;i<this._width*(this._height-1);i++)
-        if(status.maze[(this._width-1)*this._height+i]){
+        if(maze[(this._width-1)*this._height+i]){
             let x=i%this._width,y=~~(i/this._width)
             context.fillRect(
                 (this._blockSize+1)*x+1,
@@ -48,11 +55,11 @@ function draw(status){
     let zoom=this._zoom*this._dpr
     this._node.canvas.width=Math.ceil(this._imageWidth*zoom)
     this._node.canvas.height=Math.ceil(this._imageHeight*zoom)
-    drawMaze.call(this,zoom,status)
+    drawMaze.call(this,zoom,status.maze)
     let context=this._node.canvas.getContext('2d')
     context.setTransform(zoom,0,0,zoom,0,0)
     context.drawImage(
-        this._node.mazeCanvas,0,0,this._imageWidth,this._imageHeight
+        this._cache.mazeCanvas,0,0,this._imageWidth,this._imageHeight
     )
     context.shadowColor='rgba(0,0,0,.2)'
     context.shadowBlur=zoom

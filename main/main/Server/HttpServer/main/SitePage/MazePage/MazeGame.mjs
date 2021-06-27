@@ -19,11 +19,13 @@ function MazeGame(){
     this._imageWidth=this._width*(this._blockSize+1)+1
     this._imageHeight=this._height*(this._blockSize+1)+1
     this._node={
-        mazeCanvas:doe.canvas(),
         diamond:doe.img({src:'diamond-red.png'}),
     }
     this._queue=[]
     this._status={}
+    this._cache={
+        mazeCanvas:doe.canvas(),
+    }
     this.node=this._node.div=doe.div(
         {className:'mazeGame'},
         this._node.canvas=doe.canvas({
@@ -52,7 +54,6 @@ MazeGame.prototype.animationFrame=function(t){
     while(
         this._queue.length
     ){
-        this._drew=0
         let a=this._queue.shift()
         positionTo.call(this,a[0])
         if({
@@ -78,7 +79,6 @@ MazeGame.prototype.animationFrame=function(t){
             this._status.direction.divN(l)
         this._status.time=a[0]
     }
-    this._drew=0
     positionTo.call(this,t)
     this._status.time=t
     draw.call(this,this._status)
