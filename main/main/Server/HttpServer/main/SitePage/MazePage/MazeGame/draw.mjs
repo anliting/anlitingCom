@@ -95,15 +95,5 @@ function draw(status){
         2*Math.PI
     )
     context.fill()
-    context.fillStyle='#afafff'
-    context.beginPath()
-    context.arc(
-        1+(this._blockSize+1)*status.x+this._blockSize/2,
-        1+(this._blockSize+1)*status.y+this._blockSize/2,
-        this._blockSize/4,
-        0,
-        2*Math.PI
-    )
-    context.fill()
 }
 export default draw
