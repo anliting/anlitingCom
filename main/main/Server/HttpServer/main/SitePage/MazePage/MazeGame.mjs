@@ -16,6 +16,8 @@ function MazeGame(){
     this._blockSize=16
     this._width=44
     this._height=28
+    this._width=1
+    this._height=1
     this._imageWidth=this._width*(this._blockSize+1)+1
     this._imageHeight=this._height*(this._blockSize+1)+1
     this._node={
