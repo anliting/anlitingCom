@@ -50,11 +50,12 @@ function MazeGame(){
     })
 }
 MazeGame.prototype.animationFrame=function(t){
-    t=Math.floor(1e3*t)-this._startTime
+    t=Math.max(this._status.time,Math.floor(1e3*t)-this._startTime)
     while(
         this._queue.length
     ){
         let a=this._queue.shift()
+        a[0]=Math.max(this._status.time,a[0])
         positionTo.call(this,a[0])
         if({
             'ArrowLeft':1,
