@@ -50,7 +50,6 @@ function MazeGame(){
     })
 }
 MazeGame.prototype.animationFrame=function(t){
-    t=Math.max(this._status.time,Math.floor(1e3*t)-this._startTime)
     while(
         this._queue.length
     ){
@@ -80,6 +79,7 @@ MazeGame.prototype.animationFrame=function(t){
             this._status.direction.divN(l)
         this._status.time=a[0]
     }
+    t=Math.max(this._status.time,Math.floor(1e3*t)-this._startTime)
     positionTo.call(this,t)
     this._status.time=t
     draw.call(this,this._status)
