@@ -1,11 +1,20 @@
 import dt from                  'dt'
 let speed=64e-3
 function segmentIntersection(a,b,c,d){
-    function area(p,q,r){
+    function da(p,q,r){
         let pq=q.newSub(p),pr=r.newSub(p)
         return pq.x*pr.y-pq.y*pr.x
     }
-    return area(a,b,c)*area(a,b,d)<0&&area(c,d,a)*area(c,d,b)<0
+    function between(p,q,r){
+        let pq=q.newSub(p),pr=r.newSub(p)
+        return pq.ip(pr)<=0
+    }
+    let d0=da(a,b,c),d1=da(a,b,d),d2=da(a,c,d),d3=da(b,c,d)
+    return!d0&&between(c,a,b)||
+        !d1&&between(d,a,b)||
+        !d2&&between(a,c,d)||
+        !d3&&between(b,c,d)||
+        d0*d1<0&&d2*d3<0
 }
 function move(
     wallX,wallY,wallWidth,wallHeight,position,direction,displacement
@@ -147,7 +156,6 @@ function positionTo(t){
     if(!this._status.position.eq(ans[1])){
         this._drew=0
         this._status.position=ans[1]
-console.log(ans[1])
     }
 }
 export default positionTo
