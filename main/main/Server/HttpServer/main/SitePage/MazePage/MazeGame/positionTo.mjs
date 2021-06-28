@@ -156,7 +156,6 @@ function positionTo(t){
     if(!this._status.position.eq(ans[1])){
         this._drew=0
         this._status.position=ans[1]
-console.log('debug',ans[1])
     }
 }
 export default positionTo
