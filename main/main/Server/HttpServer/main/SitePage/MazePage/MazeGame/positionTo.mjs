@@ -1,19 +1,31 @@
 import dt from                  'dt'
 let speed=64e-3
 function segmentIntersection(a,b,c,d){
-    function da(p,q,r){
-        let pq=q.newSub(p),pr=r.newSub(p)
-        return pq.x*pr.y-pq.y*pr.x
+    function da(ax,ay,bx,by){
+        return ax*by-ay*bx
     }
-    function between(p,q,r){
-        let pq=q.newSub(p),pr=r.newSub(p)
-        return pq.ip(pr)<=0
+    function between(ax,ay,bx,by){
+        return ax*ay+bx*by<=0
     }
-    let d0=da(a,b,c),d1=da(a,b,d),d2=da(a,c,d),d3=da(b,c,d)
-    return!d0&&between(c,a,b)||
-        !d1&&between(d,a,b)||
-        !d2&&between(a,c,d)||
-        !d3&&between(b,c,d)||
+    let
+        a2bx=b.x-a.x,
+        a2cx=c.x-a.x,
+        a2dx=d.x-a.x,
+        b2cx=c.x-b.x,
+        b2dx=d.x-b.x,
+        a2by=b.y-a.y,
+        a2cy=c.y-a.y,
+        a2dy=d.y-a.y,
+        b2cy=c.y-b.y,
+        b2dy=d.y-b.y,
+        d0=da(a2bx,a2by,a2cx,a2cy),
+        d1=da(a2bx,a2by,a2dx,a2dy),
+        d2=da(a2cx,a2cy,a2dx,a2dy),
+        d3=da(b2cx,b2cy,b2dx,b2dy)
+    return!d0&&between(a2cx,a2cy,b2cx,b2cy)||
+        !d1&&between(a2dx,a2dy,b2dx,b2dy)||
+        !d2&&between(a2cx,a2cy,a2dx,a2dy)||
+        !d3&&between(b2cx,b2cy,b2dx,b2dy)||
         d0*d1<0&&d2*d3<0
 }
 function move(
