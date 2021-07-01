@@ -81,8 +81,9 @@ function move(
 function positionTo(t){
     if(!+this._status.direction)
         return
+    let step=(t-this._status.time)*speed/+this._status.direction
     let displacement=this._status.direction.newMulN(
-        (t-this._status.time)*speed
+        step
     )
     let ans
     {

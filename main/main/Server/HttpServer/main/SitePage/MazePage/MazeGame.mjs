@@ -74,9 +74,6 @@ MazeGame.prototype.animationFrame=function(t){
                     (this._status.key.ArrowDown?1:0)
             )
         }
-        let l=+this._status.direction
-        if(l)
-            this._status.direction.divN(l)
         this._status.time=a[0]
     }
     t=Math.max(this._status.time,Math.floor(1e3*t)-this._startTime)
