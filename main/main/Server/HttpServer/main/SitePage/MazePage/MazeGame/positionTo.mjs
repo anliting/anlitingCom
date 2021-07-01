@@ -1,11 +1,11 @@
 import dt from                  'dt'
 let speed=64e-3
-function segmentIntersection(a,b,c,d){
+function move(a,b,c,d){
     function da(ax,ay,bx,by){
         return ax*by-ay*bx
     }
     function between(ax,ay,bx,by){
-        return ax*ay+bx*by<=0
+        return ax*bx+ay*by<=0
     }
     let
         a2bx=b.x-a.x,
@@ -22,153 +22,106 @@ function segmentIntersection(a,b,c,d){
         d1=da(a2bx,a2by,a2dx,a2dy),
         d2=da(a2cx,a2cy,a2dx,a2dy),
         d3=da(b2cx,b2cy,b2dx,b2dy)
-    return!d0&&between(a2cx,a2cy,b2cx,b2cy)||
-        !d1&&between(a2dx,a2dy,b2dx,b2dy)||
-        !d2&&between(a2cx,a2cy,a2dx,a2dy)||
-        !d3&&between(b2cx,b2cy,b2dx,b2dy)||
-        d0*d1<0&&d2*d3<0
-}
-function move(
-    wallX,wallY,wallWidth,wallHeight,position,direction,displacement
-){
+    if(!d0&&between(a2cx,a2cy,b2cx,b2cy))
+        return c
     let
-        wallPosition=new dt.Vector2(wallX,wallY),
-        newPosition=position.newAdd(displacement)
-    if(wallWidth){
-        if(direction.y){
-            if(segmentIntersection(
-                wallPosition,
-                new dt.Vector2(wallX+wallWidth,wallY),
-                position,
-                newPosition,
-            )){
-                let y=direction.y<0?wallY+1:wallY-1
-                return new dt.Vector2(
-                    (y-position.y)/direction.y*direction.x+position.x,
-                    y,
-                )
-            }
-        }else if(wallY==position.y){
-            if(wallX<=newPosition.x&&newPosition.x<=wallX+wallWidth)
-                return new dt.Vector2(
-                    direction.x<0?wallX+wallWidth+1:wallX-1,
-                    wallY
-                )
-        }
-    }else{
-        if(direction.x){
-            if(segmentIntersection(
-                wallPosition,
-                new dt.Vector2(wallX,wallY+wallHeight),
-                position,
-                newPosition,
-            )){
-                let x=direction.x<0?wallX+1:wallX-1
-                return new dt.Vector2(
-                    x,
-                    (x-position.x)/direction.x*direction.y+position.y,
-                )
-            }
-        }else if(wallX==position.x){
-            if(wallY<=newPosition.y&&newPosition.y<=wallY+wallHeight)
-                return new dt.Vector2(
-                    wallX,
-                    direction.y<0?wallY+wallHeight+1:wallY-1
-                )
-        }
+        touchA=!d2&&between(a2cx,a2cy,a2dx,a2dy),
+        touchB=!d3&&between(b2cx,b2cy,b2dx,b2dy)
+    if(touchA&&touchB)
+        return between(a2bx,a2by,a2cx,a2cy)?a:b
+    if(touchA)
+        return a
+    if(touchB)
+        return b
+    if(!d1&&between(a2dx,a2dy,b2dx,b2dy))
+        return d
+    if(d0*d1<0&&d2*d3<0){
+        let
+            a0=a.y-b.y,b0=b.x-a.x,c0=BigInt(a.x*b.y-a.y*b.x),
+            a1=c.y-d.y,b1=d.x-c.x,c1=BigInt(c.x*d.y-c.y*d.x),
+            det=BigInt(a0*b1-a1*b0)
+        return new dt.Vector2(
+            Number((BigInt(b0)*c1-BigInt(b1)*c0)/det),
+            Number((c0*BigInt(a1)-c1*BigInt(a0))/det),
+        )
     }
 }
 function positionTo(t){
     if(!+this._status.direction)
         return
-    let step=(t-this._status.time)*speed/+this._status.direction
-    let displacement=this._status.direction.newMulN(
-        step
-    )
-    let ans
-    {
-        let ans0=dt.NumberPair.numeric(
-            [displacement],
-            a=>a<0?Math.ceil(a):Math.floor(a)
+    let
+        step=Math.floor(
+            (t-this._status.time)*speed/this._status.direction
+        ),
+        newPosition=this._status.position.newAdd(
+            this._status.direction.newMulN(step)
         )
-        ans=[
-            Math.abs(ans0.x)+Math.abs(ans0.y),
-            this._status.position.newAdd(ans0)
-        ]
-    }
-    function consider(ans0){
-        if(!ans0)
-            return
-        let ans1=ans0.newSub(this._status.position)
-        ans1=Math.abs(ans1.x)+Math.abs(ans1.y)
-        if(ans1<ans[0])
-            ans=[ans1,ans0]
+    function consider(wallX,wallY,wallWidth,wallHeight){
+        wallX=wallX*1e3+500
+        wallY=wallY*1e3+500
+        let p=move(
+            new dt.Vector2(wallX,wallY),
+            new dt.Vector2(wallX+wallWidth*1e3,wallY+wallHeight*1e3),
+            this._status.position,
+            newPosition,
+        )
+        if(p)
+            step=Math.min(step,
+                Math.ceil(
+                    p.newSub(this._status.position)/
+                    this._status.direction
+                )-1
+            )
     }
     for(let i=0;i<(this._width-1)*this._height;i++)
         if(this._status.maze[i]){
             let x=i%(this._width-1),y=~~(i/(this._width-1))
-            consider.call(this,move(
-                (this._blockSize+1)*(x+1)*1e3+500,
-                (this._blockSize+1)*y*1e3+500,
+            consider.call(this,
+                (this._blockSize+1)*(x+1),
+                (this._blockSize+1)*y,
                 0,
-                (this._blockSize+1)*1e3,
-                this._status.position,
-                this._status.direction,
-                displacement,
-            ))
+                this._blockSize+1,
+            )
         }
     for(let i=0;i<this._width*(this._height-1);i++)
         if(this._status.maze[(this._width-1)*this._height+i]){
             let x=i%this._width,y=~~(i/this._width)
-            consider.call(this,move(
-                (this._blockSize+1)*x*1e3+500,
-                (this._blockSize+1)*(y+1)*1e3+500,
-                (this._blockSize+1)*1e3,
+            consider.call(this,
+                (this._blockSize+1)*x,
+                (this._blockSize+1)*(y+1),
+                this._blockSize+1,
                 0,
-                this._status.position,
-                this._status.direction,
-                displacement,
-            ))
+            )
         }
-    consider.call(this,move(
-        500,
-        500,
+    consider.call(this,
         0,
-        this._height*(this._blockSize+1)*1e3,
-        this._status.position,
-        this._status.direction,
-        displacement,
-    ))
-    consider.call(this,move(
-        this._width*(this._blockSize+1)*1e3+500,
-        500,
         0,
-        this._height*(this._blockSize+1)*1e3,
-        this._status.position,
-        this._status.direction,
-        displacement,
-    ))
-    consider.call(this,move(
-        500,
-        500,
-        this._width*(this._blockSize+1)*1e3,
         0,
-        this._status.position,
-        this._status.direction,
-        displacement,
-    ))
-    consider.call(this,move(
-        500,
-        this._height*(this._blockSize+1)*1e3+500,
-        this._width*(this._blockSize+1)*1e3,
+        this._height*(this._blockSize+1),
+    )
+    consider.call(this,
+        this._width*(this._blockSize+1),
         0,
-        this._status.position,
-        this._status.direction,
-        displacement,
-    ))
-    if(!this._status.position.eq(ans[1])){
+        0,
+        this._height*(this._blockSize+1),
+    )
+    consider.call(this,
+        0,
+        0,
+        this._width*(this._blockSize+1),
+        0,
+    )
+    consider.call(this,
+        0,
+        this._height*(this._blockSize+1),
+        this._width*(this._blockSize+1),
+        0,
+    )
+    if(step){
         this._drew=0
-        this._status.position=ans[1]
+        this._status.position.add(
+            this._status.direction.newMulN(step)
+        )
     }
 }
 export default positionTo
