@@ -57,18 +57,25 @@ function draw(status){
     this._node.canvas.height=Math.ceil(this._imageHeight*zoom)
     drawMaze.call(this,zoom,status.maze)
     let context=this._node.canvas.getContext('2d')
-    context.setTransform(zoom,0,0,zoom,0,0)
+    context.setTransform(
+        zoom,0,0,zoom,
+        ...new dt.Vector2(this._imageWidth/2,this._imageHeight/2).sub(
+            status.position.newMulN(1e-3)
+        ).mulN(zoom)
+    )
     context.drawImage(
         this._cache.mazeCanvas,0,0,this._imageWidth,this._imageHeight
     )
     context.shadowColor='rgba(0,0,0,.2)'
     context.shadowBlur=zoom
     context.shadowOffsetX=(
+        this._imageWidth+
         this._blockSize*.3125+
         1+(this._blockSize+1)*(this._width-1)+
         this._blockSize*.5
     )*zoom
     context.shadowOffsetY=(
+        this._imageHeight+
         this._blockSize*.0625+
         1+
         this._blockSize*.8125
@@ -76,8 +83,8 @@ function draw(status){
     context.fillStyle='#fff'
     context.beginPath()
     context.ellipse(
-        -this._blockSize*.3125,
-        -this._blockSize*.0625,
+        -this._imageWidth-this._blockSize*.3125,
+        -this._imageHeight-this._blockSize*.0625,
         this._blockSize*.3125,
         this._blockSize*.0625,
         0,
