@@ -46,6 +46,15 @@ function move(a,b,c,d){
         )
     }
 }
+let debug=0
+window.anlitingComDebug={
+    start(){
+        debug=1
+    },
+    speed(v){
+        speed=v
+    },
+}
 function positionTo(t){
     if(!+this._status.direction)
         return
@@ -56,67 +65,69 @@ function positionTo(t){
         newPosition=this._status.position.newAdd(
             this._status.direction.newMulN(step)
         )
-    function consider(wallX,wallY,wallWidth,wallHeight){
-        wallX=wallX*1e3+500
-        wallY=wallY*1e3+500
-        let p=move(
-            new dt.Vector2(wallX,wallY),
-            new dt.Vector2(wallX+wallWidth*1e3,wallY+wallHeight*1e3),
-            this._status.position,
-            newPosition,
+    if(!debug){
+        function consider(wallX,wallY,wallWidth,wallHeight){
+            wallX=wallX*1e3+500
+            wallY=wallY*1e3+500
+            let p=move(
+                new dt.Vector2(wallX,wallY),
+                new dt.Vector2(wallX+wallWidth*1e3,wallY+wallHeight*1e3),
+                this._status.position,
+                newPosition,
+            )
+            if(p)
+                step=Math.min(step,
+                    Math.ceil(
+                        p.newSub(this._status.position)/
+                        this._status.direction
+                    )-1
+                )
+        }
+        for(let i=0;i<(this._width-1)*this._height;i++)
+            if(this._status.maze[i]){
+                let x=i%(this._width-1),y=~~(i/(this._width-1))
+                consider.call(this,
+                    (this._blockSize+1)*(x+1),
+                    (this._blockSize+1)*y,
+                    0,
+                    this._blockSize+1,
+                )
+            }
+        for(let i=0;i<this._width*(this._height-1);i++)
+            if(this._status.maze[(this._width-1)*this._height+i]){
+                let x=i%this._width,y=~~(i/this._width)
+                consider.call(this,
+                    (this._blockSize+1)*x,
+                    (this._blockSize+1)*(y+1),
+                    this._blockSize+1,
+                    0,
+                )
+            }
+        consider.call(this,
+            0,
+            0,
+            0,
+            this._height*(this._blockSize+1),
         )
-        if(p)
-            step=Math.min(step,
-                Math.ceil(
-                    p.newSub(this._status.position)/
-                    this._status.direction
-                )-1
-            )
+        consider.call(this,
+            this._width*(this._blockSize+1),
+            0,
+            0,
+            this._height*(this._blockSize+1),
+        )
+        consider.call(this,
+            0,
+            0,
+            this._width*(this._blockSize+1),
+            0,
+        )
+        consider.call(this,
+            0,
+            this._height*(this._blockSize+1),
+            this._width*(this._blockSize+1),
+            0,
+        )
     }
-    for(let i=0;i<(this._width-1)*this._height;i++)
-        if(this._status.maze[i]){
-            let x=i%(this._width-1),y=~~(i/(this._width-1))
-            consider.call(this,
-                (this._blockSize+1)*(x+1),
-                (this._blockSize+1)*y,
-                0,
-                this._blockSize+1,
-            )
-        }
-    for(let i=0;i<this._width*(this._height-1);i++)
-        if(this._status.maze[(this._width-1)*this._height+i]){
-            let x=i%this._width,y=~~(i/this._width)
-            consider.call(this,
-                (this._blockSize+1)*x,
-                (this._blockSize+1)*(y+1),
-                this._blockSize+1,
-                0,
-            )
-        }
-    consider.call(this,
-        0,
-        0,
-        0,
-        this._height*(this._blockSize+1),
-    )
-    consider.call(this,
-        this._width*(this._blockSize+1),
-        0,
-        0,
-        this._height*(this._blockSize+1),
-    )
-    consider.call(this,
-        0,
-        0,
-        this._width*(this._blockSize+1),
-        0,
-    )
-    consider.call(this,
-        0,
-        this._height*(this._blockSize+1),
-        this._width*(this._blockSize+1),
-        0,
-    )
     if(step){
         this._drew=0
         this._status.position.add(
