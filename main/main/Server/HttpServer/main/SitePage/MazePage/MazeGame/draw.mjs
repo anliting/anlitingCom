@@ -53,8 +53,6 @@ function draw(status){
         return
     this._drew=1
     let zoom=this._zoom*this._dpr
-    /*this._node.canvas.width=Math.ceil(this._imageWidth*zoom)
-    this._node.canvas.height=Math.ceil(this._imageHeight*zoom)*/
     this._node.canvas.width=Math.ceil((11*this._blockSize)*zoom)
     this._node.canvas.height=Math.ceil((7*this._blockSize)*zoom)
     drawMaze.call(this,zoom,status.maze)

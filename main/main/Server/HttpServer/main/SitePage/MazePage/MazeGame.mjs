@@ -14,8 +14,8 @@ function generateMaze(){
 }
 function MazeGame(){
     this._blockSize=16
-    this._width=44
-    this._height=28
+    this._width=50
+    this._height=50
     this._imageWidth=this._width*(this._blockSize+1)+1
     this._imageHeight=this._height*(this._blockSize+1)+1
     this._node={
@@ -42,14 +42,9 @@ function MazeGame(){
         this._drew=0
         this._dpr=devicePixelRatio
         this._node.canvas.style.setProperty('--dpr',''+this._dpr)
-        //this._zoom=Math.min(a[0]/this._imageWidth,a[1]/this._imageHeight)
         this._zoom=Math.min(
             a[0]/(11*this._blockSize),a[1]/(7*this._blockSize)
         )
-        /*doe(this._node.div.style,{
-            width:`${this._imageWidth*this._zoom}px`,
-            height:`${this._imageHeight*this._zoom}px`
-        })*/
         doe(this._node.div.style,{
             width:`${this._zoom*(11*this._blockSize)}px`,
             height:`${this._zoom*(7*this._blockSize)}px`
