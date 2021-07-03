@@ -84,6 +84,7 @@ MazePage.style=MazeGame.style+`
         text-align:center;
         line-height:0;
         height:14em;
+        background-color:#5f5f5f;
     }
     body>.mazePage>.b::after{
         content:'';
