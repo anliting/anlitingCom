@@ -1,5 +1,5 @@
 import dt from                  'dt'
-let speed=64e-3
+let speed=32e-3
 function move(a,b,c,d){
     function da(ax,ay,bx,by){
         return ax*by-ay*bx
@@ -68,7 +68,7 @@ function positionTo(t){
         if(p)
             step=Math.min(step,
                 Math.ceil(
-                    p.newSub(this._status.position)/
+                    p.sub(this._status.position)/
                     this._status.direction
                 )-1
             )
