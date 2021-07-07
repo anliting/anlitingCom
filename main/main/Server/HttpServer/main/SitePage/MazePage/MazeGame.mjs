@@ -2,8 +2,7 @@ import doe from                 'doe'
 import dt from                  'dt'
 import Variable from            '../../Variable.mjs'
 import generateAStyleMaze from  './MazeGame/generateAStyleMaze.mjs'
-import draw from                './MazeGame/draw.mjs'
-import positionTo from          './MazeGame/positionTo.mjs'
+import animationFrame from      './MazeGame/animationFrame.mjs'
 function generateMaze(){
     let
         edgeCount=2*this._width*this._height-this._width-this._height,
@@ -13,9 +12,6 @@ function generateMaze(){
     return a
 }
 function MazeGame(){
-    this._blockSize=16
-    this._width=50
-    this._height=50
     this._imageWidth=this._width*(this._blockSize+1)+1
     this._imageHeight=this._height*(this._blockSize+1)+1
     this._node={
@@ -43,46 +39,22 @@ function MazeGame(){
         this._dpr=devicePixelRatio
         this._node.canvas.style.setProperty('--dpr',''+this._dpr)
         this._zoom=Math.min(
-            a[0]/(11*this._blockSize),a[1]/(7*this._blockSize)
+            a[0]/this._view.x,
+            a[1]/this._view.y
         )
         doe(this._node.div.style,{
-            width:`${this._zoom*(11*this._blockSize)}px`,
-            height:`${this._zoom*(7*this._blockSize)}px`
+            width:`${this._zoom*this._view.x}px`,
+            height:`${this._zoom*this._view.y}px`
         })
     })
 }
-MazeGame.prototype.animationFrame=function(t){
-    while(
-        this._queue.length
-    ){
-        let a=this._queue.shift()
-        a[0]=Math.max(this._status.time,a[0])
-        positionTo.call(this,a[0])
-        if({
-            'ArrowLeft':1,
-            'ArrowRight':1,
-            'ArrowUp':1,
-            'ArrowDown':1,
-        }[a[2]]){
-            if(a[1]=='keyDown')
-                this._status.key[a[2]]=1
-            if(a[1]=='keyUp')
-                this._status.key[a[2]]=0
-            this._status.direction=new dt.Vector2(
-                    (this._status.key.ArrowLeft?-1:0)+
-                    (this._status.key.ArrowRight?1:0)
-                ,
-                    (this._status.key.ArrowUp?-1:0)+
-                    (this._status.key.ArrowDown?1:0)
-            )
-        }
-        this._status.time=a[0]
-    }
-    t=Math.max(this._status.time,Math.floor(1e3*t)-this._startTime)
-    positionTo.call(this,t)
-    this._status.time=t
-    draw.call(this,this._status)
-}
+MazeGame.prototype._blockSize=16
+MazeGame.prototype._view=new dt.Vector2(16,9).mulN(
+    MazeGame.prototype._blockSize
+)
+MazeGame.prototype._width=50
+MazeGame.prototype._height=50
+MazeGame.prototype.animationFrame=animationFrame
 MazeGame.prototype.start=function(){
     this._startTime=Math.floor(1e3*performance.now())
     this._drew=0
@@ -95,6 +67,11 @@ MazeGame.prototype.start=function(){
             (1+this._blockSize/2)*1e3,
             ((this._blockSize+1)*(this._height-1)+1+this._blockSize/2)*1e3
         ),
+        viewPosition:new dt.Vector2(
+            (1+this._blockSize/2)*1e3,
+            ((this._blockSize+1)*(this._height-1)+1+this._blockSize/2)*1e3
+        ),
+        viewVelocity:new dt.Vector2,
     }
 }
 MazeGame.prototype.focus=function(){

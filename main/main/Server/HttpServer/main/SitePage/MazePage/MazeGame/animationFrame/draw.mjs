@@ -53,13 +53,13 @@ function draw(status){
         return
     this._drew=1
     let zoom=this._zoom*this._dpr
-    this._node.canvas.width=Math.ceil((11*this._blockSize)*zoom)
-    this._node.canvas.height=Math.ceil((7*this._blockSize)*zoom)
+    this._node.canvas.width=Math.ceil(this._view.x*zoom)
+    this._node.canvas.height=Math.ceil(this._view.y*zoom)
     drawMaze.call(this,zoom,status.maze)
     let context=this._node.canvas.getContext('2d')
     context.setTransform(
         zoom,0,0,zoom,
-        ...new dt.Vector2((11*this._blockSize)/2,(7*this._blockSize)/2).sub(
+        ...new dt.Vector2(this._view.x/2,this._view.y/2).sub(
             status.position.newMulN(1e-3)
         ).mulN(zoom)
     )

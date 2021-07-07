@@ -1,5 +1,5 @@
 import dt from                  'dt'
-let speed=32e-3
+let speed=32000e-6
 function move(a,b,c,d){
     function da(ax,ay,bx,by){
         return ax*by-ay*bx
