@@ -56,8 +56,8 @@ MazeGame.prototype._imageHeight=
     MazeGame.prototype._height*(MazeGame.prototype._blockSize+1)+1
 MazeGame.prototype.animationFrame=animationFrame
 MazeGame.prototype.start=function(){
-    this._startTime=Math.floor(1e3*performance.now())
     this._drew=0
+    this._queue=[]
     this._status={
         time:0,
         key:{},
@@ -68,7 +68,7 @@ MazeGame.prototype.start=function(){
             ((this._blockSize+1)*(this._height-1)+1+this._blockSize/2)*1e3
         ),
     }
-    this._queue=[]
+    this._startTime=Math.floor(1e3*performance.now())
 }
 MazeGame.prototype.focus=function(){
     this._node.canvas.focus()
