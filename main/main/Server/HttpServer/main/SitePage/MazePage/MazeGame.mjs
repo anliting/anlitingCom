@@ -12,8 +12,6 @@ function generateMaze(){
     return a
 }
 function MazeGame(){
-    this._imageWidth=this._width*(this._blockSize+1)+1
-    this._imageHeight=this._height*(this._blockSize+1)+1
     this._node={
         diamond:doe.img({src:'diamond-red.png'}),
     }
@@ -54,6 +52,10 @@ MazeGame.prototype._view=new dt.Vector2(16,9).mulN(
 )
 MazeGame.prototype._width=50
 MazeGame.prototype._height=50
+MazeGame.prototype._imageWidth=
+    MazeGame.prototype._width*(MazeGame.prototype._blockSize+1)+1
+MazeGame.prototype._imageHeight=
+    MazeGame.prototype._height*(MazeGame.prototype._blockSize+1)+1
 MazeGame.prototype.animationFrame=animationFrame
 MazeGame.prototype.start=function(){
     this._startTime=Math.floor(1e3*performance.now())
@@ -67,11 +69,6 @@ MazeGame.prototype.start=function(){
             (1+this._blockSize/2)*1e3,
             ((this._blockSize+1)*(this._height-1)+1+this._blockSize/2)*1e3
         ),
-        viewPosition:new dt.Vector2(
-            (1+this._blockSize/2)*1e3,
-            ((this._blockSize+1)*(this._height-1)+1+this._blockSize/2)*1e3
-        ),
-        viewVelocity:new dt.Vector2,
     }
 }
 MazeGame.prototype.focus=function(){
