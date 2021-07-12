@@ -15,8 +15,6 @@ function MazeGame(){
     this._node={
         diamond:doe.img({src:'diamond-red.png'}),
     }
-    this._queue=[]
-    this._status={}
     this._cache={
         mazeCanvas:doe.canvas(),
     }
@@ -70,6 +68,7 @@ MazeGame.prototype.start=function(){
             ((this._blockSize+1)*(this._height-1)+1+this._blockSize/2)*1e3
         ),
     }
+    this._queue=[]
 }
 MazeGame.prototype.focus=function(){
     this._node.canvas.focus()
