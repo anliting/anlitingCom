@@ -84,7 +84,7 @@ HomePage.style=`
     body>.chatPage>.roomList{
         margin-top:1em;
         overflow-y:scroll;
-        height:11.25em;
+        height:calc(16em - 1.75em - 1em);
     }
     body>.chatPage>.roomList>*{
         padding:.125em;

@@ -28,7 +28,10 @@ export default`
         padding:.25em 0;
     }
     body>.chatRoomPage>.messageList>*{
-        height:calc(11.2em - 1.5em * var(--lineCount));
+        height:calc(
+            16em - 1.75em - .25em - .25em - .25em -
+            1.5em * var(--lineCount)
+        );
         overflow-y:scroll;
         overflow-anchor:none;
         word-break:break-all;
@@ -48,7 +51,7 @@ export default`
     }
     body>.chatRoomPage>.sendPanel>.a>*{
         resize:none;
-        width:15em;
+        width:calc(22em - 1em - 3em - 1em);
         height:calc(1.5em * var(--lineCount));
         background-color:#bfbfbf;
         margin:0;
