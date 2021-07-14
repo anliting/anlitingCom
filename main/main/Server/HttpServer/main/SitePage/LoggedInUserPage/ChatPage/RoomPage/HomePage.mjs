@@ -61,8 +61,10 @@ function HomePage(){
                             )
                         )
                     )
-                    if(bottom)
+                    if(bottom){
+                        this._skipOnScroll=1
                         n.scrollTop=n.scrollHeight
+                    }
                     setScrollRatio.call(this)
                 })
             })
