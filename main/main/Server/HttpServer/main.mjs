@@ -19,7 +19,11 @@ site.out.out(a=>{
         break
     }
 })
-sitePage.out.to(site.in)
+sitePage.out.out(a=>{
+    if(['logIn','logOut'].includes(a[0])){
+    }
+    site.in.in(a)
+})
 doe.head(
     doe.style(
         style+
@@ -71,4 +75,10 @@ let frame=t=>{
         sitePage.page.value.animationFrame(t)
 }
 requestAnimationFrame(frame)
-navigator.serviceWorker.register('%23sw')
+console.log(navigator.serviceWorker.controller)
+;(async()=>{
+    let registration=await navigator.serviceWorker.register('%23sw')
+    registration.onupdatefound=e=>{
+        console.log(registration.installing)
+    }
+})()
