@@ -75,10 +75,20 @@ let frame=t=>{
         sitePage.page.value.animationFrame(t)
 }
 requestAnimationFrame(frame)
-console.log(navigator.serviceWorker.controller)
+navigator.serviceWorker.onmessage=e=>{
+    console.log(e.data)
+}
 ;(async()=>{
     let registration=await navigator.serviceWorker.register('%23sw')
-    registration.onupdatefound=e=>{
-        console.log(registration.installing)
-    }
+    if(navigator.serviceWorker.controller){
+        let serviceWorker=navigator.serviceWorker.controller
+        serviceWorker.postMessage(['hello'])
+    }else
+        registration.onupdatefound=e=>{
+            let serviceWorker=registration.installing
+            serviceWorker.onstatechange=e=>{
+                if(serviceWorker.state=='activating')
+                    serviceWorker.postMessage(['hello'])
+            }
+        }
 })()
