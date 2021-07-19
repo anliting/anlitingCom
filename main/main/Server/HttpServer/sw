@@ -1,31 +1,36 @@
 let version='0'
-oninstall=e=>{
-    e.waitUntil((async()=>{
-        let cache=await caches.open(version)
-        await cache.addAll(['.'])
-    })())
-}
 onfetch=e=>{
-    // waitUntil?
+    let cache=caches.open(version),c=(async()=>{
+        cache=await cache
+        return cache.match(e.request)
+    })()
     e.respondWith((async()=>{
-        let cache=caches.open(version),c=(async()=>{
-            cache=await cache
-            return cache.match(e.request)
-        })()
         let res
         try{
             res=await fetch(e.request.clone())
         }catch(e){
             return c
         }
-        ;(async()=>{
+        e.waitUntil((async()=>{
             cache=await cache
             cache.put(e.request,res)
-        })()
+        })())
         return res.clone()
     })())
 }
 onmessage=e=>{
-    if(e.data[0]=='hello')
-        e.source.postMessage(['world'])
+    e.waitUntil((async()=>{
+        if(['logIn','logOut'].includes(e.data[0])){
+            let client=await clients.matchAll()
+            client.map(c=>{
+                c.postMessage(e.data)
+            })
+        }
+    })())
+}
+oninstall=e=>{
+    e.waitUntil((async()=>{
+        let cache=await caches.open(version)
+        await cache.addAll(['.'])
+    })())
 }

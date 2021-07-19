@@ -6,7 +6,21 @@ import SitePage from            './main/SitePage.mjs'
 let
     site=new Site,
     sitePage=new SitePage,
-    connectionStatus=new Variable(0)
+    connectionStatus=new Variable(0),
+    sw=(async()=>{
+        let reg=await navigator.serviceWorker.register('%23sw')
+        await new Promise(rs=>{
+            if(reg.active)
+                rs()
+            else
+                reg.onupdatefound=e=>
+                    reg.installing.onstatechange=e=>{
+                        if(reg.active)
+                            rs()
+                    }
+        })
+        return reg.active
+    })()
 site.onLine=navigator.onLine
 ononline=onoffline=()=>site.onLine=navigator.onLine
 site.out.out(a=>{
@@ -20,9 +34,13 @@ site.out.out(a=>{
     }
 })
 sitePage.out.out(a=>{
-    if(['logIn','logOut'].includes(a[0])){
-    }
-    site.in.in(a)
+    if(['logIn','logOut'].includes(a[0]))
+        (async()=>{
+            sw=await sw
+            sw.postMessage(a)
+        })()
+    else
+        site.in.in(a)
 })
 doe.head(
     doe.style(
@@ -76,19 +94,6 @@ let frame=t=>{
 }
 requestAnimationFrame(frame)
 navigator.serviceWorker.onmessage=e=>{
-    console.log(e.data)
+    if(['logIn','logOut'].includes(e.data[0]))
+        site.in.in(e.data)
 }
-;(async()=>{
-    let registration=await navigator.serviceWorker.register('%23sw')
-    if(navigator.serviceWorker.controller){
-        let serviceWorker=navigator.serviceWorker.controller
-        serviceWorker.postMessage(['hello'])
-    }else
-        registration.onupdatefound=e=>{
-            let serviceWorker=registration.installing
-            serviceWorker.onstatechange=e=>{
-                if(serviceWorker.state=='activating')
-                    serviceWorker.postMessage(['hello'])
-            }
-        }
-})()
