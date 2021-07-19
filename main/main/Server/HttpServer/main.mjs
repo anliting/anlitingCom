@@ -11,13 +11,12 @@ let
         let reg=await navigator.serviceWorker.register('%23sw')
         await new Promise(rs=>{
             if(reg.active)
-                rs()
-            else
-                reg.onupdatefound=e=>
-                    reg.installing.onstatechange=e=>{
-                        if(reg.active)
-                            rs()
-                    }
+                return rs()
+            reg.onupdatefound=e=>
+                reg.installing.onstatechange=e=>{
+                    if(reg.active)
+                        rs()
+                }
         })
         return reg.active
     })()
