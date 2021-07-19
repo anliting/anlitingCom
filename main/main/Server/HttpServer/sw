@@ -46,7 +46,8 @@ onfetch=e=>{
 }
 onmessage=e=>{
     if(['logIn','logOut'].includes(e.data[0]))
-        e.waitUntil((async()=>{
+        e.waitUntil(logInFlow=(async()=>{
+            await logInFlow
             let client=await clients.matchAll()
             client.map(c=>{
                 c.postMessage(e.data)
