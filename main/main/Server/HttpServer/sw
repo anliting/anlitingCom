@@ -1,4 +1,30 @@
-let version='0'
+let
+    version='0',
+    db=new Promise(rs=>{
+        let openReq=indexedDB.open('')
+        openReq.onsuccess=e=>{
+            rs(openReq.result)
+        }
+        openReq.onupgradeneeded=e=>{
+            openReq.result.createObjectStore('logIn')
+        }
+    }),logInFlow=(async()=>{
+        db=await db
+    })()
+        /*let transaction=db.transaction('logIn','readwrite')
+        let objectStore=transaction.objectStore('logIn')
+        transaction.oncomplete=e=>{
+        }
+        let getAllReq=objectStore.getAll()
+        getAllReq.onsuccess=e=>{
+            let a=getAllReq.result
+            if(a.length){
+                console.log(a[0])
+                objectStore.put(a[0]+1,0)
+            }else{
+                objectStore.put(0,0)
+            }
+        }*/
 onfetch=e=>{
     let cache=caches.open(version),c=(async()=>{
         cache=await cache
@@ -19,14 +45,13 @@ onfetch=e=>{
     })())
 }
 onmessage=e=>{
-    e.waitUntil((async()=>{
-        if(['logIn','logOut'].includes(e.data[0])){
+    if(['logIn','logOut'].includes(e.data[0]))
+        e.waitUntil((async()=>{
             let client=await clients.matchAll()
             client.map(c=>{
                 c.postMessage(e.data)
             })
-        }
-    })())
+        })())
 }
 oninstall=e=>{
     e.waitUntil((async()=>{
