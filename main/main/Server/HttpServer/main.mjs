@@ -20,6 +20,10 @@ let
         })
         return reg.active
     })()
+;(async()=>{
+    sw=await sw
+    sw.postMessage(['getLogIn'])
+})()
 site.onLine=navigator.onLine
 ononline=onoffline=()=>site.onLine=navigator.onLine
 site.out.out(a=>{
