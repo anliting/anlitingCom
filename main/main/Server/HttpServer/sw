@@ -56,7 +56,9 @@ onmessage=e=>{
         case'getLogIn':
             e.waitUntil(logInFlow=(async()=>{
                 await logInFlow
-                e.source.postMessage(['logIn',...await getLogIn()])
+                let logIn=await getLogIn()
+                if(logIn)
+                    e.source.postMessage(['logIn',...logIn])
             })())
         break
         case'logIn':
@@ -90,6 +92,7 @@ onmessage=e=>{
     }
 }
 oninstall=e=>{
+    skipWaiting()
     e.waitUntil((async()=>{
         let cache=await caches.open(version)
         await cache.addAll(['.'])
