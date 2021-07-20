@@ -32,6 +32,9 @@ function putLogIn(credential){
         transaction.oncomplete=rs
     })
 }
+onactivate=e=>{
+    e.waitUntil(clients.claim())
+}
 onfetch=e=>{
     let cache=caches.open(version),c=(async()=>{
         cache=await cache
