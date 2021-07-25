@@ -2,9 +2,8 @@ import dt from                  'dt'
 import positionTo from          './animationFrame/positionTo.mjs'
 import draw from                './animationFrame/draw.mjs'
 export default function(t){
-    while(
-        this._queue.length
-    ){
+    t=Math.floor(1e3*t)-this._startTime
+    while(this._queue.length&&this._queue[0][0]<t){
         let a=this._queue.shift()
         a[0]=Math.max(this._status.time,a[0])
         positionTo.call(this,a[0])
@@ -28,7 +27,6 @@ export default function(t){
         }
         this._status.time=a[0]
     }
-    t=Math.max(this._status.time,Math.floor(1e3*t)-this._startTime)
     positionTo.call(this,t)
     this._status.time=t
     draw.call(this,this._status)
