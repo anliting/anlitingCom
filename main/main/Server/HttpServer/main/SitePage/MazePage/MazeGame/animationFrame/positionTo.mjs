@@ -46,15 +46,15 @@ function move(a,b,c,d){
         )
     }
 }
-function positionTo(t){
-    if(!+this._status.direction)
+function positionTo(status,t){
+    if(!+status.direction)
         return
     let
         step=Math.floor(
-            (t-this._status.time)*speed/this._status.direction
+            (t-status.time)*speed/status.direction
         ),
-        newPosition=this._status.position.newAdd(
-            this._status.direction.newMulN(step)
+        newPosition=status.position.newAdd(
+            status.direction.newMulN(step)
         )
     function consider(wallX,wallY,wallWidth,wallHeight){
         wallX=wallX*1e3+500
@@ -62,19 +62,19 @@ function positionTo(t){
         let p=move(
             new dt.Vector2(wallX,wallY),
             new dt.Vector2(wallX+wallWidth*1e3,wallY+wallHeight*1e3),
-            this._status.position,
+            status.position,
             newPosition,
         )
         if(p)
             step=Math.min(step,
                 Math.ceil(
-                    p.sub(this._status.position)/
-                    this._status.direction
+                    p.sub(status.position)/
+                    status.direction
                 )-1
             )
     }
     for(let i=0;i<(this._width-1)*this._height;i++)
-        if(this._status.maze[i]){
+        if(status.maze[i]){
             let x=i%(this._width-1),y=~~(i/(this._width-1))
             consider.call(this,
                 (this._blockSize+1)*(x+1),
@@ -84,7 +84,7 @@ function positionTo(t){
             )
         }
     for(let i=0;i<this._width*(this._height-1);i++)
-        if(this._status.maze[(this._width-1)*this._height+i]){
+        if(status.maze[(this._width-1)*this._height+i]){
             let x=i%this._width,y=~~(i/this._width)
             consider.call(this,
                 (this._blockSize+1)*x,
@@ -119,8 +119,8 @@ function positionTo(t){
     )
     if(step){
         this._drew=0
-        this._status.position.add(
-            this._status.direction.newMulN(step)
+        status.position.add(
+            status.direction.newMulN(step)
         )
     }
 }
