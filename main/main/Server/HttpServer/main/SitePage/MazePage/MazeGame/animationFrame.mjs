@@ -7,10 +7,12 @@ function pushWithEvent(status,queue,t,push,event){
         push(status,Math.max(status.time,a[0]))
         event(status,a)
     }
-    push(status,t)
+    let s=Object.assign({},status)
+    push(s,t)
+    return s
 }
 export default function(t){
-    pushWithEvent(
+    let s=pushWithEvent(
         this._status,
         this._queue,
         Math.floor(1e3*t)-this._startTime,
@@ -39,5 +41,5 @@ export default function(t){
             }
         }
     )
-    draw.call(this,this._status)
+    draw.call(this,s)
 }

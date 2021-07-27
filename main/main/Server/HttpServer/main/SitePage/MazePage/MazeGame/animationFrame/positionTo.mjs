@@ -121,7 +121,7 @@ function positionTo(status,t){
     )
     if(step){
         this._drew=0
-        status.position.add(
+        status.position=status.position.newAdd(
             status.direction.newMulN(step)
         )
     }
