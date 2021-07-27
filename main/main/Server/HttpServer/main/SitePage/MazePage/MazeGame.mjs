@@ -48,6 +48,10 @@ MazeGame.prototype._blockSize=16
 MazeGame.prototype._view=new dt.Vector2(16,9).mulN(
     MazeGame.prototype._blockSize
 )
+/*
+    With block size = 16, ensure that width and height are both less than
+    3947 to mitigate floating-point inaccuracy.
+*/
 MazeGame.prototype._width=50
 MazeGame.prototype._height=50
 MazeGame.prototype._imageWidth=
