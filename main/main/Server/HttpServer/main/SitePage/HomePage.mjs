@@ -46,6 +46,10 @@ function HomePage(){
                 doe.div({className:'button',onclick:()=>{
                     this.out.in('maze')
                 }},'Maze'),
+                ' ',
+                doe.div({className:'button',onclick:()=>{
+                    this.out.in('idleKingdom')
+                }},'Idle Kingdom (incomplete)'),
             ),
             doe.div(
                 {className:'b'},

@@ -2,6 +2,7 @@ import doe from                 'doe'
 import HomePage from            './SitePage/HomePage.mjs'
 import UserPage from            './SitePage/UserPage.mjs'
 import MazePage from            './SitePage/MazePage.mjs'
+import IdleKingdomPage from     './SitePage/IdleKingdomPage.mjs'
 import LoggedInUserPage from    './SitePage/LoggedInUserPage.mjs'
 import{Stream}from              'dt'
 import Variable from            './Variable.mjs'
@@ -11,6 +12,7 @@ function SitePage(){
         loggedInUserPage=new LoggedInUserPage,
         homePage=new HomePage,
         mazePage=new MazePage,
+        idleKingdomPage=new IdleKingdomPage,
         roomListListener=new Variable
     this.page=new Variable
     this.credential=new Variable
@@ -42,6 +44,10 @@ function SitePage(){
             case'maze':
                 mazePage.clear()
                 this.page.value=mazePage
+            break
+            case'idleKingdom':
+                idleKingdomPage.clear()
+                this.page.value=idleKingdomPage
             break
         }
     })
@@ -86,6 +92,13 @@ function SitePage(){
         }
     })
     mazePage.out.out(a=>{
+        switch(a[0]){
+            case'back':
+                this.page.value=homePage
+            break
+        }
+    })
+    idleKingdomPage.out.out(a=>{
         switch(a[0]){
             case'back':
                 this.page.value=homePage
