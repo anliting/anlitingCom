@@ -45,15 +45,6 @@ MazePage.prototype.animationFrame=function(t){
 MazePage.prototype.clear=function(){
     this._game.start()
 }
-MazePage.prototype.focus=function(){
-    this._game.focus()
-}
-MazePage.prototype.keyDown=function(e){
-    this._game.keyDown(e)
-}
-MazePage.prototype.keyUp=function(e){
-    this._game.keyUp(e)
-}
 MazePage.style=MazeGame.style+`
     body>.mazePage{
         display:inline-block;

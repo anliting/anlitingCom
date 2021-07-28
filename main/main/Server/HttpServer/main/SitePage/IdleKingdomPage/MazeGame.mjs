@@ -26,8 +26,6 @@ function MazeGame(){
                 e.preventDefault()
                 e.stopPropagation()
             },
-            onkeydown:this.keyDown.bind(this),
-            onkeyup:this.keyUp.bind(this),
         }),
     )
     this.size=new Variable([1,1]).for(a=>{
@@ -64,36 +62,8 @@ MazeGame.prototype.start=function(){
     this._queue=[]
     this._status={
         time:0,
-        key:{},
-        maze:generateMaze.call(this),
-        direction:new dt.Vector2,
-        position:new dt.Vector2(
-            (1+this._blockSize/2)*1e3,
-            ((this._blockSize+1)*(this._height-1)+1+this._blockSize/2)*1e3
-        ),
     }
     this._startTime=Math.floor(1e3*performance.now())
-}
-MazeGame.prototype.focus=function(){
-    this._node.canvas.focus()
-}
-MazeGame.prototype.keyDown=function(e){
-    if(!(
-        !e.repeat
-    ))
-        return
-    e.preventDefault()
-    e.stopPropagation()
-    this._queue.push([
-        Math.floor(e.timeStamp*1e3)-this._startTime,'keyDown',e.key
-    ])
-}
-MazeGame.prototype.keyUp=function(e){
-    e.preventDefault()
-    e.stopPropagation()
-    this._queue.push([
-        Math.floor(e.timeStamp*1e3)-this._startTime,'keyUp',e.key
-    ])
 }
 MazeGame.style=`
     .mazeGame{
