@@ -1,9 +1,9 @@
 import doe from                 'doe'
 import{Stream}from              'dt'
 import Variable from            '../Variable.mjs'
-import MazeGame from            './IdleKingdomPage/MazeGame.mjs'
-function MazePage(){
-    this._game=new MazeGame
+import IdleKingdomGame from     './IdleKingdomPage/IdleKingdomGame.mjs'
+function IdleKingdomPage(){
+    this._game=new IdleKingdomGame
     this.out=new Stream
     this.node=doe.div(
         {className:'mazePage'},
@@ -18,15 +18,6 @@ function MazePage(){
                     },
                 },'Back'),
             ),
-            doe.div(
-                {className:'b'},
-                doe.div({
-                    className:'button',
-                    onclick:()=>{
-                        this.clear()
-                    },
-                },'New Game'),
-            ),
         ),
         doe.div(
             {className:'b'},
@@ -39,13 +30,13 @@ function MazePage(){
         this._game.size.value=[22/24*zoom,14/24*zoom]
     })
 }
-MazePage.prototype.animationFrame=function(t){
+IdleKingdomPage.prototype.animationFrame=function(t){
     this._game.animationFrame(t)
 }
-MazePage.prototype.clear=function(){
+IdleKingdomPage.prototype.clear=function(){
     this._game.start()
 }
-MazePage.style=MazeGame.style+`
+IdleKingdomPage.style=IdleKingdomGame.style+`
     body>.mazePage{
         display:inline-block;
         padding:1em;
@@ -87,4 +78,4 @@ MazePage.style=MazeGame.style+`
         background-color:#5f5f5f;
     }
 `
-export default MazePage
+export default IdleKingdomPage
