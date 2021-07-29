@@ -1,6 +1,6 @@
 import http from'http'
 import https from'https'
-import ws from'ws'
+import{WebSocketServer}from'ws'
 function Connection(connection){
     this._connection=connection
     this._connection.on('close',()=>
@@ -22,7 +22,7 @@ function WsServer(tls){
         }).on('tlsClientError',()=>{})
     :
         http.createServer()
-    this._wsServer=new ws.Server({
+    this._wsServer=new WebSocketServer({
         server:this._httpServer,
     }).on('connection',connection=>{
         let doc={}
