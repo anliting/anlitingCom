@@ -6,7 +6,7 @@ function IdleKingdomPage(){
     this._game=new IdleKingdomGame
     this.out=new Stream
     this.node=doe.div(
-        {className:'mazePage'},
+        {className:'idleKingdomPage'},
         doe.div(
             {className:'a'},
             doe.div(
@@ -37,7 +37,7 @@ IdleKingdomPage.prototype.clear=function(){
     this._game.start()
 }
 IdleKingdomPage.style=IdleKingdomGame.style+`
-    body>.mazePage{
+    body>.idleKingdomPage{
         display:inline-block;
         padding:1em;
         width:22em;
@@ -48,34 +48,30 @@ IdleKingdomPage.style=IdleKingdomGame.style+`
             .0625em .0625em .0625em rgba(0,0,0,.2);
         vertical-align:middle;
     }
-    body>.mazePage>.a{
+    body>.idleKingdomPage>.a{
         display:table;
         width:100%;
     }
-    body>.mazePage>.a>*{
+    body>.idleKingdomPage>.a>*{
         display:table-cell;
     }
-    body>.mazePage>.a>.a{
+    body>.idleKingdomPage>.a>.a{
         text-align:left;
     }
-    body>.mazePage>.a>.b{
-        text-align:right;
-    }
-    body>.mazePage>.b{
+    body>.idleKingdomPage>.b{
         margin-top:.25em;
         text-align:center;
         line-height:0;
         height:14em;
     }
-    body>.mazePage>.b::after{
+    body>.idleKingdomPage>.b::after{
         content:'';
         display:inline-block;
         height:100%;
         vertical-align:middle;
     }
-    body>.mazePage>.b>*{
+    body>.idleKingdomPage>.b>*{
         vertical-align:middle;
-        background-color:#5f5f5f;
     }
 `
 export default IdleKingdomPage

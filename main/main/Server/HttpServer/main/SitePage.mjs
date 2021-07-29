@@ -107,7 +107,7 @@ function SitePage(){
     })
     this.page.value=homePage
 }
-SitePage.style=UserPage.style+LoggedInUserPage.style+MazePage.style+`
+SitePage.style=UserPage.style+LoggedInUserPage.style+MazePage.style+IdleKingdomPage.style+`
     body>.homePage{
         display:inline-block;
         padding:1em;
