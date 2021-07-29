@@ -61,7 +61,6 @@ IdleKingdomPage.style=IdleKingdomGame.style+`
     body>.idleKingdomPage>.b{
         margin-top:.25em;
         text-align:center;
-        line-height:0;
         height:14em;
     }
     body>.idleKingdomPage>.b::after{
