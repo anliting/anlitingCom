@@ -49,7 +49,7 @@ function HomePage(){
                 ' ',
                 doe.div({className:'button',onclick:()=>{
                     this.out.in('idleKingdom')
-                }},'Idle Kingdom (incomplete)'),
+                }},'Idle Kingdom'),
             ),
             doe.div(
                 {className:'b'},
