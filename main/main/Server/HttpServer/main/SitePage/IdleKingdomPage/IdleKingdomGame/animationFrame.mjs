@@ -16,22 +16,22 @@ export default function(t){
         Math.floor(1e3*t)-this._startTime,
         (status,t)=>{
             status.factory.map((a,i)=>{
-                status.gold+=a*10**i*(t-status.time)/1e6
+                status.gold+=0.1*a*10**i*(t-status.time)/1e6
             })
             status.time=t
         },
         (status,a)=>{
             switch(a[1]){
                 case'buy':
-                    if(8**a[2]<=status.gold){
-                        status.gold-=8**a[2]
+                    if(8*8**a[2]<=status.gold){
+                        status.gold-=8*8**a[2]
                         status.factory[a[2]]++
                     }
                 break
                 case'sell':
                     if(status.factory[a[2]]){
                         status.factory[a[2]]--
-                        status.gold+=8**a[2]
+                        status.gold+=8*8**a[2]
                     }
                 break
             }
@@ -41,7 +41,7 @@ export default function(t){
     s.factory.map((a,i)=>{
         this._node.factoryCount[i].textContent=a
         this._node.factoryBuy[i].classList[
-            8**i<=s.gold?'remove':'add'
+            8*8**i<=s.gold?'remove':'add'
         ]('disabled')
         this._node.factorySell[i].classList[
             s.factory[i]?'remove':'add'

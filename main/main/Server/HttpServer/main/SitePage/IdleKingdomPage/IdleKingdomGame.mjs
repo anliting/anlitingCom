@@ -9,11 +9,11 @@ function factoryRow(a,i){
             a.name
         ),
         doe.div(
-            {className:'e'},`${10**i} GPS`
+            {className:'e'},`${0.1*10**i} GPS`
         ),
         this._node.factoryCount[i]=doe.div({className:'b'},),
         this._node.factoryPrice[i]=doe.div(
-            {className:'d'},`${8**i} G`
+            {className:'d'},`${8*8**i} G`
         ),
         doe.div(
             {className:'c'},
@@ -70,7 +70,7 @@ IdleKingdomGame.prototype.start=function(){
     this._queue=[]
     this._status={
         time:0,
-        gold:5,
+        gold:40,
         factory:[0,0,0,0,0,0,0],
     }
     this._startTime=Math.floor(1e3*performance.now())
