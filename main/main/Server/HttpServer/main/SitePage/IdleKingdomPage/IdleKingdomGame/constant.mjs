@@ -7,5 +7,7 @@ export default{
         {name:'騎士'},
         {name:'弓騎兵'},
         {name:'牧師'},
-    ]
+    ],
+    speed:i=>.1*10**i,
+    price:i=>8*8**i,
 }
