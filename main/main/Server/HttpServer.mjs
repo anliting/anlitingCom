@@ -89,6 +89,30 @@ function HttpServer(mainDir,tls,wsEndListen){
             fs.createReadStream(`${mainDir}/main/Server/HttpServer/diamond-red.png`).pipe(stream)
             return
         }
+        if(header[':method']=='GET'&&url.pathname=='/farmer.png'){
+            if(stream.closed)
+                return
+            stream.respond({
+                ':status':200,
+                'content-type':'image/png',
+                'strict-transport-security':
+                    'includeSubDomains;max-age=63072000;preload'
+            })
+            fs.createReadStream(`${mainDir}/main/Server/HttpServer/idleKingdom/farmer.png`).pipe(stream)
+            return
+        }
+        if(header[':method']=='GET'&&url.pathname=='/gold.png'){
+            if(stream.closed)
+                return
+            stream.respond({
+                ':status':200,
+                'content-type':'image/png',
+                'strict-transport-security':
+                    'includeSubDomains;max-age=63072000;preload'
+            })
+            fs.createReadStream(`${mainDir}/main/Server/HttpServer/idleKingdom/gold.png`).pipe(stream)
+            return
+        }
         stream.respond({
             ':status':400,
             'strict-transport-security':

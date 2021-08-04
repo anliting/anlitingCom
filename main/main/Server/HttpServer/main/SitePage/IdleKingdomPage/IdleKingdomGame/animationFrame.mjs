@@ -44,7 +44,7 @@ export default function(t){
     s.factory.map((a,i)=>{
         let p=constant.price(i,a)
         this._node.factoryCount[i].textContent=a
-        this._node.factoryPrice[i].textContent=`${p} G`
+        this._node.factoryPrice[i].textContent=p<1e6?p:p.toPrecision(3)
         this._node.factoryBuy[i].classList[
             p<=s.gold?'remove':'add'
         ]('disabled')

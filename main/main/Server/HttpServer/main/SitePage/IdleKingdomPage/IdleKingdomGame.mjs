@@ -3,16 +3,22 @@ import Variable from            '../../Variable.mjs'
 import animationFrame from      './IdleKingdomGame/animationFrame.mjs'
 import constant from            './IdleKingdomGame/constant.mjs'
 function factoryRow(a,i){
+    let s=constant.speed(i)
     return doe.div(
         doe.div(
             {className:'a'},
             a.name
         ),
         doe.div(
-            {className:'e'},`${constant.speed(i)} GPS`
+            {className:'e'},`${s<1e6?s:s.toPrecision(3)} GPS`
         ),
         this._node.factoryCount[i]=doe.div({className:'b'},),
-        this._node.factoryPrice[i]=doe.div({className:'d'}),
+        doe.div(
+            {className:'d'},
+            this._node.factoryPrice[i]=doe.span(),
+            ' ',
+            doe.img({className:'a',src:'gold.png'}),
+        ),
         doe.div(
             {className:'c'},
             this._node.factoryBuy[i]=doe.div({
@@ -47,8 +53,10 @@ function IdleKingdomGame(){
     this.node=this._node.div=doe.div(
         {className:'idleKingdomGame'},
         doe.div(
-            '黃金：',
+            {className:'b'},
             this._node.goldSpan=doe.span(),
+            ' ',
+            doe.img({className:'a',src:'gold.png'}),
         ),
         doe.div(
             {className:'a'},
@@ -69,7 +77,7 @@ IdleKingdomGame.prototype.start=function(){
     this._status={
         time:0,
         gold:40,
-        factory:[0,0,0,0,0,0,0],
+        factory:constant.factory.map(_=>0),
     }
     this._startTime=Math.floor(1e3*performance.now())
 }
@@ -79,6 +87,12 @@ IdleKingdomGame.style=`
         position:relative;
         text-align:left;
         overflow-y:scroll;
+    }
+    .idleKingdomGame>.b>*{
+        vertical-align:middle;
+    }
+    .idleKingdomGame>.b>.a{
+        width:1em;
     }
     .idleKingdomGame>.a{
         margin-top:.5em;
@@ -100,6 +114,12 @@ IdleKingdomGame.style=`
     }
     .idleKingdomGame>.a>*>.d{
         text-align:right;
+    }
+    .idleKingdomGame>.a>*>.d>*{
+        vertical-align:middle;
+    }
+    .idleKingdomGame>.a>*>.d>.a{
+        width:.6em;
     }
     .idleKingdomGame>.a>*>.c{
         text-align:right;
