@@ -22,16 +22,19 @@ export default function(t){
         },
         (status,a)=>{
             switch(a[1]){
-                case'buy':
-                    if(constant.price(a[2])<=status.gold){
-                        status.gold-=constant.price(a[2])
+                case'buy':{
+                    let p=constant.price(a[2],status.factory[a[2]])
+                    if(p<=status.gold){
+                        status.gold-=p
                         status.factory[a[2]]++
                     }
-                break
+                }break
                 case'sell':
                     if(status.factory[a[2]]){
                         status.factory[a[2]]--
-                        status.gold+=constant.price(a[2])
+                        status.gold+=constant.price(
+                            a[2],status.factory[a[2]]
+                        )*.7
                     }
                 break
             }
@@ -39,9 +42,11 @@ export default function(t){
     )
     this._node.goldSpan.textContent=Math.floor(s.gold)
     s.factory.map((a,i)=>{
+        let p=constant.price(i,a)
         this._node.factoryCount[i].textContent=a
+        this._node.factoryPrice[i].textContent=`${p} G`
         this._node.factoryBuy[i].classList[
-            constant.price(i)<=s.gold?'remove':'add'
+            p<=s.gold?'remove':'add'
         ]('disabled')
         this._node.factorySell[i].classList[
             s.factory[i]?'remove':'add'

@@ -12,9 +12,7 @@ function factoryRow(a,i){
             {className:'e'},`${constant.speed(i)} GPS`
         ),
         this._node.factoryCount[i]=doe.div({className:'b'},),
-        this._node.factoryPrice[i]=doe.div(
-            {className:'d'},`${constant.price(i)} G`
-        ),
+        this._node.factoryPrice[i]=doe.div({className:'d'}),
         doe.div(
             {className:'c'},
             this._node.factoryBuy[i]=doe.div({
