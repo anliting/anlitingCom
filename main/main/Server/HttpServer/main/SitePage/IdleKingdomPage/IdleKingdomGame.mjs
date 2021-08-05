@@ -10,17 +10,17 @@ function factoryRow(a,i){
             a.name
         ),
         doe.div(
-            {className:'e'},`${s<1e6?s:s.toPrecision(3)} GPS`
+            {className:'b'},`${s<1e6?s:s.toPrecision(3)} GPS`
         ),
-        this._node.factoryCount[i]=doe.div({className:'b'},),
+        this._node.factoryCount[i]=doe.div({className:'x'},),
         doe.div(
-            {className:'d'},
+            {className:'y'},
             this._node.factoryPrice[i]=doe.span(),
             ' ',
             doe.img({className:'a',src:'gold.png'}),
         ),
         doe.div(
-            {className:'c'},
+            {className:'z'},
             this._node.factoryBuy[i]=doe.div({
                 className:'button',
                 onclick:e=>{
@@ -88,6 +88,9 @@ IdleKingdomGame.style=`
         text-align:left;
         overflow-y:scroll;
     }
+    .idleKingdomGame>.b{
+        height:2em;
+    }
     .idleKingdomGame>.b>*{
         vertical-align:middle;
     }
@@ -106,22 +109,22 @@ IdleKingdomGame.style=`
     .idleKingdomGame>.a>*>*{
         display:table-cell;
     }
-    .idleKingdomGame>.a>*>.e{
-        text-align:right;
-    }
     .idleKingdomGame>.a>*>.b{
         text-align:right;
     }
-    .idleKingdomGame>.a>*>.d{
+    .idleKingdomGame>.a>*>.x{
         text-align:right;
     }
-    .idleKingdomGame>.a>*>.d>*{
+    .idleKingdomGame>.a>*>.y{
+        text-align:right;
+    }
+    .idleKingdomGame>.a>*>.y>*{
         vertical-align:middle;
     }
-    .idleKingdomGame>.a>*>.d>.a{
+    .idleKingdomGame>.a>*>.y>.a{
         width:.6em;
     }
-    .idleKingdomGame>.a>*>.c{
+    .idleKingdomGame>.a>*>.z{
         text-align:right;
     }
 `

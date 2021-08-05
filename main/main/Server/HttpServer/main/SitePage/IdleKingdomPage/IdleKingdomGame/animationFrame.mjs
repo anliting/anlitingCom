@@ -40,7 +40,8 @@ export default function(t){
             }
         }
     )
-    this._node.goldSpan.textContent=Math.floor(s.gold)
+    let g=Math.floor(s.gold)
+    this._node.goldSpan.textContent=g<1e6?g:g.toPrecision(3)
     s.factory.map((a,i)=>{
         let p=constant.price(i,a)
         this._node.factoryCount[i].textContent=a
