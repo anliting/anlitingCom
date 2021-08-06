@@ -1,0 +1,2 @@
+rm work/ipc
+(cd work;node ../anlitingCom/main/main.mjs)
