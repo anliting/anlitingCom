@@ -1,9 +1,9 @@
 [submodule "lib/doe"]
 	path = lib/doe
-	url = https://github.com/anliting/doe.git
+	url = git@github.com:anliting/doe.git
 [submodule "lib/dt"]
 	path = lib/dt
-	url = https://github.com/anliting/dt.git
+	url = git@github.com:anliting/dt.git
 [submodule "lib/uri"]
 	path = lib/uri
-	url = https://github.com/anliting/uri.git
+	url = git@github.com:anliting/uri.git
