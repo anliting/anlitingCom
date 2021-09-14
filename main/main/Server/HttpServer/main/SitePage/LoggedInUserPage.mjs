@@ -79,7 +79,7 @@ function LoggedInUserPage(){
     })
     this.page=new Variable(homePage)
 }
-LoggedInUserPage.style=ChatPage.style+`
+LoggedInUserPage.style=ChatPage.style+DeepWorldPage.style+`
     body>.loggedInUserPage{
         display:inline-block;
         margin:0 auto;
@@ -97,18 +97,6 @@ LoggedInUserPage.style=ChatPage.style+`
     }
     body>.loggedInUserPage>.a>*+*{
         margin-top:.25em;
-    }
-    body>.deepWorldPage{
-        display:inline-block;
-        margin:0 auto;
-        padding:1em;
-        width:22em;
-        height:16em;
-        font-size:calc(var(--zoom) * 1 / 24 * 1px);
-        text-shadow:
-            0 0 .0625em rgba(0,0,0,.4),
-            .0625em .0625em .0625em rgba(0,0,0,.2);
-        vertical-align:middle;
     }
     body>.editProfilePage{
         display:inline-block;
