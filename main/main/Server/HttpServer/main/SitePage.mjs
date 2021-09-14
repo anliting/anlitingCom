@@ -21,7 +21,7 @@ function SitePage(){
             this.out.in(['unlistenUserProfile',from[0]])
         if(to)
             this.out.in(['listenUserProfile',to[0],console.log])
-        if(!to&&[userPage.page.value,loggedInUserPage.page.value].includes(
+        if([userPage.page.value,loggedInUserPage.page.value].includes(
             this.page.value
         ))
             this.page.value=homePage
@@ -36,9 +36,11 @@ function SitePage(){
     homePage.out.out(a=>{
         switch(a){
             case'logIn':
+                userPage.clear()
                 this.page.bind(userPage.page)
             break
             case'loggedInUserPage':
+                loggedInUserPage.clear()
                 this.page.bind(loggedInUserPage.page)
             break
             case'maze':

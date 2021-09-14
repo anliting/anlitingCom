@@ -8,9 +8,9 @@ import EditProfilePage from     './LoggedInUserPage/EditProfilePage.mjs'
 import HomePage from            './LoggedInUserPage/HomePage.mjs'
 function LoggedInUserPage(){
     this.out=new Stream
-    let chatPage,homePage,editProfilePage,changePasswordPage,deepWorldPage
-    homePage=new HomePage
-    homePage.out.out(a=>{
+    let chatPage,editProfilePage,changePasswordPage,deepWorldPage
+    this._homePage=new HomePage
+    this._homePage.out.out(a=>{
         switch(a[0]){
             case'back':
                 this.out.in(a)
@@ -39,7 +39,7 @@ function LoggedInUserPage(){
     editProfilePage.out.out(a=>{
         switch(a[0]){
             case'back':
-                this.page.value=homePage
+                this.page.value=this._homePage
             break
         }
     })
@@ -47,7 +47,7 @@ function LoggedInUserPage(){
     changePasswordPage.out.out(a=>{
         switch(a[0]){
             case'back':
-                this.page.value=homePage
+                this.page.value=this._homePage
             break
         }
     })
@@ -55,7 +55,7 @@ function LoggedInUserPage(){
     chatPage.out.out(a=>{
         switch(a[0]){
             case'back':
-                this.page.value=homePage
+                this.page.value=this._homePage
             break
             case'invite':
             case'leave':
@@ -73,11 +73,11 @@ function LoggedInUserPage(){
     deepWorldPage.out.out(a=>{
         switch(a[0]){
             case'back':
-                this.page.value=homePage
+                this.page.value=this._homePage
             break
         }
     })
-    this.page=new Variable(homePage)
+    this.page=new Variable(this._homePage)
 }
 LoggedInUserPage.style=ChatPage.style+DeepWorldPage.style+`
     body>.loggedInUserPage{
@@ -123,4 +123,7 @@ LoggedInUserPage.style=ChatPage.style+DeepWorldPage.style+`
         vertical-align:middle;
     }
 `
+LoggedInUserPage.prototype.clear=function(){
+    this.page.value=this._homePage
+}
 export default LoggedInUserPage
