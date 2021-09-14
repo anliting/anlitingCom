@@ -1,0 +1,21 @@
+import doe from                 'doe'
+import{Stream}from              'dt'
+import Variable from            '../../Variable.mjs'
+function DeepWorldPage(){
+    this.out=new Stream
+    this.node=doe.div(
+        {className:'deepWorldPage'},
+        doe.div(
+            doe.div('Back',{
+                className:'button',
+                onclick:()=>{
+                    this.out.in(['back'])
+                }
+            }),
+        ),
+    )
+    this.size=new Variable([1,1]).for(a=>{
+        this.node.style.setProperty('--zoom',''+Math.min(a[0],a[1]/(3/4)))
+    })
+}
+export default DeepWorldPage

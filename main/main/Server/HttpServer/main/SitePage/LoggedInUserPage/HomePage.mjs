@@ -56,6 +56,13 @@ function HomePage(){
                     this.out.in(['chat'])
                 },
             }),
+            ' ',
+            doe.div('Deep World',{
+                className:'button',
+                onclick:()=>{
+                    this.out.in(['deepWorld'])
+                },
+            }),
         ),
     )
     this.size=new Variable([1,1]).for(a=>{
