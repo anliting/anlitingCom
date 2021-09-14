@@ -33,7 +33,7 @@ function UserPage(){
     })
     this.page=new Variable(this._logInPage)
 }
-UserPage.style=LogInPage.style
+UserPage.style=LogInPage.style+RegisterPage.style
 UserPage.prototype.clear=function(){
     this._logInPage.clear()
     this.page.value=this._logInPage

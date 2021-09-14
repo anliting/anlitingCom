@@ -68,4 +68,31 @@ function HomePage(){
         this.node.style.setProperty('--zoom',''+Math.min(a[0],a[1]/(3/4)))
     })
 }
+HomePage.style=`
+    body>.homePage{
+        display:inline-block;
+        padding:1em;
+        width:22em;
+        height:16em;
+        font-size:calc(var(--zoom) * 1 / 24 * 1px);
+        text-shadow:
+            0 0 .0625em rgba(0,0,0,.4),
+            .0625em .0625em .0625em rgba(0,0,0,.2);
+        vertical-align:middle;
+    }
+    body>.homePage>.a{
+        padding-left:1em;
+        text-align:right;
+        height:1.75em;
+    }
+    body>.homePage>.a>.loggedInUserPageButton{
+        min-width:2em;
+    }
+    body>.homePage>.b{
+        margin-top:1em;
+    }
+    body>.homePage>.b>*+*{
+        margin-top:1em;
+    }
+`
 export default HomePage

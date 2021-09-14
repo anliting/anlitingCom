@@ -119,4 +119,23 @@ function RegisterPage(site){
 RegisterPage.prototype.focus=function(){
     this._registerPanel.focus()
 }
+RegisterPage.style=`
+    body>.registerPage{
+        display:inline-block;
+        margin:0 auto;
+        padding:1em;
+        width:22em;
+        height:16em;
+        font-size:calc(var(--zoom) * 1 / 24 * 1px);
+        text-shadow:
+            0 0 .0625em rgba(0,0,0,.4),
+            .0625em .0625em .0625em rgba(0,0,0,.2);
+        vertical-align:middle;
+    }
+    body>.registerPage>.registerPanel{
+        margin-top:1em;
+        box-shadow:0 -.05em rgba(0,0,0,.2);
+        padding-top:1em;
+    }
+`
 export default RegisterPage
