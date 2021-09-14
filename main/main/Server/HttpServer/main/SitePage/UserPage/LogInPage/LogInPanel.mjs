@@ -8,7 +8,6 @@ function submit(){
             +this._idInput.value,
             this._passwordInput.value
         ]
-        this._passwordInput.value=''
         this.out.in(a)
     }
 }

@@ -5,10 +5,11 @@ import Variable from        '../Variable.mjs'
 import{Stream}from          'dt'
 function UserPage(){
     this.out=new Stream
-    let registerPage=new RegisterPage
-    registerPage.out.out(a=>{
+    this._registerPage=new RegisterPage
+    this._registerPage.out.out(a=>{
         switch(a[0]){
             case'back':
+                this.page.value.clear()
                 this.page.value=this._logInPage
             break
             case'putUser':
@@ -27,7 +28,8 @@ function UserPage(){
                 this.out.in(['back'])
             break
             case'register':
-                this.page.value=registerPage
+                this.page.value.clear()
+                this.page.value=this._registerPage
             break
         }
     })
@@ -35,7 +37,7 @@ function UserPage(){
 }
 UserPage.style=LogInPage.style+RegisterPage.style
 UserPage.prototype.clear=function(){
-    this._logInPage.clear()
+    this.page.value.clear()
     this.page.value=this._logInPage
 }
 export default UserPage

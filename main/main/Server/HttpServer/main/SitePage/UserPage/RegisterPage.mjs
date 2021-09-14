@@ -31,7 +31,6 @@ function RegisterPage(site){
                 className:'button',
                 onclick:()=>{
                     if(['form','done'].includes(this._status)){
-                        this._registerPanel.clear()
                         this.out.in(['back'])
                     }
                 }
@@ -42,6 +41,9 @@ function RegisterPage(site){
     this.size=new Variable([1,1]).for(a=>{
         this.node.style.setProperty('--zoom',''+Math.min(a[0],a[1]/(3/4)))
     })
+}
+RegisterPage.prototype.clear=function(){
+    this._registerPanel.clear()
 }
 RegisterPage.prototype.focus=function(){
     this._registerPanel.focus()
