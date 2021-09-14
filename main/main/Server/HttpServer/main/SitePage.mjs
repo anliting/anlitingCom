@@ -6,14 +6,18 @@ import IdleKingdomPage from     './SitePage/IdleKingdomPage.mjs'
 import LoggedInUserPage from    './SitePage/LoggedInUserPage.mjs'
 import{Stream}from              'dt'
 import Variable from            './Variable.mjs'
+function popPage(){
+    if(this.page.value==this._userPage.page.value)
+        this._userPage.clear()
+}
 function SitePage(){
     let
-        userPage=new UserPage,
         loggedInUserPage=new LoggedInUserPage,
         homePage=new HomePage,
         mazePage=new MazePage,
         idleKingdomPage=new IdleKingdomPage,
         roomListListener=new Variable
+    this._userPage=new UserPage
     this.page=new Variable
     this.credential=new Variable
     this.credential.for((to,from)=>{
@@ -21,10 +25,15 @@ function SitePage(){
             this.out.in(['unlistenUserProfile',from[0]])
         if(to)
             this.out.in(['listenUserProfile',to[0],console.log])
-        if([userPage.page.value,loggedInUserPage.page.value].includes(
+        if([
+            this._userPage.page.value,
+            loggedInUserPage.page.value,
+        ].includes(
             this.page.value
-        ))
+        )){
+            popPage.call(this)
             this.page.value=homePage
+        }
         roomListListener[to?'for':'unfor'](l=>{
             if(!l)
                 return
@@ -36,26 +45,30 @@ function SitePage(){
     homePage.out.out(a=>{
         switch(a){
             case'logIn':
-                userPage.clear()
-                this.page.bind(userPage.page)
+                popPage.call(this)
+                this.page.bind(this._userPage.page)
             break
             case'loggedInUserPage':
+                popPage.call(this)
                 loggedInUserPage.clear()
                 this.page.bind(loggedInUserPage.page)
             break
             case'maze':
+                popPage.call(this)
                 mazePage.clear()
                 this.page.value=mazePage
             break
             case'idleKingdom':
+                popPage.call(this)
                 idleKingdomPage.clear()
                 this.page.value=idleKingdomPage
             break
         }
     })
-    userPage.out.out(a=>{
+    this._userPage.out.out(a=>{
         switch(a[0]){
             case'back':
+                popPage.call(this)
                 this.page.value=homePage
             break
             case'logIn':
@@ -67,6 +80,7 @@ function SitePage(){
     loggedInUserPage.out.out(a=>{
         switch(a[0]){
             case'back':
+                popPage.call(this)
                 this.page.value=homePage
             break
             case'cutCurrentUser':
@@ -74,6 +88,7 @@ function SitePage(){
                     await new Promise(rs=>
                         this.out.in(['cutCurrentUser',rs])
                     )
+                    popPage.call(this)
                     this.page.value=homePage
                 })()
             break
@@ -96,6 +111,7 @@ function SitePage(){
     mazePage.out.out(a=>{
         switch(a[0]){
             case'back':
+                popPage.call(this)
                 this.page.value=homePage
             break
         }
@@ -103,6 +119,7 @@ function SitePage(){
     idleKingdomPage.out.out(a=>{
         switch(a[0]){
             case'back':
+                popPage.call(this)
                 this.page.value=homePage
             break
         }
