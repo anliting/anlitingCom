@@ -1,7 +1,13 @@
 export default{
     factory:[
-        {name:'獵人'},
-        {name:'農民'},
+        {
+            image:'/hunter.png',
+            name:'獵人',
+        },
+        {
+            image:'/farmer.png',
+            name:'農民',
+        },
         {name:'礦工'},
         {name:'織布工'},
         {name:'步兵'},

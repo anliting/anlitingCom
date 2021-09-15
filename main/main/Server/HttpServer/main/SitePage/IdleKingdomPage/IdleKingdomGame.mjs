@@ -7,7 +7,8 @@ function factoryRow(a,i){
     return doe.div(
         doe.div(
             {className:'a'},
-            a.name
+            a.image&&[doe.img({className:'a',src:a.image}),' '],
+            doe.span(a.name),
         ),
         doe.div(
             {className:'b'},`${s<1e6?s:s.toPrecision(3)} GPS`
@@ -62,6 +63,13 @@ function IdleKingdomGame(){
             {className:'a'},
             constant.factory.map(factoryRow.bind(this)),
         ),
+        doe.div(
+            'Created by ',
+            doe.a({href:'https://anliting.com/'},'An-Li Ting'),
+            ' and ',
+            doe.a({href:'https://chrysalis.tw/'},'Ivan Huang'),
+            '.',
+        ),
     )
     this.size=new Variable([1,1]).for(a=>{
         this._dpr=devicePixelRatio
@@ -108,6 +116,12 @@ IdleKingdomGame.style=`
     }
     .idleKingdomGame>.a>*>*{
         display:table-cell;
+    }
+    .idleKingdomGame>.a>*>.a>*{
+        vertical-align:middle;
+    }
+    .idleKingdomGame>.a>*>.a>.a{
+        height:1.2em;
     }
     .idleKingdomGame>.a>*>.b{
         text-align:right;

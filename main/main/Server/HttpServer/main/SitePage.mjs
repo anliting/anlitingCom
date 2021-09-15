@@ -7,8 +7,6 @@ import LoggedInUserPage from    './SitePage/LoggedInUserPage.mjs'
 import{Stream}from              'dt'
 import Variable from            './Variable.mjs'
 function popPage(){
-    if(this.page.value==this._idleKingdomPage)
-        this._idleKingdomPage.clear()
     if(this.page.value==this._loggedInUserPage.page.value)
         this._loggedInUserPage.clear()
     if(this.page.value==this._mazePage)
@@ -63,6 +61,7 @@ function SitePage(){
             break
             case'idleKingdom':
                 popPage.call(this)
+                this._idleKingdomPage.start()
                 this.page.value=this._idleKingdomPage
             break
         }

@@ -1,38 +1,20 @@
 import http2 from           'http2'
 import fs from              'fs'
 import urlModule from       'url'
-import link from            './HttpServer/link.mjs'
 import minify from          './HttpServer/minify.mjs'
-import htmlMinifier from    'html-minifier'
+import calcRootContent from './HttpServer/calcRootContent.mjs'
+let get={
+    '/diamond-red.png':['image/png','diamond-red.png'],
+    '/farmer.png':['image/png','idleKingdom/farmer.png'],
+    '/gold.png':['image/png','idleKingdom/gold.png'],
+    '/hunter.png':['image/png','idleKingdom/hunter.png'],
+}
 async function calcSw(mainDir){
     return minify(
         ''+await fs.promises.readFile(
             `${mainDir}/main/Server/HttpServer/sw`
         )
     )
-}
-async function calcRootContent(mainDir,wsEndListen){
-    let main=(async()=>minify(`globalThis.anlitingCom=${
-        JSON.stringify(wsEndListen)
-    };${
-        await link(`${mainDir}/main/Server/HttpServer/main.mjs`,{
-            doe:`${mainDir}/../lib/doe/export/main.mjs`,
-            dt:`${mainDir}/../lib/dt/export/main.mjs`,
-            uri:`${mainDir}/../lib/uri/export/main.mjs`,
-        })
-    }`))()
-    return htmlMinifier.minify(`
-        <!doctype html>
-        <meta name=viewport content='initial-scale=1,width=device-width'>
-        <link rel=icon href=data:,>
-        <title>anliting.com</title>
-        <body>
-        <script type=module>${await main}</script>
-    `,{
-        collapseWhitespace:true,
-        removeAttributeQuotes:true,
-        removeOptionalTags:true,
-    })
 }
 function createTypeAHttp2Server(tls){
     return tls?
@@ -77,40 +59,15 @@ function HttpServer(mainDir,tls,wsEndListen){
             })
             return stream.end(await this._swPromise)
         }
-        if(header[':method']=='GET'&&url.pathname=='/diamond-red.png'){
-            if(stream.closed)
-                return
+        if(header[':method']=='GET'&&url.pathname in get){
+            let a=get[url.pathname]
             stream.respond({
                 ':status':200,
-                'content-type':'image/png',
+                'content-type':a[0],
                 'strict-transport-security':
                     'includeSubDomains;max-age=63072000;preload'
             })
-            fs.createReadStream(`${mainDir}/main/Server/HttpServer/diamond-red.png`).pipe(stream)
-            return
-        }
-        if(header[':method']=='GET'&&url.pathname=='/farmer.png'){
-            if(stream.closed)
-                return
-            stream.respond({
-                ':status':200,
-                'content-type':'image/png',
-                'strict-transport-security':
-                    'includeSubDomains;max-age=63072000;preload'
-            })
-            fs.createReadStream(`${mainDir}/main/Server/HttpServer/idleKingdom/farmer.png`).pipe(stream)
-            return
-        }
-        if(header[':method']=='GET'&&url.pathname=='/gold.png'){
-            if(stream.closed)
-                return
-            stream.respond({
-                ':status':200,
-                'content-type':'image/png',
-                'strict-transport-security':
-                    'includeSubDomains;max-age=63072000;preload'
-            })
-            fs.createReadStream(`${mainDir}/main/Server/HttpServer/idleKingdom/gold.png`).pipe(stream)
+            fs.createReadStream(`${mainDir}/main/Server/HttpServer/${a[1]}`).pipe(stream)
             return
         }
         stream.respond({
