@@ -30,6 +30,10 @@ function DeepWorldPage(){
         this.node.style.setProperty('--zoom',''+Math.min(a[0],a[1]/(9/16)))
     })
 }
+DeepWorldPage.prototype.on=function(){
+}
+DeepWorldPage.prototype.off=function(){
+}
 DeepWorldPage.style=`
     body>.deepWorldPage{
         display:inline-block;

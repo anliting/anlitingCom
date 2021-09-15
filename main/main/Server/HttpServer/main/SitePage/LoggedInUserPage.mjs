@@ -6,9 +6,13 @@ import ChangePasswordPage from  './LoggedInUserPage/ChangePasswordPage.mjs'
 import DeepWorldPage from       './LoggedInUserPage/DeepWorldPage.mjs'
 import EditProfilePage from     './LoggedInUserPage/EditProfilePage.mjs'
 import HomePage from            './LoggedInUserPage/HomePage.mjs'
+function offPage(){
+    if(this.page.value==this._deepWorldPage)
+        this._deepWorldPage.off()
+}
 function LoggedInUserPage(){
     this.out=new Stream
-    let chatPage,editProfilePage,changePasswordPage,deepWorldPage
+    let chatPage,editProfilePage,changePasswordPage
     this._homePage=new HomePage
     this._homePage.out.out(a=>{
         switch(a[0]){
@@ -16,18 +20,22 @@ function LoggedInUserPage(){
                 this.out.in(a)
             break
             case'changePassword':
+                offPage.call(this)
                 this.page.value=changePasswordPage
             break
             case'chat':
+                offPage.call(this)
                 this.page.bind(chatPage.page)
             break
             case'cutCurrentUser':
                 this.out.in(['cutCurrentUser'])
             break
             case'deepWorld':
-                this.page.value=deepWorldPage
+                offPage.call(this)
+                this.page.value=this._deepWorldPage
             break
             case'editProfile':
+                offPage.call(this)
                 this.page.value=editProfilePage
             break
             case'logOut':
@@ -39,6 +47,7 @@ function LoggedInUserPage(){
     editProfilePage.out.out(a=>{
         switch(a[0]){
             case'back':
+                offPage.call(this)
                 this.page.value=this._homePage
             break
         }
@@ -47,6 +56,7 @@ function LoggedInUserPage(){
     changePasswordPage.out.out(a=>{
         switch(a[0]){
             case'back':
+                offPage.call(this)
                 this.page.value=this._homePage
             break
         }
@@ -55,6 +65,7 @@ function LoggedInUserPage(){
     chatPage.out.out(a=>{
         switch(a[0]){
             case'back':
+                offPage.call(this)
                 this.page.value=this._homePage
             break
             case'invite':
@@ -69,17 +80,18 @@ function LoggedInUserPage(){
             break
         }
     })
-    deepWorldPage=new DeepWorldPage
-    deepWorldPage.out.out(a=>{
+    this._deepWorldPage=new DeepWorldPage
+    this._deepWorldPage.out.out(a=>{
         switch(a[0]){
             case'back':
+                offPage.call(this)
                 this.page.value=this._homePage
             break
         }
     })
     this.page=new Variable(this._homePage)
 }
-LoggedInUserPage.style=ChatPage.style+DeepWorldPage.style+`
+LoggedInUserPage.style=EditProfilePage.style+ChangePasswordPage.style+ChatPage.style+DeepWorldPage.style+`
     body>.loggedInUserPage{
         display:inline-block;
         margin:0 auto;
@@ -98,32 +110,9 @@ LoggedInUserPage.style=ChatPage.style+DeepWorldPage.style+`
     body>.loggedInUserPage>.a>*+*{
         margin-top:.25em;
     }
-    body>.editProfilePage{
-        display:inline-block;
-        margin:0 auto;
-        padding:1em;
-        width:22em;
-        height:16em;
-        font-size:calc(var(--zoom) * 1 / 24 * 1px);
-        text-shadow:
-            0 0 .0625em rgba(0,0,0,.4),
-            .0625em .0625em .0625em rgba(0,0,0,.2);
-        vertical-align:middle;
-    }
-    body>.changePasswordPage{
-        display:inline-block;
-        margin:0 auto;
-        padding:1em;
-        width:22em;
-        height:16em;
-        font-size:calc(var(--zoom) * 1 / 24 * 1px);
-        text-shadow:
-            0 0 .0625em rgba(0,0,0,.4),
-            .0625em .0625em .0625em rgba(0,0,0,.2);
-        vertical-align:middle;
-    }
 `
 LoggedInUserPage.prototype.clear=function(){
+    offPage.call(this)
     this.page.value=this._homePage
 }
 export default LoggedInUserPage
