@@ -6,7 +6,7 @@ function loadIdleKingdomPage(){
     this._idleKingdomPage.out.out(a=>{
         switch(a[0]){
             case'back':
-                this._popPage()
+                this._offPage()
                 this.page.value=this._homePage
             break
         }

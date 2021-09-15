@@ -23,7 +23,7 @@ function MazePage(){
                 doe.div({
                     className:'button',
                     onclick:()=>{
-                        this.clear()
+                        this._game.on()
                     },
                 },'New Game'),
             ),
@@ -42,8 +42,8 @@ function MazePage(){
 MazePage.prototype.animationFrame=function(t){
     this._game.animationFrame(t)
 }
-MazePage.prototype.start=function(){
-    this._game.start()
+MazePage.prototype.on=function(){
+    this._game.on()
 }
 MazePage.prototype.focus=function(){
     this._game.focus()

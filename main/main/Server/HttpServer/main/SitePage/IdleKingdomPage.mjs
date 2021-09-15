@@ -33,8 +33,8 @@ function IdleKingdomPage(){
 IdleKingdomPage.prototype.animationFrame=function(t){
     this._game.animationFrame(t)
 }
-IdleKingdomPage.prototype.start=function(){
-    this._game.start()
+IdleKingdomPage.prototype.on=function(){
+    this._game.on()
 }
 IdleKingdomPage.style=IdleKingdomGame.style+`
     body>.idleKingdomPage{

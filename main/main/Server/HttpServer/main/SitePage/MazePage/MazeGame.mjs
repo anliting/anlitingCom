@@ -59,7 +59,7 @@ MazeGame.prototype._imageWidth=
 MazeGame.prototype._imageHeight=
     MazeGame.prototype._height*(MazeGame.prototype._blockSize+1)+1
 MazeGame.prototype.animationFrame=animationFrame
-MazeGame.prototype.start=function(){
+MazeGame.prototype.on=function(){
     this._drew=0
     this._queue=[]
     this._status={

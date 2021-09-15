@@ -50,13 +50,13 @@ function SitePage(){
             case'maze':
                 this._offPage()
                 loadMazePage.call(this)
-                this._mazePage.start()
+                this._mazePage.on()
                 this.page.value=this._mazePage
             break
             case'idleKingdom':
                 this._offPage()
                 loadIdleKingdomPage.call(this)
-                this._idleKingdomPage.start()
+                this._idleKingdomPage.on()
                 this.page.value=this._idleKingdomPage
             break
         }

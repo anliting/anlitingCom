@@ -82,7 +82,7 @@ function IdleKingdomGame(){
     })
 }
 IdleKingdomGame.prototype.animationFrame=animationFrame
-IdleKingdomGame.prototype.start=function(){
+IdleKingdomGame.prototype.on=function(){
     this._queue=[]
     this._status={
         time:0,
