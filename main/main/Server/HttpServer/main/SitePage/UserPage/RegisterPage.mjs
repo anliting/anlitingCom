@@ -42,7 +42,7 @@ function RegisterPage(site){
         this.node.style.setProperty('--zoom',''+Math.min(a[0],a[1]/(3/4)))
     })
 }
-RegisterPage.prototype.clear=function(){
+RegisterPage.prototype.off=function(){
     this._registerPanel.clear()
 }
 RegisterPage.prototype.focus=function(){

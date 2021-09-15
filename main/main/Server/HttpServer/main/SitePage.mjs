@@ -26,7 +26,7 @@ function SitePage(){
         ].includes(
             this.page.value
         )){
-            this._popPage()
+            this._offPage()
             this.page.value=this._homePage
         }
         roomListListener[to?'for':'unfor'](l=>{
@@ -40,21 +40,21 @@ function SitePage(){
     this._homePage.out.out(a=>{
         switch(a){
             case'logIn':
-                this._popPage()
+                this._offPage()
                 this.page.bind(this._userPage.page)
             break
             case'loggedInUserPage':
-                this._popPage()
+                this._offPage()
                 this.page.bind(this._loggedInUserPage.page)
             break
             case'maze':
-                this._popPage()
+                this._offPage()
                 loadMazePage.call(this)
                 this._mazePage.start()
                 this.page.value=this._mazePage
             break
             case'idleKingdom':
-                this._popPage()
+                this._offPage()
                 loadIdleKingdomPage.call(this)
                 this._idleKingdomPage.start()
                 this.page.value=this._idleKingdomPage
@@ -64,7 +64,7 @@ function SitePage(){
     this._loggedInUserPage.out.out(a=>{
         switch(a[0]){
             case'back':
-                this._popPage()
+                this._offPage()
                 this.page.value=this._homePage
             break
             case'cutCurrentUser':
@@ -72,7 +72,7 @@ function SitePage(){
                     await new Promise(rs=>
                         this.out.in(['cutCurrentUser',rs])
                     )
-                    this._popPage()
+                    this._offPage()
                     this.page.value=this._homePage
                 })()
             break
@@ -95,7 +95,7 @@ function SitePage(){
     this._userPage.out.out(a=>{
         switch(a[0]){
             case'back':
-                this._popPage()
+                this._offPage()
                 this.page.value=this._homePage
             break
             case'logIn':
@@ -106,11 +106,11 @@ function SitePage(){
     })
     this.page.value=this._homePage
 }
-SitePage.prototype._popPage=function(){
+SitePage.prototype._offPage=function(){
     if(this.page.value==this._loggedInUserPage.page.value)
-        this._loggedInUserPage.clear()
+        this._loggedInUserPage.off()
     if(this.page.value==this._userPage.page.value)
-        this._userPage.clear()
+        this._userPage.off()
 }
 SitePage.style=UserPage.style+LoggedInUserPage.style+MazePage.style+IdleKingdomPage.style+HomePage.style
 export default SitePage

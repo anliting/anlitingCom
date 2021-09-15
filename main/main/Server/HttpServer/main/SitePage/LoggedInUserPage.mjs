@@ -32,6 +32,7 @@ function LoggedInUserPage(){
             break
             case'deepWorld':
                 offPage.call(this)
+                this._deepWorldPage.on()
                 this.page.value=this._deepWorldPage
             break
             case'editProfile':
@@ -91,6 +92,10 @@ function LoggedInUserPage(){
     })
     this.page=new Variable(this._homePage)
 }
+LoggedInUserPage.prototype.off=function(){
+    offPage.call(this)
+    this.page.value=this._homePage
+}
 LoggedInUserPage.style=EditProfilePage.style+ChangePasswordPage.style+ChatPage.style+DeepWorldPage.style+`
     body>.loggedInUserPage{
         display:inline-block;
@@ -111,8 +116,4 @@ LoggedInUserPage.style=EditProfilePage.style+ChangePasswordPage.style+ChatPage.s
         margin-top:.25em;
     }
 `
-LoggedInUserPage.prototype.clear=function(){
-    offPage.call(this)
-    this.page.value=this._homePage
-}
 export default LoggedInUserPage

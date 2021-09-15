@@ -9,7 +9,7 @@ function UserPage(){
     this._registerPage.out.out(a=>{
         switch(a[0]){
             case'back':
-                this.page.value.clear()
+                this.page.value.off()
                 this.page.value=this._logInPage
             break
             case'putUser':
@@ -28,7 +28,7 @@ function UserPage(){
                 this.out.in(['back'])
             break
             case'register':
-                this.page.value.clear()
+                this.page.value.off()
                 this.page.value=this._registerPage
             break
         }
@@ -36,8 +36,8 @@ function UserPage(){
     this.page=new Variable(this._logInPage)
 }
 UserPage.style=LogInPage.style+RegisterPage.style
-UserPage.prototype.clear=function(){
-    this.page.value.clear()
+UserPage.prototype.off=function(){
+    this.page.value.off()
     this.page.value=this._logInPage
 }
 export default UserPage

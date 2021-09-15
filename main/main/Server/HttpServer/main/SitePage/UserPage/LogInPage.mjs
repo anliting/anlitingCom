@@ -29,7 +29,7 @@ function LogInPage(){
         this.node.style.setProperty('--zoom',''+Math.min(a[0],a[1]/(3/4)))
     })
 }
-LogInPage.prototype.clear=function(){
+LogInPage.prototype.off=function(){
     this._logInPanel.clear()
 }
 LogInPage.prototype.focus=function(){
