@@ -9,8 +9,6 @@ import Variable from            './Variable.mjs'
 function popPage(){
     if(this.page.value==this._loggedInUserPage.page.value)
         this._loggedInUserPage.clear()
-    if(this.page.value==this._mazePage)
-        this._mazePage.clear()
     if(this.page.value==this._userPage.page.value)
         this._userPage.clear()
 }
@@ -57,6 +55,7 @@ function SitePage(){
             break
             case'maze':
                 popPage.call(this)
+                this._mazePage.start()
                 this.page.value=this._mazePage
             break
             case'idleKingdom':
@@ -66,15 +65,11 @@ function SitePage(){
             break
         }
     })
-    this._userPage.out.out(a=>{
+    this._idleKingdomPage.out.out(a=>{
         switch(a[0]){
             case'back':
                 popPage.call(this)
                 this.page.value=this._homePage
-            break
-            case'logIn':
-            case'putUser':
-                this.out.in(a)
             break
         }
     })
@@ -117,11 +112,15 @@ function SitePage(){
             break
         }
     })
-    this._idleKingdomPage.out.out(a=>{
+    this._userPage.out.out(a=>{
         switch(a[0]){
             case'back':
                 popPage.call(this)
                 this.page.value=this._homePage
+            break
+            case'logIn':
+            case'putUser':
+                this.out.in(a)
             break
         }
     })

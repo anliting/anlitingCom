@@ -42,7 +42,7 @@ function MazePage(){
 MazePage.prototype.animationFrame=function(t){
     this._game.animationFrame(t)
 }
-MazePage.prototype.clear=function(){
+MazePage.prototype.start=function(){
     this._game.start()
 }
 MazePage.prototype.focus=function(){
