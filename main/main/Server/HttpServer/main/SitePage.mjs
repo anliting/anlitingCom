@@ -1,23 +1,17 @@
 import doe from                 'doe'
 import HomePage from            './SitePage/HomePage.mjs'
-import UserPage from            './SitePage/UserPage.mjs'
-import MazePage from            './SitePage/MazePage.mjs'
 import IdleKingdomPage from     './SitePage/IdleKingdomPage.mjs'
 import LoggedInUserPage from    './SitePage/LoggedInUserPage.mjs'
+import MazePage from            './SitePage/MazePage.mjs'
+import UserPage from            './SitePage/UserPage.mjs'
 import{Stream}from              'dt'
 import Variable from            './Variable.mjs'
-function popPage(){
-    if(this.page.value==this._loggedInUserPage.page.value)
-        this._loggedInUserPage.clear()
-    if(this.page.value==this._userPage.page.value)
-        this._userPage.clear()
-}
+import loadIdleKingdomPage from './SitePage/loadIdleKingdomPage.mjs'
+import loadMazePage from        './SitePage/loadMazePage.mjs'
 function SitePage(){
     let roomListListener=new Variable
     this._homePage=new HomePage
-    this._idleKingdomPage=new IdleKingdomPage
     this._loggedInUserPage=new LoggedInUserPage
-    this._mazePage=new MazePage
     this._userPage=new UserPage
     this.page=new Variable
     this.credential=new Variable
@@ -32,7 +26,7 @@ function SitePage(){
         ].includes(
             this.page.value
         )){
-            popPage.call(this)
+            this._popPage()
             this.page.value=this._homePage
         }
         roomListListener[to?'for':'unfor'](l=>{
@@ -46,37 +40,31 @@ function SitePage(){
     this._homePage.out.out(a=>{
         switch(a){
             case'logIn':
-                popPage.call(this)
+                this._popPage()
                 this.page.bind(this._userPage.page)
             break
             case'loggedInUserPage':
-                popPage.call(this)
+                this._popPage()
                 this.page.bind(this._loggedInUserPage.page)
             break
             case'maze':
-                popPage.call(this)
+                this._popPage()
+                loadMazePage.call(this)
                 this._mazePage.start()
                 this.page.value=this._mazePage
             break
             case'idleKingdom':
-                popPage.call(this)
+                this._popPage()
+                loadIdleKingdomPage.call(this)
                 this._idleKingdomPage.start()
                 this.page.value=this._idleKingdomPage
-            break
-        }
-    })
-    this._idleKingdomPage.out.out(a=>{
-        switch(a[0]){
-            case'back':
-                popPage.call(this)
-                this.page.value=this._homePage
             break
         }
     })
     this._loggedInUserPage.out.out(a=>{
         switch(a[0]){
             case'back':
-                popPage.call(this)
+                this._popPage()
                 this.page.value=this._homePage
             break
             case'cutCurrentUser':
@@ -84,7 +72,7 @@ function SitePage(){
                     await new Promise(rs=>
                         this.out.in(['cutCurrentUser',rs])
                     )
-                    popPage.call(this)
+                    this._popPage()
                     this.page.value=this._homePage
                 })()
             break
@@ -104,18 +92,10 @@ function SitePage(){
             break
         }
     })
-    this._mazePage.out.out(a=>{
-        switch(a[0]){
-            case'back':
-                popPage.call(this)
-                this.page.value=this._homePage
-            break
-        }
-    })
     this._userPage.out.out(a=>{
         switch(a[0]){
             case'back':
-                popPage.call(this)
+                this._popPage()
                 this.page.value=this._homePage
             break
             case'logIn':
@@ -125,6 +105,12 @@ function SitePage(){
         }
     })
     this.page.value=this._homePage
+}
+SitePage.prototype._popPage=function(){
+    if(this.page.value==this._loggedInUserPage.page.value)
+        this._loggedInUserPage.clear()
+    if(this.page.value==this._userPage.page.value)
+        this._userPage.clear()
 }
 SitePage.style=UserPage.style+LoggedInUserPage.style+MazePage.style+IdleKingdomPage.style+HomePage.style
 export default SitePage
