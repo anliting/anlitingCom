@@ -7,8 +7,10 @@ function factoryRow(a,i){
     return doe.div(
         doe.div(
             {className:'a'},
-            a.image&&[doe.img({className:'a',src:a.image}),' '],
-            doe.span(a.name),
+            doe.div(
+                a.image&&[doe.img({className:'a',src:a.image}),' '],
+                doe.span(a.name),
+            ),
         ),
         doe.div(
             {className:'b'},`${s<1e6?s:s.toPrecision(3)} GPS`
@@ -116,12 +118,13 @@ IdleKingdomGame.style=`
     }
     .idleKingdomGame>.a>*>*{
         display:table-cell;
-    }
-    .idleKingdomGame>.a>*>.a>*{
         vertical-align:middle;
     }
-    .idleKingdomGame>.a>*>.a>.a{
-        height:1.2em;
+    .idleKingdomGame>.a>*>.a>*>*{
+        vertical-align:bottom;
+    }
+    .idleKingdomGame>.a>*>.a>*>.a{
+        height:1.8em;
     }
     .idleKingdomGame>.a>*>.b{
         text-align:right;
