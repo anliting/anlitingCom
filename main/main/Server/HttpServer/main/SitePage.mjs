@@ -27,7 +27,7 @@ function SitePage(){
         if(from)
             this.out.in(['unlistenUserProfile',from[0]])
         if(to)
-            this.out.in(['listenUserProfile',to[0],console.log])
+            this.out.in(['listenUserProfile',to[0],()=>{}])
         if([
             this._userPage.page.value,
             this._loggedInUserPage.page.value,
