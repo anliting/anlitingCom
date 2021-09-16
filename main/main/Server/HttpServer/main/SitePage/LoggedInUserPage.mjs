@@ -88,6 +88,9 @@ function LoggedInUserPage(){
                 offPage.call(this)
                 this.page.value=this._homePage
             break
+            case'listenCharacterList':
+                a[1]([{id:0}])
+            break
         }
     })
     this.page=new Variable(this._homePage)

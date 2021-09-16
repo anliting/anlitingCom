@@ -31,6 +31,7 @@ function DeepWorldPage(){
     })
 }
 DeepWorldPage.prototype.on=function(){
+    this.out.in(['listenCharacterList',console.log])
 }
 DeepWorldPage.prototype.off=function(){
 }
