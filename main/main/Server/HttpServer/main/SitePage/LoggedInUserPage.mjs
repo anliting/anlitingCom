@@ -65,8 +65,7 @@ function LoggedInUserPage(){
             break
         }
     })
-    chatPage=new ChatPage
-    chatPage.out.out(a=>{
+    chatPage=new ChatPage(a=>{
         switch(a[0]){
             case'back':
                 offPage.call(this)

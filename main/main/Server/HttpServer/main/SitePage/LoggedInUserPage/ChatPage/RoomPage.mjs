@@ -1,18 +1,17 @@
 import doe from                 'doe'
-import{Stream}from              'dt'
 import Variable from            '../../../Variable.mjs'
 import HomePage from            './RoomPage/HomePage.mjs'
 import MemberPage from          './RoomPage/MemberPage.mjs'
-function RoomPage(){
+function RoomPage(out){
     this.messageList=new Variable([])
-    this.out=new Stream
+    this._out=out
     this._homePage=new HomePage(a=>{
         switch(a[0]){
             case'member':
                 this.page.value=this._memberPage
             break
             default:
-                this.out.in(a)
+                this._out(a)
             break
         }
     })
@@ -23,7 +22,7 @@ function RoomPage(){
                 this.page.value=this._homePage
             break
             default:
-                this.out.in(a)
+                this._out(a)
             break
         }
     })

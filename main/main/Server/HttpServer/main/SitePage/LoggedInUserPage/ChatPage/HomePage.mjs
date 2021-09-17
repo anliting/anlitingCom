@@ -1,9 +1,8 @@
 import doe from             'doe'
-import{Stream}from          'dt'
 import Variable from        '../../../Variable.mjs'
-function HomePage(){
+function HomePage(out){
     this.roomList=new Variable([])
-    this.out=new Stream
+    this._out=out
     this.node=doe.div(
         {className:'chatPage'},
         doe.div(
@@ -14,7 +13,7 @@ function HomePage(){
                     doe.div('Back',{
                         className:'button',
                         onclick:()=>{
-                            this.out.in(['back'])
+                            this._out(['back'])
                         },
                     }),
                 ),
@@ -23,7 +22,7 @@ function HomePage(){
                     doe.div('Create Room',{
                         className:'button',
                         onclick:()=>{
-                            this.out.in(['putRoom',()=>{}])
+                            this._out(['putRoom',()=>{}])
                         },
                     }),
                 ),
@@ -39,7 +38,7 @@ function HomePage(){
                                 doe.div({
                                     className:'button item',
                                     onclick:_=>{
-                                        this.out.in(['room',a.id])
+                                        this._out(['room',a.id])
                                     },
                                 },''+a.id)
                             )

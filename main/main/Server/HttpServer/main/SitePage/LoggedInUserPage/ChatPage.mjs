@@ -1,14 +1,10 @@
 import doe from                 'doe'
-import{Stream}from              'dt'
 import Variable from            '../../Variable.mjs'
 import HomePage from            './ChatPage/HomePage.mjs'
 import RoomPage from            './ChatPage/RoomPage.mjs'
-function ChatPage(){
-    let currentRoom
-    let homePage=new HomePage,roomPage=new RoomPage
-    this.page=new Variable(homePage)
-    this.out=new Stream
-    homePage.out.out(a=>{
+function ChatPage(out){
+    let currentRoom,homePage,roomPage
+    homePage=new HomePage(a=>{
         if(a[0]=='room'){
             roomPage.clear()
             this.page.bind(roomPage.page)
@@ -16,26 +12,28 @@ function ChatPage(){
             this._messageListListener=messageList=>
                 roomPage.messageList.value=messageList
             currentRoom=a[1]
-            this.out.in([
+            this._out([
                 'listenMessageList',a[1],this._messageListListener
             ])
         }else
-            this.out.in(a)
+            this._out(a)
     })
-    roomPage.out.out(a=>{
+    roomPage=new RoomPage(a=>{
         if(a[0]=='back'){
             this.page.value=homePage
-            this.out.in([
+            this._out([
                 'unlistenMessageList',this._messageListListener
             ])
         }else if(a[0]=='putMessage'){
-            this.out.in(['putMessage',currentRoom,a[1],a[2]])
+            this._out(['putMessage',currentRoom,a[1],a[2]])
         }else if(a[0]=='leave')
-            this.out.in(['leave',currentRoom,()=>{}])
+            this._out(['leave',currentRoom,()=>{}])
         else if(a[0]=='invite')
-            this.out.in(['invite',currentRoom,a[1],()=>{}])
+            this._out(['invite',currentRoom,a[1],()=>{}])
     })
-    this.out.in(['listenRoomList',roomList=>{
+    this.page=new Variable(homePage)
+    this._out=out
+    this._out(['listenRoomList',roomList=>{
         homePage.roomList.value=roomList
         if(!(
             this.page.value!=roomPage.page.value||
