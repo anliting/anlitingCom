@@ -4,7 +4,7 @@ import style from               './main/style.mjs'
 import Variable from            './main/Variable.mjs'
 import SitePage from            './main/SitePage.mjs'
 let
-    site=new Site,
+    site,
     sitePage,
     connectionStatus=new Variable(0),
     sw=(async()=>{
@@ -24,9 +24,7 @@ let
     sw=await sw
     sw.postMessage(['getLogIn'])
 })()
-site.onLine=navigator.onLine
-ononline=onoffline=()=>site.onLine=navigator.onLine
-site.out.out(a=>{
+site=new Site(a=>{
     switch(a[0]){
         case'connectionStatus':
             connectionStatus.value=a[1]
@@ -36,6 +34,8 @@ site.out.out(a=>{
         break
     }
 })
+site.onLine=navigator.onLine
+ononline=onoffline=()=>site.onLine=navigator.onLine
 sitePage=new SitePage(a=>{
     if(['logIn','logOut'].includes(a[0]))
         (async()=>{
@@ -43,7 +43,7 @@ sitePage=new SitePage(a=>{
             sw.postMessage(a)
         })()
     else
-        site.in.in(a)
+        site.in(a)
 })
 doe.head(
     doe.style(
@@ -98,5 +98,5 @@ let frame=t=>{
 requestAnimationFrame(frame)
 navigator.serviceWorker.onmessage=e=>{
     if(['logIn','logOut'].includes(e.data[0]))
-        site.in.in(e.data)
+        site.in(e.data)
 }

@@ -1,4 +1,3 @@
-import{Stream}from      'dt'
 import Connection from  './Site/Connection.mjs'
 import chatSite from    './Site/chatSite.mjs'
 function setVariable(o,k,f){
@@ -21,12 +20,12 @@ async function connect(){
                 return
             this._connection=0
             this._connectionStatus=0
-            this.out.in(['connectionStatus',0])
+            this._out(['connectionStatus',0])
         },
         logOut:()=>{
             if(this.credential){
                 this.credential=0
-                this.out.in(['credential'])
+                this._out(['credential'])
             }
         },
     }
@@ -38,7 +37,7 @@ async function connect(){
         if(a.status==0)
             send.call(this,a)
     })
-    this.out.in(['connectionStatus',1])
+    this._out(['connectionStatus',1])
 }
 async function send(m){
     let a=m.mission
@@ -80,9 +79,9 @@ async function send(m){
     if(a[0]=='unlistenUserProfile')
         this._connection.unlistenUserProfile(a[1])
 }
-function Site(){
+function Site(out){
     this._mission=[]
-    this.in=(new Stream).out(a=>{
+    this.in=a=>{
         let mission={mission:a,status:0}
         this._mission.push(mission)
         if(this._connectionStatus)
@@ -90,15 +89,15 @@ function Site(){
         switch(a[0]){
             case'logIn':
                 this.credential=a.slice(1)
-                this.out.in(['credential'])
+                this._out(['credential'])
             break
             case'logOut':
                 this.credential=0
-                this.out.in(['credential'])
+                this._out(['credential'])
             break
         }
-    })
-    this.out=new Stream
+    }
+    this._out=out
 }
 setVariable(Site.prototype,'_connectionStatus',function(v){
     this._toConnect=this.onLine&&!v
