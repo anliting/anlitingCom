@@ -1,11 +1,9 @@
 import doe from             'doe'
 import LogInPanel from      './LogInPage/LogInPanel.mjs'
-import{Stream}from          'dt'
 import Variable from        '../../Variable.mjs'
-function LogInPage(){
-    this.out=new Stream
-    this._logInPanel=new LogInPanel
-    this._logInPanel.out.to(this.out)
+function LogInPage(out){
+    this._out=out
+    this._logInPanel=new LogInPanel(out)
     this.node=doe.div(
         {className:'logInPage'},
         doe.div(
@@ -13,13 +11,13 @@ function LogInPage(){
             doe.div(
                 {className:'a'},
                 doe.div('Back',{className:'button',onclick:()=>{
-                    this.out.in(['back'])
+                    this._out(['back'])
                 }}),
             ),
             doe.div(
                 {className:'b'},
                 doe.div('Register',{className:'button',onclick:()=>{
-                    this.out.in(['register'])
+                    this._out(['register'])
                 }}),
             ),
         ),

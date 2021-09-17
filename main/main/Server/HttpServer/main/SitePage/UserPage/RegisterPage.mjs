@@ -1,12 +1,10 @@
 import doe from         'doe'
-import{Stream}from      'dt'
 import Variable from    '../../Variable.mjs'
 import RegisterPanel from   './RegisterPage/RegisterPanel.mjs'
-function RegisterPage(site){
-    this.out=new Stream
+function RegisterPage(out){
+    this.out=out
     this._status='form'
-    this._registerPanel=new RegisterPanel
-    this._registerPanel.out.out(a=>{
+    this._registerPanel=new RegisterPanel(a=>{
         switch(a[0]){
             case'status':
                 if(a[1]=='form'){
@@ -20,7 +18,7 @@ function RegisterPage(site){
                 this._status=a[1]
             break
             case'putUser':
-                this.out.in(a)
+                this._out(a)
             break
         }
     })
@@ -31,7 +29,7 @@ function RegisterPage(site){
                 className:'button',
                 onclick:()=>{
                     if(['form','done'].includes(this._status)){
-                        this.out.in(['back'])
+                        this._out(['back'])
                     }
                 }
             }),

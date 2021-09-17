@@ -1,19 +1,16 @@
 import doe from         'doe'
-import{Stream}from      'dt'
 function submit(){
     this._idInput.required=true
-    if(this._idInput.checkValidity()){
-        let a=[
+    if(this._idInput.checkValidity())
+        this._out([
             'logIn',
             +this._idInput.value,
             this._passwordInput.value
-        ]
-        this.out.in(a)
-    }
+        ])
 }
-function LogInPanel(){
+function LogInPanel(out){
     this._node={}
-    this.out=new Stream
+    this._out=out
     this.node=doe.div(
         {
             className:'logInPanel',

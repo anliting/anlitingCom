@@ -1,15 +1,14 @@
 import doe from                 'doe'
-import{Stream}from              'dt'
 import Variable from            '../../Variable.mjs'
-function HomePage(){
-    this.out=new Stream
+function HomePage(out){
+    this._out=out
     this.node=doe.div(
         {className:'loggedInUserPage'},
         doe.div(
             doe.div('Back',{
                 className:'button',
                 onclick:()=>{
-                    this.out.in(['back'])
+                    this._out(['back'])
                 }
             }),
         ),
@@ -19,14 +18,14 @@ function HomePage(){
                 doe.div('Edit Profile',{
                     className:'button',
                     onclick:()=>{
-                        this.out.in(['editProfile'])
+                        this._out(['editProfile'])
                     },
                 }),
                 ' ',
                 doe.div('Change Password',{
                     className:'button',
                     onclick:()=>{
-                        this.out.in(['changePassword'])
+                        this._out(['changePassword'])
                     },
                 }),
             ),
@@ -37,14 +36,14 @@ function HomePage(){
                         if(
                             confirm('Are you sure to delete this user?')
                         )
-                            this.out.in(['cutCurrentUser'])
+                            this._out(['cutCurrentUser'])
                     },
                 }),
                 ' ',
                 doe.div('Log Out',{
                     className:'button',
                     onclick:()=>{
-                        this.out.in(['logOut'])
+                        this._out(['logOut'])
                     }
                 }),
             ),
@@ -53,14 +52,14 @@ function HomePage(){
             doe.div('Chat',{
                 className:'button',
                 onclick:()=>{
-                    this.out.in(['chat'])
+                    this._out(['chat'])
                 },
             }),
             ' ',
             doe.div('Deep World',{
                 className:'button',
                 onclick:()=>{
-                    this.out.in(['deepWorld'])
+                    this._out(['deepWorld'])
                 },
             }),
         ),

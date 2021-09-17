@@ -1,5 +1,4 @@
 import doe from                 'doe'
-import{Stream}from              'dt'
 import Variable from            '../Variable.mjs'
 import ChatPage from            './LoggedInUserPage/ChatPage.mjs'
 import ChangePasswordPage from  './LoggedInUserPage/ChangePasswordPage.mjs'
@@ -13,14 +12,13 @@ function offPage(){
         this._deepWorldPage.off()
     }
 }
-function LoggedInUserPage(){
-    this.out=new Stream
+function LoggedInUserPage(out){
+    this._out=out
     let chatPage,editProfilePage,changePasswordPage
-    this._homePage=new HomePage
-    this._homePage.out.out(a=>{
+    this._homePage=new HomePage(a=>{
         switch(a[0]){
             case'back':
-                this.out.in(a)
+                this._out(a)
             break
             case'changePassword':
                 offPage.call(this)
@@ -31,7 +29,7 @@ function LoggedInUserPage(){
                 this.page.bind(chatPage.page)
             break
             case'cutCurrentUser':
-                this.out.in(['cutCurrentUser'])
+                this._out(['cutCurrentUser'])
             break
             case'deepWorld':
                 offPage.call(this)
@@ -43,12 +41,11 @@ function LoggedInUserPage(){
                 this.page.value=editProfilePage
             break
             case'logOut':
-                this.out.in(['logOut'])
+                this._out(['logOut'])
             break
         }
     })
-    editProfilePage=new EditProfilePage
-    editProfilePage.out.out(a=>{
+    editProfilePage=new EditProfilePage(a=>{
         switch(a[0]){
             case'back':
                 offPage.call(this)
@@ -56,8 +53,7 @@ function LoggedInUserPage(){
             break
         }
     })
-    changePasswordPage=new ChangePasswordPage
-    changePasswordPage.out.out(a=>{
+    changePasswordPage=new ChangePasswordPage(a=>{
         switch(a[0]){
             case'back':
                 offPage.call(this)
@@ -79,7 +75,7 @@ function LoggedInUserPage(){
             case'putRoom':
             case'unlistenMessageList':
             case'unlistenRoomList':
-                this.out.in(a)
+                this._out(a)
             break
         }
     })

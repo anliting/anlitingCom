@@ -1,15 +1,14 @@
 import doe from             'doe'
-import{Stream}from          'dt'
 import Variable from        '../../Variable.mjs'
-function EditProfilePage(){
-    this.out=new Stream
+function EditProfilePage(out){
+    this._out=out
     this.node=doe.div(
         {className:'editProfilePage'},
         doe.div(
             doe.div('Back',{
                 className:'button',
                 onclick:()=>{
-                    this.out.in(['back'])
+                    this._out(['back'])
                 }
             }),
         ),

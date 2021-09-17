@@ -1,10 +1,9 @@
 import doe from         'doe'
-import{Stream}from      'dt'
 async function submit(){
     this._status='inProgress'
-    this.out.in(['status','inProgress'])
+    this._out(['status','inProgress'])
     let putUser=new Promise(rs=>
-        this.out.in(['putUser',this._passwordInput.value,rs])
+        this._out(['putUser',this._passwordInput.value,rs])
     )
     this._passwordInput.value=''
     let beingRegisteredDiv
@@ -16,7 +15,7 @@ async function submit(){
     )
     let userId=await putUser
     this._status='done'
-    this.out.in(['status','done'])
+    this._out(['status','done'])
     doe(this.node,
         1,beingRegisteredDiv,0,
         this._completeDiv=doe.div(
@@ -24,8 +23,8 @@ async function submit(){
         ),
     )
 }
-function RegisterPanel(){
-    this.out=new Stream
+function RegisterPanel(out){
+    this._out=out
     this._status='form'
     this.node=doe.div(
         {className:'registerPanel',},

@@ -11,8 +11,49 @@ import loadMazePage from        './SitePage/loadMazePage.mjs'
 function SitePage(){
     let roomListListener=new Variable
     this._homePage=new HomePage
-    this._loggedInUserPage=new LoggedInUserPage
-    this._userPage=new UserPage
+    this._loggedInUserPage=new LoggedInUserPage(a=>{
+        switch(a[0]){
+            case'back':
+                this._offPage()
+                this.page.value=this._homePage
+            break
+            case'cutCurrentUser':
+                ;(async()=>{
+                    await new Promise(rs=>
+                        this.out.in(['cutCurrentUser',rs])
+                    )
+                    this._offPage()
+                    this.page.value=this._homePage
+                })()
+            break
+            case'invite':
+            case'leave':
+            case'listenMessageList':
+            case'logOut':
+            case'putMessage':
+            case'putRoom':
+                this.out.in(a)
+            break
+            case'listenRoomList':
+                roomListListener.value=a[1]
+            break
+            case'unlistenMessageList':
+            case'unlistenRoomList':
+            break
+        }
+    })
+    this._userPage=new UserPage(a=>{
+        switch(a[0]){
+            case'back':
+                this._offPage()
+                this.page.value=this._homePage
+            break
+            case'logIn':
+            case'putUser':
+                this.out.in(a)
+            break
+        }
+    })
     this.page=new Variable
     this.credential=new Variable
     this.credential.for((to,from)=>{
@@ -58,49 +99,6 @@ function SitePage(){
                 loadIdleKingdomPage.call(this)
                 this._idleKingdomPage.on()
                 this.page.value=this._idleKingdomPage
-            break
-        }
-    })
-    this._loggedInUserPage.out.out(a=>{
-        switch(a[0]){
-            case'back':
-                this._offPage()
-                this.page.value=this._homePage
-            break
-            case'cutCurrentUser':
-                ;(async()=>{
-                    await new Promise(rs=>
-                        this.out.in(['cutCurrentUser',rs])
-                    )
-                    this._offPage()
-                    this.page.value=this._homePage
-                })()
-            break
-            case'invite':
-            case'leave':
-            case'listenMessageList':
-            case'logOut':
-            case'putMessage':
-            case'putRoom':
-                this.out.in(a)
-            break
-            case'listenRoomList':
-                roomListListener.value=a[1]
-            break
-            case'unlistenMessageList':
-            case'unlistenRoomList':
-            break
-        }
-    })
-    this._userPage.out.out(a=>{
-        switch(a[0]){
-            case'back':
-                this._offPage()
-                this.page.value=this._homePage
-            break
-            case'logIn':
-            case'putUser':
-                this.out.in(a)
             break
         }
     })

@@ -2,30 +2,27 @@ import doe from             'doe'
 import RegisterPage from    './UserPage/RegisterPage.mjs'
 import LogInPage from       './UserPage/LogInPage.mjs'
 import Variable from        '../Variable.mjs'
-import{Stream}from          'dt'
-function UserPage(){
-    this.out=new Stream
-    this._registerPage=new RegisterPage
-    this._registerPage.out.out(a=>{
+function UserPage(out){
+    this._out=out
+    this._registerPage=new RegisterPage(a=>{
         switch(a[0]){
             case'back':
                 this.page.value.off()
                 this.page.value=this._logInPage
             break
             case'putUser':
-                this.out.in(a)
+                this._out(a)
             break
         }
     })
-    this._logInPage=new LogInPage
-    this._logInPage.out.out(a=>{
+    this._logInPage=new LogInPage(a=>{
         switch(a[0]){
             case'back':
-                this.out.in(['back'])
+                this._out(['back'])
             break
             case'logIn':
-                this.out.in(a)
-                this.out.in(['back'])
+                this._out(a)
+                this._out(['back'])
             break
             case'register':
                 this.page.value.off()
