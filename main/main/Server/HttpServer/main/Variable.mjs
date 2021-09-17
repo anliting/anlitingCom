@@ -6,7 +6,7 @@ function transformValue(value){
 }
 function removeBindIfExist(){
     if(this._bind){
-        this.unfor(this._bind)
+        this._bind[0].unfor(this._bind[1])
         this._bind=0
     }
 }
@@ -30,9 +30,10 @@ Variable.prototype.for=function(transform){
 Variable.prototype.unfor=Variable.prototype.cutTransform
 Variable.prototype.bind=function(v){
     removeBindIfExist.call(this)
-    v.for(this._bind=to=>{
+    this._bind=[v,to=>{
         transformValue.call(this,to)
-    })
+    }]
+    v.for(this._bind[1])
     return this
 }
 Variable.prototype.setValue=function(value){
