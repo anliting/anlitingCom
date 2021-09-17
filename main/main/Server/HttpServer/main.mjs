@@ -5,7 +5,7 @@ import Variable from            './main/Variable.mjs'
 import SitePage from            './main/SitePage.mjs'
 let
     site=new Site,
-    sitePage=new SitePage,
+    sitePage,
     connectionStatus=new Variable(0),
     sw=(async()=>{
         let reg=await navigator.serviceWorker.register('%23sw')
@@ -36,7 +36,7 @@ site.out.out(a=>{
         break
     }
 })
-sitePage.out.out(a=>{
+sitePage=new SitePage(a=>{
     if(['logIn','logOut'].includes(a[0]))
         (async()=>{
             sw=await sw

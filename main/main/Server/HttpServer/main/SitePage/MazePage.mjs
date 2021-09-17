@@ -1,10 +1,9 @@
 import doe from                 'doe'
-import{Stream}from              'dt'
 import Variable from            '../Variable.mjs'
 import MazeGame from            './MazePage/MazeGame.mjs'
-function MazePage(){
+function MazePage(out){
     this._game=new MazeGame
-    this.out=new Stream
+    this._out=out
     this.node=doe.div(
         {className:'mazePage'},
         doe.div(
@@ -14,7 +13,7 @@ function MazePage(){
                 doe.div({
                     className:'button',
                     onclick:()=>{
-                        this.out.in(['back'])
+                        this._out(['back'])
                     },
                 },'Back'),
             ),

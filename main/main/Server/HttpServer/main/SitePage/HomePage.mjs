@@ -1,9 +1,8 @@
 import doe from                 'doe'
 import Variable from            '../Variable.mjs'
-import{Stream}from              'dt'
-function HomePage(){
+function HomePage(out){
     this.credential=new Variable
-    this.out=new Stream
+    this._out=out
     this.node=doe.div(
         {className:'homePage'},
         doe.div(
@@ -14,7 +13,7 @@ function HomePage(){
                     doe.div({
                         className:'button',
                         onclick:()=>{
-                            this.out.in('logIn')
+                            this._out('logIn')
                         }
                     },'Log In'),
                     a=>!a
@@ -24,7 +23,7 @@ function HomePage(){
                     doe.div({
                         className:'button item loggedInUserPageButton',
                         onclick:()=>{
-                            this.out.in('loggedInUserPage')
+                            this._out('loggedInUserPage')
                         },
                     },n=>{
                         this.credential.for(to=>{
@@ -44,11 +43,11 @@ function HomePage(){
             doe.div(
                 {className:'b'},
                 doe.div({className:'button',onclick:()=>{
-                    this.out.in('maze')
+                    this._out('maze')
                 }},'Maze'),
                 ' ',
                 doe.div({className:'button',onclick:()=>{
-                    this.out.in('idleKingdom')
+                    this._out('idleKingdom')
                 }},'Idle Kingdom'),
             ),
             doe.div(

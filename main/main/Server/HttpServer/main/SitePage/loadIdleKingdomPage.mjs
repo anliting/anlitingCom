@@ -2,8 +2,7 @@ import IdleKingdomPage from     './IdleKingdomPage.mjs'
 function loadIdleKingdomPage(){
     if(this._idleKingdomPage)
         return
-    this._idleKingdomPage=new IdleKingdomPage
-    this._idleKingdomPage.out.out(a=>{
+    this._idleKingdomPage=new IdleKingdomPage(a=>{
         switch(a[0]){
             case'back':
                 this._offPage()

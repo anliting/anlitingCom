@@ -2,7 +2,7 @@ import doe from         'doe'
 import Variable from    '../../Variable.mjs'
 import RegisterPanel from   './RegisterPage/RegisterPanel.mjs'
 function RegisterPage(out){
-    this.out=out
+    this._out=out
     this._status='form'
     this._registerPanel=new RegisterPanel(a=>{
         switch(a[0]){

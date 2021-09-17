@@ -1,10 +1,9 @@
 import doe from                 'doe'
-import{Stream}from              'dt'
 import Variable from            '../Variable.mjs'
 import IdleKingdomGame from     './IdleKingdomPage/IdleKingdomGame.mjs'
-function IdleKingdomPage(){
+function IdleKingdomPage(out){
     this._game=new IdleKingdomGame
-    this.out=new Stream
+    this._out=out
     this.node=doe.div(
         {className:'idleKingdomPage'},
         doe.div(
@@ -14,7 +13,7 @@ function IdleKingdomPage(){
                 doe.div({
                     className:'button',
                     onclick:()=>{
-                        this.out.in(['back'])
+                        this._out(['back'])
                     },
                 },'Back'),
             ),

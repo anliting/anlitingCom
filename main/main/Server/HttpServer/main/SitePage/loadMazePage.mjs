@@ -2,8 +2,7 @@ import MazePage from            './MazePage.mjs'
 function loadMazePage(){
     if(this._mazePage)
         return
-    this._mazePage=new MazePage
-    this._mazePage.out.out(a=>{
+    this._mazePage=new MazePage(a=>{
         switch(a[0]){
             case'back':
                 this._offPage()
