@@ -1,16 +1,15 @@
 import doe from                 'doe'
-import{Stream}from              'dt'
 import Variable from            '../../../../Variable.mjs'
 function submit(){
     this._node.input.required=true
     if(this._node.input.checkValidity()){
-        this.out.in(['invite',+this._node.input.value])
+        this._out(['invite',+this._node.input.value])
         this.clear()
     }
 }
-function MemberPage(){
+function MemberPage(out){
     this._node={}
-    this.out=new Stream
+    this._out=out
     this.node=doe.div(
         {className:'chatRoomMemberPage'},
         doe.div(
@@ -21,7 +20,7 @@ function MemberPage(){
                     doe.div('Back',{
                         className:'button',
                         onclick:()=>{
-                            this.out.in(['back'])
+                            this._out(['back'])
                         },
                     }),
                 ),
@@ -33,7 +32,7 @@ function MemberPage(){
                             if(
                                 confirm('Are you sure to leave this room?')
                             )
-                                this.out.in(['leave'])
+                                this._out(['leave'])
                         },
                     }),
                 ),

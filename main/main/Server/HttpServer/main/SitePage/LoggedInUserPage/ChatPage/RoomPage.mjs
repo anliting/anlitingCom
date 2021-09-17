@@ -6,10 +6,7 @@ import MemberPage from          './RoomPage/MemberPage.mjs'
 function RoomPage(){
     this.messageList=new Variable([])
     this.out=new Stream
-    this._homePage=new HomePage
-    this._memberPage=new MemberPage
-    this._homePage.messageList.bind(this.messageList)
-    this._homePage.out.out(a=>{
+    this._homePage=new HomePage(a=>{
         switch(a[0]){
             case'member':
                 this.page.value=this._memberPage
@@ -19,7 +16,8 @@ function RoomPage(){
             break
         }
     })
-    this._memberPage.out.out(a=>{
+    this._homePage.messageList.bind(this.messageList)
+    this._memberPage=new MemberPage(a=>{
         switch(a[0]){
             case'back':
                 this.page.value=this._homePage

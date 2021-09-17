@@ -1,5 +1,4 @@
 import doe from                 'doe'
-import{Stream}from              'dt'
 import Variable from            '../../../../Variable.mjs'
 import compile from             './HomePage/compile.mjs'
 import createControlPanel from  './HomePage/createControlPanel.mjs'
@@ -18,19 +17,19 @@ function setScrollRatio(){
         scrollTopMax(this._node.messageList)
 }
 function submit(){
-    this.out.in(['putMessage',this._node.input.value,()=>{}])
+    this._out(['putMessage',this._node.input.value,()=>{}])
     clearInput.call(this)
 }
 function clearInput(){
     this._node.input.value=''
     this.node.style.setProperty('--lineCount',1)
 }
-function HomePage(){
+function HomePage(out){
     this._node={}
     this._scrollRatio=1
     this._skipOnScroll=0
     this.messageList=new Variable([])
-    this.out=new Stream
+    this._out=out
     this.node=doe.div(
         {className:'chatRoomPage'},
         createControlPanel.call(this),

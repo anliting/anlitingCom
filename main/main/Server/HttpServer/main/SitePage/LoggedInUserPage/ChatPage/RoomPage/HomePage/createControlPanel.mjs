@@ -8,7 +8,7 @@ function createControlPanel(){
                 doe.div('Back',{
                     className:'button',
                     onclick:()=>{
-                        this.out.in(['back'])
+                        this._out(['back'])
                     },
                 }),
             ),
@@ -17,7 +17,7 @@ function createControlPanel(){
                 doe.div('Member',{
                     className:'button',
                     onclick:()=>{
-                        this.out.in(['member'])
+                        this._out(['member'])
                     },
                 }),
             ),
