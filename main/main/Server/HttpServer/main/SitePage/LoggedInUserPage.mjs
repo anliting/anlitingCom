@@ -85,8 +85,7 @@ function LoggedInUserPage(){
         }
     })
     this._onDeepWorldPageOff=new Set
-    this._deepWorldPage=new DeepWorldPage
-    this._deepWorldPage.out.out(a=>{
+    this._deepWorldPage=new DeepWorldPage(a=>{
         switch(a[0]){
             case'back':
                 offPage.call(this)

@@ -1,8 +1,7 @@
 import doe from                 'doe'
-import{Stream}from              'dt'
 import Variable from            '../../Variable.mjs'
-function DeepWorldPage(){
-    this.out=new Stream
+function DeepWorldPage(out){
+    this._out=out
     this.node=doe.div(
         {className:'deepWorldPage'},
         doe.div(
@@ -12,7 +11,7 @@ function DeepWorldPage(){
                 doe.div('Back',{
                     className:'button',
                     onclick:()=>{
-                        this.out.in(['back'])
+                        this._out(['back'])
                     }
                 }),
             ),
@@ -31,7 +30,7 @@ function DeepWorldPage(){
     })
 }
 DeepWorldPage.prototype.on=function(){
-    this.out.in(['listenCharacterList',console.log])
+    this._out(['listenCharacterList',console.log])
 }
 DeepWorldPage.prototype.off=function(){
 }
