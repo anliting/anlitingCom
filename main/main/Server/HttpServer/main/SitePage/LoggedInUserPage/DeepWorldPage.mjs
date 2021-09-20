@@ -20,6 +20,7 @@ function DeepWorldPage(out){
                 doe.div('New Character',{
                     className:'button',
                     onclick:()=>{
+                        this._out(['newCharacter'])
                     }
                 }),
             ),
@@ -33,6 +34,7 @@ DeepWorldPage.prototype.on=function(){
     this._out(['listenCharacterList',console.log])
 }
 DeepWorldPage.prototype.off=function(){
+    this._out(['unlistenCharacterList'])
 }
 DeepWorldPage.style=`
     body>.deepWorldPage{

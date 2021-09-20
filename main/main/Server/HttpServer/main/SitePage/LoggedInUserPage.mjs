@@ -6,11 +6,8 @@ import DeepWorldPage from       './LoggedInUserPage/DeepWorldPage.mjs'
 import EditProfilePage from     './LoggedInUserPage/EditProfilePage.mjs'
 import HomePage from            './LoggedInUserPage/HomePage.mjs'
 function offPage(){
-    if(this.page.value==this._deepWorldPage){
-        ;[...this._onDeepWorldPageOff].map(f=>f())
-        this._onDeepWorldPageOff.clear()
+    if(this.page.value==this._deepWorldPage)
         this._deepWorldPage.off()
-    }
 }
 function LoggedInUserPage(out){
     this._out=out
@@ -79,7 +76,7 @@ function LoggedInUserPage(out){
             break
         }
     })
-    this._onDeepWorldPageOff=new Set
+    this._deepWorld={}
     this._deepWorldPage=new DeepWorldPage(a=>{
         switch(a[0]){
             case'back':
@@ -87,17 +84,12 @@ function LoggedInUserPage(out){
                 this.page.value=this._homePage
             break
             case'listenCharacterList':
-                {
-                    let id,onOff
-                    id=setTimeout(()=>{
-                        a[1]([{id:0}])
-                        this._onDeepWorldPageOff.delete(onOff)
-                    },2e3)
-                    onOff=()=>{
-                        clearTimeout(id)
-                    }
-                    this._onDeepWorldPageOff.add(onOff)
-                }
+                this._deepWorld.id=setInterval(()=>{
+                    a[1]([{id:0}])
+                },2e3)
+            break
+            case'unlistenCharacterList':
+                clearTimeout(this._deepWorld.id)
             break
         }
     })
