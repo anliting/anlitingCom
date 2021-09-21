@@ -81,7 +81,22 @@ async function send(m){
 }
 function Site(out){
     this._mission=[]
+    let deepWorld={}
     this.in=a=>{
+        if(a[0]=='deepWorld'){
+            a=a.slice(1)
+            switch(a[0]){
+                case'listenCharacterList':
+                    deepWorld.id=setInterval(()=>{
+                        a[1]([{id:0}])
+                    },2e3)
+                break
+                case'unlistenCharacterList':
+                    clearTimeout(deepWorld.id)
+                break
+            }
+            return
+        }
         let mission={mission:a,status:0}
         this._mission.push(mission)
         if(this._connectionStatus)

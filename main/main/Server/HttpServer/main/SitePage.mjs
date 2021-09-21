@@ -62,6 +62,9 @@ function SitePage(out){
             case'unlistenMessageList':
             case'unlistenRoomList':
             break
+            case'deepWorld':
+                this._out(a)
+            break
         }
     })
     this._userPage=new UserPage(a=>{

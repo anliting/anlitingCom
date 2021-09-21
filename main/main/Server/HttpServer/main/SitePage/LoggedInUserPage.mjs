@@ -76,20 +76,14 @@ function LoggedInUserPage(out){
             break
         }
     })
-    let deepWorld={}
     this._deepWorldPage=new DeepWorldPage(a=>{
         switch(a[0]){
             case'back':
                 offPage.call(this)
                 this.page.value=this._homePage
             break
-            case'listenCharacterList':
-                deepWorld.id=setInterval(()=>{
-                    a[1]([{id:0}])
-                },2e3)
-            break
-            case'unlistenCharacterList':
-                clearTimeout(deepWorld.id)
+            default:
+                this._out(['deepWorld',...a])
             break
         }
     })
