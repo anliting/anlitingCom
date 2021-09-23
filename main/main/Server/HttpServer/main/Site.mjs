@@ -46,6 +46,9 @@ async function send(m){
         await this._connection.cutCurrentUser()
         a[1]()
     }
+    if(a[0]=='deepWorld'){
+        console.log(a)
+    }
     if(a[0]=='invite'){
         m.status='sent'
         chatSite.invite(this._connection,a[1],a[2],a[3])
