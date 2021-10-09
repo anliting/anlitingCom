@@ -30,11 +30,15 @@ function DeepWorldPage(out){
         this.node.style.setProperty('--zoom',''+Math.min(a[0],a[1]/(9/16)))
     })
 }
-DeepWorldPage.prototype.on=function(){
-    this._out(['listenCharacterList',console.log])
-}
-DeepWorldPage.prototype.off=function(){
-    this._out(['unlistenCharacterList'])
+DeepWorldPage.prototype.in=function(a){
+    switch(a[0]){
+        case'off':
+            this._out(['unlistenCharacterList'])
+        break
+        case'on':
+            this._out(['listenCharacterList',console.log])
+        break
+    }
 }
 DeepWorldPage.style=`
     body>.deepWorldPage{

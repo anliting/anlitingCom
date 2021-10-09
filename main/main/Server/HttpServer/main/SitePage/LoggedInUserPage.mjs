@@ -7,7 +7,7 @@ import EditProfilePage from     './LoggedInUserPage/EditProfilePage.mjs'
 import HomePage from            './LoggedInUserPage/HomePage.mjs'
 function offPage(){
     if(this.page.value==this._deepWorldPage)
-        this._deepWorldPage.off()
+        this._deepWorldPage.in(['off'])
 }
 function LoggedInUserPage(out){
     this._out=out
@@ -30,7 +30,7 @@ function LoggedInUserPage(out){
             break
             case'deepWorld':
                 offPage.call(this)
-                this._deepWorldPage.on()
+                this._deepWorldPage.in(['on'])
                 this.page.value=this._deepWorldPage
             break
             case'editProfile':
