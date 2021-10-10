@@ -32,6 +32,8 @@ function DeepWorldPage(out){
 }
 DeepWorldPage.prototype.in=function(a){
     switch(a[0]){
+        case'connect':
+        break
         case'off':
             this._out(['unlistenCharacterList'])
         break
