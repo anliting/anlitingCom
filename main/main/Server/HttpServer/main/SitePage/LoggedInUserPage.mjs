@@ -87,6 +87,7 @@ function LoggedInUserPage(out){
             break
         }
     })
+    this._deepWorldPage.in(['connect'])
     this.page=new Variable(this._homePage)
 }
 LoggedInUserPage.prototype.off=function(){
