@@ -33,12 +33,22 @@ function DeepWorldPage(out){
 DeepWorldPage.prototype.in=function(a){
     switch(a[0]){
         case'connect':
+            this._connected=1
+            if(this._on)
+                this._out(['listenCharacterList',console.log])
+        break
+        case'disconnect':
+            this._connected=0
         break
         case'off':
-            this._out(['unlistenCharacterList'])
+            this._on=0
+            if(this._connected)
+                this._out(['unlistenCharacterList'])
         break
         case'on':
-            this._out(['listenCharacterList',console.log])
+            this._on=1
+            if(this._connected)
+                this._out(['listenCharacterList',console.log])
         break
     }
 }
