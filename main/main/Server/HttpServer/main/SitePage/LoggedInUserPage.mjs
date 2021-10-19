@@ -94,7 +94,10 @@ LoggedInUserPage.prototype.off=function(){
     offPage.call(this)
     this.page.value=this._homePage
 }
-LoggedInUserPage.style=EditProfilePage.style+ChangePasswordPage.style+ChatPage.style+DeepWorldPage.style+`
+LoggedInUserPage.style=EditProfilePage.style+
+    ChangePasswordPage.style+
+    ChatPage.style+
+    DeepWorldPage.style+`
     body>.loggedInUserPage{
         display:inline-block;
         margin:0 auto;
