@@ -57,6 +57,9 @@ function HomePage(out){
                         href:'https://althea.anliting.com/'
                     },'My blog')),
                     doe.li(doe.a({
+                        href:'https://qr.anliting.com/'
+                    },'QR Code Scanner')),
+                    doe.li(doe.a({
                         href:'https://stopwatch.anliting.com/'
                     },'Stopwatch')),
                 )
