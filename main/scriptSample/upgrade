@@ -1,4 +1,0 @@
-(cd anlitingCom;git pull --recurse-submodules)
-rm -fr node_modules package.json package-lock.json
-cp anlitingCom/main/package.json .
-npm i

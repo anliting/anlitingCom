@@ -1,0 +1,5 @@
+services:
+    anliting-com:
+        volumes:
+            - ./anlitingCom:/app/anlitingCom
+            - ./work:/app/work

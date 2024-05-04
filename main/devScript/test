@@ -1,3 +1,0 @@
-rm -fr testWork
-mkdir testWork
-(cd testWork;node ../anlitingCom/main/test.mjs)

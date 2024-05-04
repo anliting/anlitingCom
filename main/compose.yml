@@ -1,0 +1,6 @@
+services:
+    anliting-com:
+        build:
+            context: anlitingCom
+            dockerfile: main/Dockerfile
+        image: anliting-com

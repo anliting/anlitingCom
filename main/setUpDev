@@ -1,6 +1,0 @@
-cp anlitingCom/main/devScript/* anlitingCom/main/package.json .
-npm i
-mkdir work
-printf '1100 ::1'>work/httpListen
-printf '1101 ::1'>work/wsEndListen
-printf '1101 ::1'>work/wsListen

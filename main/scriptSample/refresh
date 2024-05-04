@@ -1,3 +1,0 @@
-systemctl --user stop anlitingCom.service
-sh upgrade
-systemctl --user start anlitingCom.service
