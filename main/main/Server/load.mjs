@@ -73,22 +73,14 @@ async function load(){
     await this._chat.load
     await Promise.all([
         this._ipcServer.listen(),
-        (async()=>{
-            if(httpListen=await httpListen)
-                await this._httpServer.listen(httpListen)
-        })(),
-        (async()=>{
-            if(await httpListenOnPath)
-                await this._httpServer.listen(['httpServer'])
-        })(),
-        (async()=>{
-            if(wsListen=await wsListen)
-                await this._wsSite.listen(wsListen)
-        })(),
-        (async()=>{
-            if(await wsListenOnPath)
-                await this._wsSite.listen(['wsServer'])
-        })(),
+        this._httpServer.listen([
+            process.env.httpListenPort,
+            process.env.httpListenHostname
+        ]),
+        this._wsSite.listen([
+            process.env.wsListenPort,
+            process.env.wsListenHostname
+        ]),
     ])
 }
 export default load
