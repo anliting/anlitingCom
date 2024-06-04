@@ -13,13 +13,6 @@ Server.prototype._unreferSession=function(session){
         this._session.delete(session)
     }
 }
-Server.prototype._loadHttpTls=async function(){
-    let[key,crt]=await Promise.all([
-        fs.promises.readFile('httpTls/key'),
-        fs.promises.readFile('httpTls/crt'),
-    ])
-    this._httpServer.setSecureContext({key,cert:crt})
-}
 Server.prototype._loadWsTls=async function(){
     let[key,crt]=await Promise.all([
         fs.promises.readFile('wsTls/key'),

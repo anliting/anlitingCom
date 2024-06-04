@@ -1,4 +1,4 @@
-import http2 from           'http2'
+import http from            'http'
 import fs from              'fs'
 import urlModule from       'url'
 import minify from          './HttpServer/minify.mjs'
@@ -16,70 +16,52 @@ async function calcSw(mainDir){
         )
     )
 }
-function createTypeAHttp2Server(tls){
-    return tls?
-        http2.createSecureServer().on('secureConnection',socket=>{
-            socket.on('error',()=>{})
-        }).on('tlsClientError',()=>{})
-    :
-        http2.createServer()
-}
 function HttpServer(mainDir,tls,wsEndListen){
     this._mainDir=mainDir
-    this._session=new Set
     this._rootContentPromise=calcRootContent(mainDir,wsEndListen)
     this._swPromise=calcSw(mainDir)
-    this._server=createTypeAHttp2Server(tls).on('session',session=>{
-        this._session.add(session)
-        session.on('close',()=>
-            this._session.delete(session)
-        )
-    }).on('stream',async(stream,header)=>{
-        stream.on('error',()=>{stream.close()})
-        let url=new urlModule.URL(header[':path'],'http://a')
-        if(header[':method']=='GET'&&url.pathname=='/'){
+    this._server=http.createServer(async(rq,rs)=>{
+        let url=new urlModule.URL(rq.url,'http://a')
+        if(rq.method=='GET'&&url.pathname=='/'){
             let content=await this._rootContentPromise
-            if(stream.closed)
-                return
-            stream.respond({
-                ':status':200,
+            rs.writeHead(200,{
                 'content-type':'text/html;charset=utf-8',
                 'strict-transport-security':
                     'includeSubDomains;max-age=63072000;preload'
             })
-            stream.end(content)
+            rs.end(content)
             return
         }
-        if(header[':method']=='GET'&&url.pathname=='/%23sw'){
-            stream.respond({
-                ':status':200,
+        if(rq.method=='GET'&&url.pathname=='/'){
+            rs.writeHead(200,{
+                'content-type':'text/html;charset=utf-8',
+                'strict-transport-security':
+                    'includeSubDomains;max-age=63072000;preload'
+            })
+            rs.end(await this._rootContentPromise)
+            return
+        }
+        if(rq.method=='GET'&&url.pathname=='/%23sw'){
+            rs.writeHead(200,{
                 'content-type':'application/javascript',
                 'strict-transport-security':
                     'includeSubDomains;max-age=63072000;preload'
             })
-            return stream.end(await this._swPromise)
+            return rs.end(await this._swPromise)
         }
-        if(header[':method']=='GET'&&url.pathname in get){
+        if(rq.method=='GET'&&url.pathname in get){
             let a=get[url.pathname]
-            stream.respond({
-                ':status':200,
+            rs.writeHead(200,{
                 'content-type':a[0],
                 'strict-transport-security':
                     'includeSubDomains;max-age=63072000;preload'
             })
-            fs.createReadStream(`${mainDir}/main/Server/HttpServer/${a[1]}`).pipe(stream)
+            fs.createReadStream(`${mainDir}/main/Server/HttpServer/${a[1]}`).pipe(rs)
             return
         }
-        stream.respond({
-            ':status':400,
-            'strict-transport-security':
-                'includeSubDomains;max-age=63072000;preload'
-        })
-        stream.end()
+        rs.writeHead(400)
+        rs.end()
     })
-}
-HttpServer.prototype.setSecureContext=function(secureContext){
-    this._server.setSecureContext(secureContext)
 }
 HttpServer.prototype.listen=function(a){
     return new Promise(rs=>
@@ -89,9 +71,6 @@ HttpServer.prototype.listen=function(a){
 HttpServer.prototype.end=function(){
     return new Promise(rs=>{
         this._server.close(rs)
-        this._session.forEach(a=>
-            a.destroy()
-        )
     })
 }
 export default HttpServer

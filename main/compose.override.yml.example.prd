@@ -1,4 +1,4 @@
 services:
-    anliting-com:
+    app:
         volumes:
             - ./work:/app/work
